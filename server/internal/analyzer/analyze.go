@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/metrics"
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 )
@@ -120,6 +121,8 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 
 	result := GenerateResult(resp)
 	resp.Result = result
+	metrics.RiskScore.Observe(float64(result.RiskScore))
+	metrics.TrustScore.Observe(float64(result.TrustScore))
 
 	if len(errs) > 0 {
 		resp.Incomplete = true

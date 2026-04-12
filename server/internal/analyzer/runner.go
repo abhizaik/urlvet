@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/abhizaik/SafeSurf/internal/metrics"
 )
 
 // runTasks runs all tasks in parallel, collects timings and non-fatal errors
@@ -24,12 +26,16 @@ func runTasks(ctx context.Context, in *Input, tasks []Task) (*Output, []error) {
 				return
 			default:
 				start := time.Now()
-				if err := t.Run(in, out); err != nil {
+				err := t.Run(in, out)
+				elapsed := time.Since(start)
+				metrics.TaskDuration.WithLabelValues(t.Name()).Observe(elapsed.Seconds())
+				if err != nil {
+					metrics.TaskErrors.WithLabelValues(t.Name()).Inc()
 					mu.Lock()
 					errs = append(errs, fmt.Errorf("%s: %w", t.Name(), err))
 					mu.Unlock()
 				}
-				out.setTiming(t.Name(), time.Since(start))
+				out.setTiming(t.Name(), elapsed)
 			}
 		}()
 	}
