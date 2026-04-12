@@ -196,7 +196,6 @@
 </svelte:head>
 
 <section>
-  <title>SafeSurf</title>
   <div
     class={`max-w-4xl mx-auto px-6 ${isLanding ? "min-h-[70vh] flex flex-col justify-center" : "py-12"}`}
   >
@@ -291,45 +290,56 @@
       ></div>
 
       <label for="url-input" class="sr-only">URL to analyze</label>
-      <div class="relative flex flex-col md:flex-row gap-3 z-10">
-        <!-- Input -->
-        <input
-          id="url-input"
-          type="text"
-          class={`flex-1 rounded-lg bg-gray-900 border border-gray-800 px-4 py-3 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${accent.ring} focus:shadow-lg`}
-          placeholder="Enter a URL (e.g. example.com)"
-          bind:value={input}
-          autocomplete="url"
-          inputmode="url"
-          required
-        />
+      <div class="relative flex flex-col gap-2 z-10">
+        <div class="flex flex-col md:flex-row gap-3">
+          <!-- Input -->
+          <input
+            id="url-input"
+            type="text"
+            class={`flex-1 rounded-lg bg-gray-900 border px-4 py-3 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 focus:shadow-lg ${error ? 'border-red-600 focus:ring-red-600' : `border-gray-800 ${accent.ring}`}`}
+            placeholder="Enter a URL (e.g. example.com)"
+            bind:value={input}
+            on:input={() => { if (error) error = null; }}
+            autocomplete="url"
+            inputmode="url"
+            aria-invalid={error ? "true" : undefined}
+            aria-describedby={error ? "url-error" : undefined}
+            required
+          />
 
-        <!-- Button -->
-        <button
-          type="submit"
-          class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-600"
-          disabled={loading}
-          aria-busy={loading}
-        >
-          {#if loading}
-            <svg
-              class="w-4 h-4 animate-spin text-white"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M12 4v4m0 8v4m8-8h-4M4 12H0"
-              />
-            </svg>
-            Scanning ..
-          {:else}
-            Scan Now
-          {/if}
-        </button>
+          <!-- Button -->
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-600"
+            disabled={loading}
+            aria-busy={loading}
+            aria-label={loading ? "Scanning URL, please wait" : "Scan Now"}
+          >
+            {#if loading}
+              <svg
+                class="w-4 h-4 animate-spin text-white"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4v4m0 8v4m8-8h-4M4 12H0"
+                />
+              </svg>
+              Scanning ..
+            {:else}
+              Scan Now
+            {/if}
+          </button>
+        </div>
+
+        {#if error}
+          <p id="url-error" class="text-red-400 text-xs mt-0.5" role="alert">{error}</p>
+        {/if}
       </div>
     </form>
 
