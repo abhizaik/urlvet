@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 )
 
 const (
-	PhishTankAPIURL = "http://checkurl.phishtank.com/checkurl/"
+	PhishTankAPIURL = "https://checkurl.phishtank.com/checkurl/"
 )
 
 type PhishTankResponse struct {
@@ -56,12 +57,12 @@ func CheckPhishTank(targetURL string) (*PhishTankResult, error) {
 		Timeout: 5 * time.Second,
 	}
 
-	req, err := http.NewRequest("POST", PhishTankAPIURL, nil)
+	req, err := http.NewRequest("POST", PhishTankAPIURL, strings.NewReader(data.Encode()))
 	if err != nil {
 		return nil, err
 	}
 
-	req.URL.RawQuery = data.Encode()
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("User-Agent", userAgent)
 
 	resp, err := client.Do(req)

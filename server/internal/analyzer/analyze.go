@@ -11,27 +11,31 @@ import (
 
 // Analyze runs all tasks and builds the final response
 func Analyze(ctx context.Context, rawURL string) (Response, []error) {
-	// Validate and extract domain
-	_, isValid, _ := checks.IsValidURL(rawURL)
-	if !isValid {
+	// Validate and normalize the URL (adds https:// if scheme is missing).
+	// Using the normalized form as the canonical URL ensures consistent cache
+	// keys regardless of how the caller formatted the input.
+	parsedURL, isValid, err := checks.IsValidURL(rawURL)
+	if err != nil || !isValid {
 		return Response{}, []error{ErrInvalidURL}
 	}
-	domain, err := checks.GetDomain(rawURL)
+	normalizedURL := parsedURL.String()
+
+	domain, err := checks.GetDomain(normalizedURL)
 	if err != nil {
 		return Response{}, []error{err}
 	}
 
 	// Initialize cache (non-blocking - if cache fails, continue without it)
 	var cacheInstance CacheInterface
-	cacheConn, err := cache.New()
-	if err != nil {
-		log.Printf("Warning: Failed to initialize cache: %v. Continuing without cache.", err)
+	cacheConn, cacheErr := cache.New()
+	if cacheErr != nil {
+		log.Printf("Warning: Failed to initialize cache: %v. Continuing without cache.", cacheErr)
 	} else {
 		cacheInstance = cacheConn
 		defer cacheConn.Close()
 	}
 
-	in := &Input{URL: rawURL, Domain: domain, Cache: cacheInstance}
+	in := &Input{URL: normalizedURL, Domain: domain, Cache: cacheInstance}
 
 	tasks := []Task{
 		rankTask{},
@@ -58,7 +62,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 	out, errs := runTasks(ctx, in, tasks)
 
 	resp := Response{
-		URL:    rawURL,
+		URL:    normalizedURL,
 		Domain: domain,
 		Features: Features{
 			Rank: out.Rank,
