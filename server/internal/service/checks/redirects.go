@@ -3,6 +3,7 @@ package checks
 import (
 	"errors"
 	"net/http"
+	"time"
 )
 
 type RedirectionResult struct {
@@ -18,6 +19,8 @@ func CheckRedirects(rawURL string) (RedirectionResult, error) {
 	var redirects []string
 
 	client := &http.Client{
+		Timeout:   30 * time.Second,
+		Transport: newSafeTransport(),
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			redirects = append(redirects, req.URL.String())
 			if len(via) >= 10 {

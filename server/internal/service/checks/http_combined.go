@@ -52,10 +52,10 @@ func CheckHTTPCombined(rawURL string) (CombinedHTTPResult, error) {
 		DisableKeepAlives:     false, // Keep connections alive for redirects
 		MaxIdleConns:          10,
 		MaxIdleConnsPerHost:   2,
-		DialContext: (&net.Dialer{
+		DialContext: ssrfSafeDialContext(&net.Dialer{
 			Timeout:   300 * time.Millisecond, // Connection timeout
 			KeepAlive: 30 * time.Second,
-		}).DialContext,
+		}),
 		TLSHandshakeTimeout: 300 * time.Millisecond, // TLS handshake timeout
 	}
 

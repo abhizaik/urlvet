@@ -68,9 +68,7 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
 
-	client := &http.Client{
-		Timeout: 15 * time.Second,
-	}
+	client := newSafeHTTPClient(15 * time.Second)
 
 	resp, err := client.Do(req)
 	if err != nil {
