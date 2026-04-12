@@ -337,13 +337,19 @@
         class="mt-6 rounded-xl border border-gray-800 bg-gray-900/70 p-4 shadow-md hover:shadow-lg transition-all"
       >
         <h4 class="text-sm font-semibold text-gray-300 mb-2">Website Screenshot</h4>
-        <img
-          src={screenshotUrl}
-          alt="Website screenshot"
-          class="w-full rounded-lg border border-gray-800 cursor-pointer hover:opacity-90"
-          loading="lazy"
+        <button
+          type="button"
+          class="w-full p-0 border-0 bg-transparent cursor-pointer rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           on:click={() => (showModal = true)}
-        />
+          aria-label="View full-size screenshot"
+        >
+          <img
+            src={screenshotUrl}
+            alt="Website screenshot"
+            class="w-full rounded-lg border border-gray-800 hover:opacity-90 transition-opacity"
+            loading="lazy"
+          />
+        </button>
       </div>
     {/if}
 
@@ -775,6 +781,7 @@
                                   class="font-medium text-blue-400 hover:text-blue-300 underline cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded px-1 transition-colors"
                                   on:click={() => openAnalyzeInNewTab(url)}
                                   title="Click to analyze this URL in a new tab"
+                                  aria-label={`Analyze ${url} in a new tab`}
                                 >
                                   {url}
                                 </button>
@@ -1374,10 +1381,10 @@
                                   text="The text labels on buttons that trigger this form's submission."
                                 />
                               </div>
-                              <div class="flex flex-wrap gap-1">
+                              <div class="flex flex-wrap gap-1 min-w-0">
                                 {#each form.submit_texts as text}
                                   <span
-                                    class="px-2 py-0.5 bg-gray-900 text-emerald-400 rounded border border-emerald-900/30 text-xs font-medium"
+                                    class="px-2 py-0.5 bg-gray-900 text-emerald-400 rounded border border-emerald-900/30 text-xs font-medium break-all"
                                   >
                                     {text}
                                   </span>
