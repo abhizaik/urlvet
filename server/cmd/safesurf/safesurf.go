@@ -1,3 +1,25 @@
+// Package main is the entrypoint for the SafeSurf API.
+//
+//	@title			SafeSurf API
+//	@version		1.0
+//	@description	URL safety analysis API. Checks phishing signals, redirects, TLS, DNS, brand mismatches, and more.
+//	@license.name	MIT
+//
+//	@host		localhost:8080
+//	@BasePath	/api/v1
+//
+//	@tag.name			Analysis
+//	@tag.description	Full URL analysis
+//	@tag.name			URL
+//	@tag.description	URL structure checks
+//	@tag.name			DNS
+//	@tag.description	DNS and infrastructure checks
+//	@tag.name			Security
+//	@tag.description	Security protocol checks
+//	@tag.name			Threat Intel
+//	@tag.description	Threat intelligence lookups
+//	@tag.name			Utility
+//	@tag.description	Utility and administrative endpoints
 package main
 
 import (
@@ -7,6 +29,7 @@ import (
 	"syscall"
 
 	"github.com/abhizaik/SafeSurf/internal/handler"
+	_ "github.com/abhizaik/SafeSurf/internal/docs" // swagger docs registration
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
 	"github.com/joho/godotenv"

@@ -6,6 +6,9 @@ import (
 	"github.com/abhizaik/SafeSurf/internal/handler/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func SetupRouter() *gin.Engine {
@@ -23,6 +26,15 @@ func SetupRouter() *gin.Engine {
 
 	// Global Rate Limiter: 20 requests per minute per IP
 	r.Use(middleware.RateLimiter(20, time.Minute))
+
+	// Prometheus metrics — record latency and request counts for all routes
+	r.Use(middleware.PrometheusMiddleware())
+
+	// Prometheus scrape endpoint (not rate-limited, not behind /api/v1)
+	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
+
+	// Swagger UI — served at /swagger/index.html
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// RootHandler returns basic info about the SafeSurf API service
 	r.GET("/", RootHandler)

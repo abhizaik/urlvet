@@ -8,6 +8,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// DomainInfoHandler returns WHOIS / RDAP registration data for the URL's domain.
+//
+//	@Summary		Domain WHOIS / RDAP info
+//	@Tags			DNS
+//	@Produce		json
+//	@Param			url	query		string	true	"URL whose domain to look up"
+//	@Success		200	{object}	map[string]any
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/domain-info [get]
 func DomainInfoHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

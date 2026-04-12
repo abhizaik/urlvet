@@ -135,6 +135,17 @@ make up
 ```
 Web UI: **[localhost:3000](http://localhost:3000)** 
 
+## API Documentation
+
+Interactive API docs (Swagger UI) are served by the backend at:
+
+```
+http://localhost:8080/swagger/index.html
+```
+
+The raw OpenAPI spec is at `http://localhost:8080/swagger/doc.json` and committed to `server/internal/docs/swagger.yaml`.  
+Full endpoint reference: [docs/api.md](docs/api.md)
+
 ## API Example
 
 The phishing detection engine exposes a simple HTTP API for real-time URL analysis.
@@ -263,6 +274,22 @@ Exact performance depends on enabled analyzers and network conditions.
 - No URL data is sent to third-party services by default
 - All analysis runs locally or in your own infrastructure
 - Designed for auditability, privacy, and controlled environments
+
+## Testing
+
+Run the backend test suite:
+
+```bash
+cd server
+go test ./...                          # all tests
+go test -v ./internal/analyzer/        # scorer tests
+go test -v ./internal/handler/         # handler smoke tests
+go test -race ./...                    # with race detector
+go test -coverprofile=c.out ./... && go tool cover -html=c.out  # coverage report
+```
+
+Coverage areas: `GenerateResult()` scorer (28 table-driven cases), HTTP handler validation smoke tests, URL utility checks, and rank loading.  
+See [docs/testing.md](docs/testing.md) for full details.
 
 ## Limitations
 - Heuristic false positives

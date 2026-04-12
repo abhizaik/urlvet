@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckUrlLengthHandler checks whether the URL exceeds the safe length threshold.
+//
+//	@Summary		URL length check
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Router			/length [get]
 func CheckUrlLengthHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {
@@ -27,6 +36,15 @@ func CheckUrlLengthHandler(c *gin.Context) {
 	})
 }
 
+// CheckUrlDepthHandler checks whether the URL path is suspiciously deep.
+//
+//	@Summary		URL depth check
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Router			/depth [get]
 func CheckUrlDepthHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

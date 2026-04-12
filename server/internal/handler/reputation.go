@@ -7,6 +7,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckTrustedTLDHandler checks whether the URL uses a trusted (gov/edu) TLD.
+//
+//	@Summary		Trusted TLD check
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]any
+//	@Failure		400	{object}	map[string]string
+//	@Router			/trusted-tld [get]
 func CheckTrustedTLDHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {
@@ -34,6 +43,15 @@ func CheckTrustedTLDHandler(c *gin.Context) {
 	})
 }
 
+// CheckRiskyTLDHandler checks whether the URL uses a high-risk TLD.
+//
+//	@Summary		Risky TLD check
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]any
+//	@Failure		400	{object}	map[string]string
+//	@Router			/risky-tld [get]
 func CheckRiskyTLDHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {
@@ -61,6 +79,15 @@ func CheckRiskyTLDHandler(c *gin.Context) {
 	})
 }
 
+// CheckUrlShortenerHandler checks whether the URL belongs to a known URL-shortener service.
+//
+//	@Summary		URL shortener detection
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Router			/url-shortener [get]
 func CheckUrlShortenerHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

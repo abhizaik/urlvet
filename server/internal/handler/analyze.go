@@ -10,6 +10,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// AnalyzeURLHandler runs a full safety analysis on the given URL.
+//
+//	@Summary		Full URL analysis
+//	@Tags			Analysis
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to analyse (max 2048 chars)"
+//	@Success		200	{object}	analyzer.Response
+//	@Failure		400	{object}	map[string]string
+//	@Router			/analyze [get]
 func AnalyzeURLHandler(c *gin.Context) {
 	url := c.Query("url")
 	if url == "" {

@@ -2,8 +2,10 @@ package analyzer
 
 import (
 	"context"
+	"strings"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/metrics"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -18,16 +20,25 @@ func cachedTask[T any](
 	setOutput func(*Output, T),
 	out *Output,
 ) (bool, error) {
+	// Derive a short label from the cache key prefix (e.g. "domain_rank" from "domain_rank:example.com").
+	keyLabel := cacheKey
+	if i := strings.IndexByte(cacheKey, ':'); i >= 0 {
+		keyLabel = cacheKey[:i]
+	}
+
 	// Try cache first
 	if cache != nil {
 		var cached T
 		if err := cache.GetJSON(ctx, cacheKey, &cached); err == nil {
+			metrics.CacheHits.WithLabelValues(keyLabel).Inc()
 			out.mu.Lock()
 			setOutput(out, cached)
 			out.mu.Unlock()
 			return true, nil
 		} else if err != redis.Nil {
 			// Cache error (not a miss) - continue to fetch
+		} else {
+			metrics.CacheMisses.WithLabelValues(keyLabel).Inc()
 		}
 	}
 

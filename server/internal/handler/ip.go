@@ -8,6 +8,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckIfUsesIPHandler checks whether the URL uses a raw IP address instead of a domain.
+//
+//	@Summary		IP address detection
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Router			/ip/check [get]
 func CheckIfUsesIPHandler(c *gin.Context) {
 	url := c.Query("url")
 	if url == "" {
@@ -33,6 +42,16 @@ func CheckIfUsesIPHandler(c *gin.Context) {
 	})
 }
 
+// ResolveIPHandler resolves the domain in the URL to its IP addresses.
+//
+//	@Summary		DNS IP resolution
+//	@Tags			DNS
+//	@Produce		json
+//	@Param			url	query		string	true	"URL whose domain to resolve"
+//	@Success		200	{object}	map[string][]string
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/ip/resolve [get]
 func ResolveIPHandler(c *gin.Context) {
 	url := c.Query("url")
 	if url == "" {

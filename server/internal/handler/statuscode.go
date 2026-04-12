@@ -7,6 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckStatusCodeHandler fetches the URL and returns its HTTP status code.
+//
+//	@Summary		HTTP status code check
+//	@Tags			Security
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]any
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/status-code [get]
 func CheckStatusCodeHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {
