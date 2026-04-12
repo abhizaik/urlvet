@@ -66,7 +66,6 @@ var RiskyTLDs = map[string]struct{}{
 	"haus":        {},
 	"homes":       {},
 	"id":          {},
-	"in":          {},
 	"ink":         {},
 	"jetzt":       {},
 	"kim":         {},

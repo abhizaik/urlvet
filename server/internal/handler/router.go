@@ -31,6 +31,7 @@ func SetupRouter() *gin.Engine {
 	r.GET("/health", HealthHandler)
 
 	v1 := r.Group("/api/v1")
+	v1.Use(middleware.URLLengthValidator(2048))
 	{
 		v1.GET("/health", HealthHandler)
 		v1.GET("/test", TestApiHandler)

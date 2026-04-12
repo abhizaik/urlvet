@@ -57,3 +57,17 @@ func max(a, b int64) int64 {
 	}
 	return b
 }
+
+// URLLengthValidator returns a middleware that rejects requests where the
+// "url" query parameter exceeds maxLen bytes, preventing DoS via oversized inputs.
+func URLLengthValidator(maxLen int) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if u := c.Query("url"); len(u) > maxLen {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": fmt.Sprintf("url exceeds maximum allowed length of %d characters", maxLen),
+			})
+			return
+		}
+		c.Next()
+	}
+}

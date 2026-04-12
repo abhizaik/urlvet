@@ -1,7 +1,10 @@
 package checks
 
 import (
+	"context"
 	"fmt"
+	"net"
+	"net/http"
 	"net/url"
 	"strings"
 	"time"
@@ -95,4 +98,86 @@ func GetDomainAge(created time.Time) (string, int, error) {
 		}
 	}
 	return strings.Join(parts, " "), days, nil
+}
+
+// --- SSRF-safe HTTP utilities ---
+
+// privateIPNets lists IP ranges that must never be dialed from the server.
+var privateIPNets = func() []*net.IPNet {
+	cidrs := []string{
+		"0.0.0.0/8",      // "this" network
+		"10.0.0.0/8",     // RFC 1918 private
+		"100.64.0.0/10",  // shared address space (RFC 6598 / CGN)
+		"127.0.0.0/8",    // loopback
+		"169.254.0.0/16", // link-local — includes AWS/GCP metadata endpoints
+		"172.16.0.0/12",  // RFC 1918 private
+		"192.0.0.0/24",   // IETF protocol assignments
+		"192.168.0.0/16", // RFC 1918 private
+		"198.18.0.0/15",  // benchmark testing
+		"224.0.0.0/4",    // multicast
+		"240.0.0.0/4",    // reserved
+		"::1/128",        // IPv6 loopback
+		"fc00::/7",       // IPv6 unique local
+		"fe80::/10",      // IPv6 link-local
+	}
+	nets := make([]*net.IPNet, 0, len(cidrs))
+	for _, c := range cidrs {
+		_, ipnet, _ := net.ParseCIDR(c)
+		nets = append(nets, ipnet)
+	}
+	return nets
+}()
+
+func isPrivateIP(ip net.IP) bool {
+	for _, block := range privateIPNets {
+		if block.Contains(ip) {
+			return true
+		}
+	}
+	return false
+}
+
+// ssrfSafeDialContext wraps a Dialer's DialContext to reject connections to
+// private/reserved IP ranges, preventing SSRF attacks.
+// DNS is resolved once here and the first public IP is dialed directly,
+// which also prevents DNS rebinding attacks.
+func ssrfSafeDialContext(d *net.Dialer) func(context.Context, string, string) (net.Conn, error) {
+	return func(ctx context.Context, network, addr string) (net.Conn, error) {
+		host, port, err := net.SplitHostPort(addr)
+		if err != nil {
+			return nil, err
+		}
+		ips, err := net.DefaultResolver.LookupHost(ctx, host)
+		if err != nil {
+			return nil, err
+		}
+		if len(ips) == 0 {
+			return nil, fmt.Errorf("ssrf: no addresses resolved for %s", host)
+		}
+		for _, raw := range ips {
+			ip := net.ParseIP(raw)
+			if ip != nil && isPrivateIP(ip) {
+				return nil, fmt.Errorf("ssrf: blocked connection to private/reserved address %s", raw)
+			}
+		}
+		// Dial the first resolved IP directly to prevent re-resolution.
+		return d.DialContext(ctx, network, net.JoinHostPort(ips[0], port))
+	}
+}
+
+// newSafeHTTPClient returns an *http.Client that blocks SSRF.
+// Use for plain fetches that don't need a custom CheckRedirect or transport.
+func newSafeHTTPClient(timeout time.Duration) *http.Client {
+	return &http.Client{
+		Timeout:   timeout,
+		Transport: newSafeTransport(),
+	}
+}
+
+// newSafeTransport returns an *http.Transport with SSRF-safe DialContext.
+// Use when building a custom http.Client (e.g. one with a CheckRedirect hook).
+func newSafeTransport() *http.Transport {
+	return &http.Transport{
+		DialContext: ssrfSafeDialContext(&net.Dialer{Timeout: 10 * time.Second}),
+	}
 }

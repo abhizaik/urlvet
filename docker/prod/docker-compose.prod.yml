@@ -7,7 +7,7 @@ services:
     environment:
       VALKEY_ADDR: "valkey:6379"
       PORT: "8080"
-      CHROME_URL: "ws://chrome:3000"
+      CHROME_URL: "ws://chrome:9222"
     depends_on:
       valkey:
         condition: service_healthy
@@ -20,12 +20,8 @@ services:
       - safesurf-net
 
   chrome:
-    image: browserless/chrome:latest
+    image: chromedp/headless-shell:latest
     container_name: safesurf-chrome
-    environment:
-      - MAX_CONCURRENT_SESSIONS=10
-      - PREBOOT_CHROME=true
-      - CONNECTION_TIMEOUT=60000
     restart: unless-stopped
     networks:
       - safesurf-net

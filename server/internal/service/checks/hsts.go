@@ -3,6 +3,7 @@ package checks
 import (
 	"crypto/tls"
 	"fmt"
+	"net"
 	"net/http"
 	"net/url"
 	"time"
@@ -26,8 +27,9 @@ func SupportsHSTS(rawURL string) (bool, error) {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			DialContext:     ssrfSafeDialContext(&net.Dialer{Timeout: 10 * time.Second}),
 		},
-		Timeout: 10 * time.Second, // 10 seconds
+		Timeout: 10 * time.Second,
 	}
 
 	resp, err := client.Do(req)
