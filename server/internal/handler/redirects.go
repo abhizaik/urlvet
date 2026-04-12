@@ -7,6 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckRedirectsHandler follows the URL's redirect chain and reports findings.
+//
+//	@Summary		Redirect chain analysis
+//	@Tags			Security
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]checks.RedirectionResult
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/redirects [get]
 func CheckRedirectsHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

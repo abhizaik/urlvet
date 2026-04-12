@@ -7,6 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckPunycodeHandler detects punycode (IDN) characters in the URL.
+//
+//	@Summary		Punycode detection
+//	@Tags			URL
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/punycode [get]
 func CheckPunycodeHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

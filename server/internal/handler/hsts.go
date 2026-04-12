@@ -7,6 +7,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CheckHSTSHandler checks whether the URL's host enforces HSTS.
+//
+//	@Summary		HSTS check
+//	@Tags			Security
+//	@Produce		json
+//	@Param			url	query		string	true	"URL to check"
+//	@Success		200	{object}	map[string]bool
+//	@Failure		400	{object}	map[string]string
+//	@Failure		500	{object}	map[string]string
+//	@Router			/hsts [get]
 func CheckHSTSHandler(c *gin.Context) {
 	rawURL := c.Query("url")
 	if rawURL == "" {

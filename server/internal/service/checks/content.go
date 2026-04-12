@@ -46,7 +46,7 @@ type PageFormResult struct {
 	Iframes         []IframeInfo   `json:"iframes"`
 	HasHiddenIframe bool           `json:"has_hidden_iframe"`
 	HasTracking     bool           `json:"has_tracking"` // detection of 1x1 pixels etc.
-	FetchDuration   time.Duration  `json:"fetch_duration"`
+	FetchDuration   time.Duration  `json:"fetch_duration" swaggertype:"integer"` // nanoseconds
 	BrandCheck      BrandResult    `json:"brand_check"`
 }
 

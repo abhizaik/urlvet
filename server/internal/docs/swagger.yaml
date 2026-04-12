@@ -1,0 +1,853 @@
+basePath: /api/v1
+definitions:
+  analyzer.Analysis:
+    properties:
+      http_status:
+        allOf:
+        - $ref: '#/definitions/analyzer.HTTPStatus'
+        description: |-
+          RedirectionChain       []string   `json:"redirection_chain"`
+          RedirectionChainLength int        `json:"redirection_chain_length"`
+          RedirectionFinalURL    string     `json:"redirection_final_url"`
+      is_hsts_supported:
+        type: boolean
+      redirection_result:
+        $ref: '#/definitions/checks.RedirectionResult'
+    type: object
+  analyzer.Features:
+    properties:
+      rank:
+        type: integer
+      tld:
+        $ref: '#/definitions/analyzer.TLDInfo'
+      url:
+        $ref: '#/definitions/analyzer.URLChecks'
+    type: object
+  analyzer.HTTPStatus:
+    properties:
+      code:
+        type: integer
+      is_redirect:
+        type: boolean
+      success:
+        type: boolean
+      text:
+        type: string
+    type: object
+  analyzer.Infrastructure:
+    properties:
+      ip_addresses:
+        items:
+          type: string
+        type: array
+      mx_hosts:
+        items:
+          type: string
+        type: array
+      mx_records_valid:
+        type: boolean
+      nameservers_valid:
+        type: boolean
+      ns_hosts:
+        items:
+          type: string
+        type: array
+    type: object
+  analyzer.Keywords:
+    properties:
+      categories:
+        additionalProperties:
+          items:
+            type: string
+          type: array
+        type: object
+      found:
+        items:
+          type: string
+        type: array
+      has_keywords:
+        type: boolean
+    type: object
+  analyzer.Performance:
+    properties:
+      timings:
+        items:
+          $ref: '#/definitions/analyzer.TimingEntry'
+        type: array
+      total_time:
+        type: string
+    type: object
+  analyzer.Reasons:
+    properties:
+      bad_reasons:
+        items:
+          type: string
+        type: array
+      good_reasons:
+        items:
+          type: string
+        type: array
+      neutral_reasons:
+        items:
+          type: string
+        type: array
+    type: object
+  analyzer.Response:
+    properties:
+      analysis:
+        $ref: '#/definitions/analyzer.Analysis'
+      content_data:
+        $ref: '#/definitions/checks.PageFormResult'
+      domain:
+        type: string
+      domain_info:
+        $ref: '#/definitions/domaininfo.RegistrationData'
+      domain_randomness:
+        $ref: '#/definitions/checks.DomainRandomnessResult'
+      errors:
+        items:
+          type: string
+        type: array
+      features:
+        $ref: '#/definitions/analyzer.Features'
+      incomplete:
+        type: boolean
+      infrastructure:
+        $ref: '#/definitions/analyzer.Infrastructure'
+      performance:
+        $ref: '#/definitions/analyzer.Performance'
+      result:
+        $ref: '#/definitions/analyzer.Result'
+      ssl_info:
+        $ref: '#/definitions/checks.SSLCertResult'
+      threat_intel:
+        $ref: '#/definitions/analyzer.ThreatIntel'
+      tls_info:
+        $ref: '#/definitions/checks.TLSResult'
+      url:
+        type: string
+    type: object
+  analyzer.Result:
+    properties:
+      final_score:
+        type: integer
+      reasons:
+        $ref: '#/definitions/analyzer.Reasons'
+      risk_score:
+        type: integer
+      trust_score:
+        type: integer
+      verdict:
+        type: string
+    type: object
+  analyzer.TLDInfo:
+    properties:
+      is_icann:
+        type: boolean
+      is_risky_tld:
+        type: boolean
+      is_trusted_tld:
+        type: boolean
+      tld:
+        type: string
+    type: object
+  analyzer.ThreatIntel:
+    properties:
+      phishtank:
+        $ref: '#/definitions/threatfeeds.PhishTankResult'
+    type: object
+  analyzer.TimingEntry:
+    properties:
+      task:
+        type: string
+      time:
+        type: string
+    type: object
+  analyzer.URLChecks:
+    properties:
+      contains_punycode:
+        type: boolean
+      has_homoglyph:
+        type: boolean
+      keywords:
+        $ref: '#/definitions/analyzer.Keywords'
+      subdomain_count:
+        type: integer
+      too_deep:
+        type: boolean
+      too_long:
+        type: boolean
+      url_shortener:
+        type: boolean
+      uses_ip:
+        type: boolean
+    type: object
+  checks.BrandResult:
+    properties:
+      brand_found:
+        type: string
+      detected_names:
+        items:
+          type: string
+        type: array
+      is_mismatch:
+        type: boolean
+    type: object
+  checks.DomainRandomnessResult:
+    properties:
+      bigramEnglishiness:
+        format: float64
+        type: number
+      digitRatio:
+        format: float64
+        type: number
+      domain:
+        type: string
+      entropy:
+        format: float64
+        type: number
+      entropyPerChar:
+        format: float64
+        type: number
+      isSuspicious:
+        type: boolean
+      label:
+        type: string
+      length:
+        type: integer
+      longestConsonantRun:
+        type: integer
+      normalizedEntropy:
+        format: float64
+        type: number
+      randomnessScore:
+        format: float64
+        type: number
+      reasons:
+        items:
+          type: string
+        type: array
+      uniqueCharRatio:
+        format: float64
+        type: number
+      vowelRatio:
+        format: float64
+        type: number
+    type: object
+  checks.FormInfo:
+    properties:
+      action:
+        description: resolved absolute action URL (may be empty -> current URL)
+        type: string
+      has_password:
+        type: boolean
+      has_payment:
+        description: credit card, money, etc.
+        type: boolean
+      has_personal:
+        description: address, phone, ssn, etc.
+        type: boolean
+      has_user_like:
+        description: username/email-like inputs
+        type: boolean
+      inputs:
+        description: raw input names/types/placeholder snippets
+        items:
+          type: string
+        type: array
+      is_external:
+        description: action host != page host (true if external)
+        type: boolean
+      is_hidden:
+        type: boolean
+      method:
+        description: GET/POST etc.
+        type: string
+      submit_texts:
+        items:
+          type: string
+        type: array
+    type: object
+  checks.IframeInfo:
+    properties:
+      height:
+        type: string
+      is_hidden:
+        type: boolean
+      src:
+        type: string
+      width:
+        type: string
+    type: object
+  checks.PageFormResult:
+    properties:
+      brand_check:
+        $ref: '#/definitions/checks.BrandResult'
+      fetch_duration:
+        description: nanoseconds
+        type: integer
+      form_count:
+        type: integer
+      forms:
+        items:
+          $ref: '#/definitions/checks.FormInfo'
+        type: array
+      has_forms:
+        type: boolean
+      has_hidden_iframe:
+        type: boolean
+      has_login_form:
+        type: boolean
+      has_payment_form:
+        type: boolean
+      has_personal_form:
+        type: boolean
+      has_tracking:
+        description: detection of 1x1 pixels etc.
+        type: boolean
+      iframes:
+        items:
+          $ref: '#/definitions/checks.IframeInfo'
+        type: array
+      title:
+        type: string
+      url:
+        type: string
+    type: object
+  checks.RedirectionResult:
+    properties:
+      chain:
+        items:
+          type: string
+        type: array
+      chain_length:
+        type: integer
+      final_url:
+        type: string
+      final_url_domain:
+        type: string
+      has_domain_jump:
+        type: boolean
+      is_redirected:
+        type: boolean
+    type: object
+  checks.SSLCertResult:
+    properties:
+      ageDays:
+        type: integer
+      chainValid:
+        type: boolean
+      ctlogged:
+        type: boolean
+      domain:
+        type: string
+      fingerprint:
+        type: string
+      hasTLS:
+        type: boolean
+      isSuspicious:
+        type: boolean
+      issuer:
+        type: string
+      knownBadChain:
+        type: boolean
+      notAfter:
+        type: string
+      notBefore:
+        type: string
+      reasons:
+        items:
+          type: string
+        type: array
+    type: object
+  checks.TLSResult:
+    properties:
+      ageDays:
+        type: integer
+      hostnameMismatch:
+        type: boolean
+      issuer:
+        type: string
+      present:
+        type: boolean
+    type: object
+  domaininfo.RegistrationData:
+    properties:
+      age_days:
+        description: total days since registration
+        type: integer
+      age_human:
+        description: e.g. "2 years 3 months"
+        type: string
+      created:
+        type: string
+      dnssec:
+        type: boolean
+      domain:
+        type: string
+      expiry:
+        type: string
+      nameservers:
+        items:
+          type: string
+        type: array
+      raw:
+        description: Raw WHOIS or RDAP JSON for debugging
+        type: string
+      registrar:
+        type: string
+      source:
+        description: '"whois" or "rdap"'
+        type: string
+      status:
+        items:
+          type: string
+        type: array
+      updated:
+        type: string
+    type: object
+  threatfeeds.PhishTankResult:
+    properties:
+      in_database:
+        type: boolean
+      is_online:
+        type: boolean
+      target:
+        type: string
+      verified:
+        type: boolean
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: URL safety analysis API. Checks phishing signals, redirects, TLS, DNS,
+    brand mismatches, and more.
+  license:
+    name: MIT
+  title: SafeSurf API
+  version: "1.0"
+paths:
+  /analyze:
+    get:
+      parameters:
+      - description: URL to analyse (max 2048 chars)
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/analyzer.Response'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Full URL analysis
+      tags:
+      - Analysis
+  /depth:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: URL depth check
+      tags:
+      - URL
+  /domain-info:
+    get:
+      parameters:
+      - description: URL whose domain to look up
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Domain WHOIS / RDAP info
+      tags:
+      - DNS
+  /health:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check
+      tags:
+      - Utility
+  /hsts:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: HSTS check
+      tags:
+      - Security
+  /ip/check:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: IP address detection
+      tags:
+      - URL
+  /ip/resolve:
+    get:
+      parameters:
+      - description: URL whose domain to resolve
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                type: string
+              type: array
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: DNS IP resolution
+      tags:
+      - DNS
+  /length:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: URL length check
+      tags:
+      - URL
+  /punycode:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Punycode detection
+      tags:
+      - URL
+  /rank:
+    get:
+      parameters:
+      - description: URL whose domain to rank
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Domain popularity rank
+      tags:
+      - DNS
+  /redirects:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/checks.RedirectionResult'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Redirect chain analysis
+      tags:
+      - Security
+  /risky-tld:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Risky TLD check
+      tags:
+      - URL
+  /status-code:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: HTTP status code check
+      tags:
+      - Security
+  /trusted-tld:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Trusted TLD check
+      tags:
+      - URL
+  /url-shortener:
+    get:
+      parameters:
+      - description: URL to check
+        in: query
+        name: url
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: URL shortener detection
+      tags:
+      - URL
+swagger: "2.0"
+tags:
+- description: Full URL analysis
+  name: Analysis
+- description: URL structure checks
+  name: URL
+- description: DNS and infrastructure checks
+  name: DNS
+- description: Security protocol checks
+  name: Security
+- description: Threat intelligence lookups
+  name: Threat Intel
+- description: Utility and administrative endpoints
+  name: Utility
