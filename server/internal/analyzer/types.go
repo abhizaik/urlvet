@@ -8,6 +8,7 @@ import (
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
 	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
+	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
 )
 
 // Response and related public types mirror the handler's previous structs
@@ -21,8 +22,9 @@ type Response struct {
 	SSLInfo        checks.SSLCertResult         `json:"ssl_info"`
 	TLSInfo        checks.TLSResult             `json:"tls_info"`
 	ContentData    *checks.PageFormResult       `json:"content_data"`
-	DomainRandomness checks.DomainRandomnessResult `json:"domain_randomness"`
-	ThreatIntel    ThreatIntel                  `json:"threat_intel"`
+	DomainRandomness checks.DomainRandomnessResult   `json:"domain_randomness"`
+	TyposquatResult  typosquat.TyposquatResult       `json:"typosquat_result"`
+	ThreatIntel      ThreatIntel                     `json:"threat_intel"`
 	Performance    Performance                  `json:"performance"`
 	Result         Result                       `json:"result"`
 	Incomplete     bool                         `json:"incomplete"`
@@ -162,7 +164,8 @@ type Output struct {
 	SSLInfo     checks.SSLCertResult
 	ContentData *checks.PageFormResult
 	TLSInfo     checks.TLSResult
-	PhishTank   *threatfeeds.PhishTankResult
+	PhishTank       *threatfeeds.PhishTankResult
+	TyposquatResult typosquat.TyposquatResult
 }
 
 func (o *Output) setTiming(name string, d time.Duration) {

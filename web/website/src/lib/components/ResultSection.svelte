@@ -240,7 +240,7 @@
           <RedirectionSection analysis={data.analysis} domain={data.domain} />
           <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
           <ContentSection contentData={data.content_data} />
-          <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} />
+          <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} typosquatResult={data.typosquat_result} />
           <InfrastructureSection infrastructure={data.infrastructure} />
           <PerformanceSection performance={data.performance} />
 

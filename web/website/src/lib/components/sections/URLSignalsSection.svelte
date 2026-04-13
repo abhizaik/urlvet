@@ -1,8 +1,9 @@
 <script lang="ts">
+  import type { DomainRandomness, TyposquatResult } from "../../types";
   import TooltipIcon from "../TooltipIcon.svelte";
-  import type { DomainRandomness } from "../../types";
   export let features: any;
   export let domainRandomness: DomainRandomness | undefined;
+  export let typosquatResult: TyposquatResult | undefined;
 </script>
 
 {#if features}
@@ -209,6 +210,42 @@
               >
             {/if}
           </div>
+        </div>
+      {/if}
+
+      {#if typosquatResult}
+        <div
+          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        >
+          <div class="flex items-center gap-1 text-gray-400">
+            <span>Typosquatting Check:</span>
+            <TooltipIcon
+              text="Checks if this domain closely resembles a well-known brand by looking for character substitutions, additions, or deletions (e.g. paypa1.com vs paypal.com), or if a brand name is embedded inside a longer domain."
+            />
+          </div>
+          {#if typosquatResult.is_suspicious}
+            {#if typosquatResult.is_combo_squat}
+              <span class="text-red-400 font-medium flex flex-col gap-0.5">
+                ❌ Combo-squatting — contains brand name
+                <span class="text-xs text-red-300 font-normal">
+                  Contains "<span class="font-mono">{typosquatResult.matched_brand}</span>"
+                  (official: {typosquatResult.matched_domain})
+                </span>
+              </span>
+            {:else}
+              <span class="text-red-400 font-medium flex flex-col gap-0.5">
+                ❌ Typosquat, {typosquatResult.distance} character{typosquatResult.distance === 1
+                  ? ""
+                  : "s"} away from the known brand
+                <span class="text-xs text-red-300 font-normal">
+                  <span class="font-mono">{typosquatResult.matched_domain}</span>
+                </span>
+              </span>
+            {/if}
+          {:else}
+            <span class="text-green-400 font-medium flex items-center gap-1">✅ No match found</span
+            >
+          {/if}
         </div>
       {/if}
     </div>
