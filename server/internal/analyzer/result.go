@@ -97,19 +97,13 @@ func GenerateResult(resp Response) Result {
 	}
 
 	// --- 5. Infrastructure Forensics ---
-	if resp.Infrastructure.NameserversValid {
-		goodReasons = append(goodReasons, "Valid DNS configuration detected.")
-		trustScore += 10
-	} else {
+	if !resp.Infrastructure.NameserversValid {
 		badReasons = append(badReasons, "Incomplete or missing DNS configuration.")
 		riskScore += 10
 	}
 
 	// MX records
-	if resp.Infrastructure.MXRecordsValid {
-		goodReasons = append(goodReasons, "Valid email server configuration (MX Records).")
-		trustScore += 10
-	} else {
+	if !resp.Infrastructure.MXRecordsValid {
 		neutralReasons = append(neutralReasons, "No email server configured for this domain.")
 		// Reduced risk score here, as some landing pages legitimately don't have email
 		riskScore += 5

@@ -12,6 +12,7 @@
   let error: string | null = null;
   let data: AnalyzeResult | null = null;
   let screenshotUrl: string | null = null;
+  let screenshotLoading = false;
 
   type Verdict = "Safe" | "Risky" | "Unclear" | "Suspicious";
   const ACCENTS: Record<Verdict, { ring: string; glow: string; badge: string }> = {
@@ -94,6 +95,7 @@
       URL.revokeObjectURL(screenshotUrl);
       screenshotUrl = null;
     }
+    screenshotLoading = true;
 
     try {
       // kick off screenshot but don't block on it
@@ -106,6 +108,9 @@
         })
         .catch(() => {
           console.warn("Screenshot request failed");
+        })
+        .finally(() => {
+          screenshotLoading = false;
         });
 
       // await analyze so loading reflects this call only
@@ -366,7 +371,7 @@
     </style>
 
     <div class="mt-8" aria-live="polite">
-      <ResultSection {data} {loading} {error} {screenshotUrl} />
+      <ResultSection {data} {loading} {error} {screenshotUrl} {screenshotLoading} />
     </div>
   </div>
 </section>
