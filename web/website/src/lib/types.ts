@@ -26,6 +26,7 @@ export interface AnalyzeResult {
   tls_info?: TLSInfo;
   content_data?: ContentData;
   domain_randomness?: DomainRandomness;
+  typosquat_result?: TyposquatResult;
   threat_intel?: ThreatIntel;
   incomplete?: boolean;
   errors?: any;
@@ -87,6 +88,14 @@ export interface ContentData {
     is_mismatch: boolean;
     detected_names: string[];
   };
+}
+
+export interface TyposquatResult {
+  is_suspicious: boolean;
+  matched_domain?: string;
+  matched_brand?: string;
+  distance?: number;
+  is_combo_squat?: boolean;
 }
 
 export interface DomainRandomness {

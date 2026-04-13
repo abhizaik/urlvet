@@ -56,6 +56,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		contentTask{},
 		homoglyphTask{},
 		phishtankTask{},
+		typosquatTask{},
 	}
 
 	// Start timing right before tasks run
@@ -110,6 +111,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		TLSInfo:          out.TLSInfo,
 		ContentData:      out.ContentData,
 		DomainRandomness: out.DomainRandomness,
+		TyposquatResult:  out.TyposquatResult,
 		ThreatIntel: ThreatIntel{
 			PhishTank: out.PhishTank,
 		},

@@ -13,9 +13,11 @@
   import ContentSection from "./sections/ContentSection.svelte";
   import URLSignalsSection from "./sections/URLSignalsSection.svelte";
   import InfrastructureSection from "./sections/InfrastructureSection.svelte";
+  import PerformanceSection from "./sections/PerformanceSection.svelte";
 
   export let data: AnalyzeResult | null = null;
   export let screenshotUrl: string | null = null;
+  export let screenshotLoading = false;
   export let loading = false;
   export let error: string | null = null;
 
@@ -170,7 +172,7 @@
     <FlagsGrid reasons={primary?.reasons} />
 
     <!-- Screenshot -->
-    <ScreenshotViewer {screenshotUrl} />
+    <ScreenshotViewer {screenshotUrl} loading={screenshotLoading} />
 
     <!-- Advanced Panel Toggle -->
     <div class="mt-6 flex justify-center">
@@ -238,8 +240,9 @@
           <RedirectionSection analysis={data.analysis} domain={data.domain} />
           <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
           <ContentSection contentData={data.content_data} />
-          <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} />
+          <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} typosquatResult={data.typosquat_result} />
           <InfrastructureSection infrastructure={data.infrastructure} />
+          <PerformanceSection performance={data.performance} />
 
           <!-- Scroll to Top -->
           <div class="mt-6 flex justify-center">

@@ -8,6 +8,7 @@ import (
 	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
+	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -288,6 +289,16 @@ func (homoglyphTask) Name() string { return "homoglyph_check" }
 func (homoglyphTask) Run(in *Input, out *Output) error {
 	h, _ := checks.HasHomoglyphs(in.Domain)
 	updateOutput(func(o *Output) { o.HomoglyphPresent = h })(out)
+	return nil
+}
+
+// Typosquatting
+type typosquatTask struct{}
+
+func (typosquatTask) Name() string { return "typosquat_check" }
+func (typosquatTask) Run(in *Input, out *Output) error {
+	result := typosquat.CheckTyposquatting(in.Domain)
+	updateOutput(func(o *Output) { o.TyposquatResult = result })(out)
 	return nil
 }
 

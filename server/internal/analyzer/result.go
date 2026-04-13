@@ -97,19 +97,13 @@ func GenerateResult(resp Response) Result {
 	}
 
 	// --- 5. Infrastructure Forensics ---
-	if resp.Infrastructure.NameserversValid {
-		goodReasons = append(goodReasons, "Valid DNS configuration detected.")
-		trustScore += 10
-	} else {
+	if !resp.Infrastructure.NameserversValid {
 		badReasons = append(badReasons, "Incomplete or missing DNS configuration.")
 		riskScore += 10
 	}
 
 	// MX records
-	if resp.Infrastructure.MXRecordsValid {
-		goodReasons = append(goodReasons, "Valid email server configuration (MX Records).")
-		trustScore += 10
-	} else {
+	if !resp.Infrastructure.MXRecordsValid {
 		neutralReasons = append(neutralReasons, "No email server configured for this domain.")
 		// Reduced risk score here, as some landing pages legitimately don't have email
 		riskScore += 5
@@ -168,7 +162,18 @@ func GenerateResult(resp Response) Result {
 		riskScore += 60
 	}
 
-	// --- 9. Threat Intelligence (PhishTank) ---
+	// --- 9. Typosquatting / Combo-squatting ---
+	if resp.TyposquatResult.IsSuspicious {
+		if resp.TyposquatResult.IsComboSquat {
+			badReasons = append(badReasons, fmt.Sprintf("Combo-squatting detected: domain contains brand name '%s' but is not the official site.", resp.TyposquatResult.MatchedBrand))
+			riskScore += 20
+		} else {
+			badReasons = append(badReasons, fmt.Sprintf("Typosquatting detected: domain closely resembles '%s' (%d character difference).", resp.TyposquatResult.MatchedDomain, resp.TyposquatResult.Distance))
+			riskScore += 40
+		}
+	}
+
+	// --- 10. Threat Intelligence (PhishTank) ---
 	if resp.ThreatIntel.PhishTank != nil && resp.ThreatIntel.PhishTank.InDatabase {
 		if resp.ThreatIntel.PhishTank.Verified && resp.ThreatIntel.PhishTank.IsOnline {
 			badReasons = append(badReasons, "CONFIRMED PHISHING: This URL is listed in PhishTank and is currently active!")
@@ -185,7 +190,7 @@ func GenerateResult(resp Response) Result {
 		}
 	}
 
-	// --- 10. Page Content & Phishing Signals ---
+	// --- 11. Page Content & Phishing Signals ---
 	if resp.ContentData != nil {
 		if resp.ContentData.HasLoginForm {
 			// Check if domain is established

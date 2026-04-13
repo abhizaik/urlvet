@@ -28,10 +28,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/abhizaik/SafeSurf/internal/handler"
 	_ "github.com/abhizaik/SafeSurf/internal/docs" // swagger docs registration
+	"github.com/abhizaik/SafeSurf/internal/handler"
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
+	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
 	"github.com/joho/godotenv"
 )
 
@@ -60,6 +61,10 @@ func main() {
 
 	err = rank.LoadDomainRanks()
 	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := typosquat.LoadTopDomains(); err != nil {
 		log.Fatal(err)
 	}
 
