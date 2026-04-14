@@ -125,10 +125,6 @@ func GenerateResult(resp Response) Result {
 			trustScore += 15
 		}
 
-		if resp.DomainInfo.Registrar != "" {
-			goodReasons = append(goodReasons, fmt.Sprintf("Registered with %s", resp.DomainInfo.Registrar))
-			trustScore += 5
-		}
 
 		// DNSSEC Logic Updated
 		if resp.DomainInfo.DNSSEC {
@@ -174,20 +170,25 @@ func GenerateResult(resp Response) Result {
 	}
 
 	// --- 10. Threat Intelligence (PhishTank) ---
-	if resp.ThreatIntel.PhishTank != nil && resp.ThreatIntel.PhishTank.InDatabase {
-		if resp.ThreatIntel.PhishTank.Verified && resp.ThreatIntel.PhishTank.IsOnline {
-			badReasons = append(badReasons, "CONFIRMED PHISHING: This URL is listed in PhishTank and is currently active!")
+	// PhishTank semantics:
+	//   valid=true  → URL IS phishing (the actual threat signal)
+	//   valid=false → URL is NOT phishing
+	//   verified    → whether the report has been reviewed at all (not a phishing indicator)
+	if resp.Phishing != nil && resp.Phishing.InDatabase {
+		if resp.Phishing.Valid && resp.Phishing.Verified {
+			// Reviewed and confirmed as phishing — highest risk.
+			badReasons = append(badReasons, "CONFIRMED PHISHING: This is a verified phishing URL.")
 			riskScore += 100
-		} else if resp.ThreatIntel.PhishTank.Verified {
-			badReasons = append(badReasons, "Previously verified phishing URL (PhishTank database).")
-			riskScore += 80
-		} else {
-			badReasons = append(badReasons, "Suspected phishing URL (listed in PhishTank, verification pending).")
-			riskScore += 40
+			if resp.Phishing.Target != "" {
+				badReasons = append(badReasons, fmt.Sprintf("Reported Target: %s", resp.Phishing.Target))
+			}
+		} else if resp.Phishing.Valid && !resp.Phishing.Verified {
+			// Reported as phishing but not yet reviewed.
+			badReasons = append(badReasons, "This URL has been reported as phishing, awaiting community verification.")
+			riskScore += 50
 		}
-		if resp.ThreatIntel.PhishTank.Target != "" {
-			badReasons = append(badReasons, fmt.Sprintf("Reported Target: %s", resp.ThreatIntel.PhishTank.Target))
-		}
+		// valid=false (regardless of verified) → confirmed NOT phishing → no penalty.
+		// A verified=true, valid=false entry means PhishTank reviewed it and cleared it.
 	}
 
 	// --- 11. Page Content & Phishing Signals ---

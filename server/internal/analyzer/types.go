@@ -2,6 +2,7 @@ package analyzer
 
 import (
 	"context"
+	"encoding/json"
 	"sync"
 	"time"
 
@@ -24,15 +25,25 @@ type Response struct {
 	ContentData    *checks.PageFormResult       `json:"content_data"`
 	DomainRandomness checks.DomainRandomnessResult   `json:"domain_randomness"`
 	TyposquatResult  typosquat.TyposquatResult       `json:"typosquat_result"`
-	ThreatIntel      ThreatIntel                     `json:"threat_intel"`
+	Phishing         *PhishingResult                 `json:"phishing"`
 	Performance    Performance                  `json:"performance"`
 	Result         Result                       `json:"result"`
 	Incomplete     bool                         `json:"incomplete"`
 	Errors         []string                     `json:"errors"`
 }
 
-type ThreatIntel struct {
-	PhishTank *threatfeeds.PhishTankResult `json:"phishtank"`
+// PhishingResult is the unified phishing-check output exposed in the API response.
+type PhishingResult struct {
+	InDatabase      bool            `json:"in_database"`
+	PhishID         int64           `json:"phish_id"`
+	PhishDetailPage string          `json:"phish_detail_page"`
+	Verified        bool            `json:"verified"`
+	VerifiedAt      string          `json:"verified_at"`
+	Valid           bool            `json:"valid"`
+	Target          string          `json:"target"`
+	Source          string          `json:"source"`
+	FromCache       bool            `json:"from_cache"`
+	RawResponse     json.RawMessage `json:"raw_response,omitempty"`
 }
 
 type Features struct {

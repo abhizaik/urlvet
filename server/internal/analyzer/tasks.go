@@ -2,6 +2,7 @@ package analyzer
 
 import (
 	"context"
+	"strings"
 
 	"github.com/abhizaik/SafeSurf/internal/constants"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
@@ -232,6 +233,9 @@ func (whoisTask) Run(in *Input, out *Output) error {
 		},
 		out,
 	)
+	if err != nil && strings.Contains(err.Error(), "no whois server found") {
+		return nil
+	}
 	return err
 }
 
@@ -307,7 +311,7 @@ type phishtankTask struct{}
 
 func (phishtankTask) Name() string { return "phishtank_check" }
 func (phishtankTask) Run(in *Input, out *Output) error {
-	_, err := cachedTask(
+	fromCache, err := cachedTask(
 		context.Background(),
 		in.Cache,
 		"phishtank:"+in.URL,
@@ -318,6 +322,11 @@ func (phishtankTask) Run(in *Input, out *Output) error {
 		func(o *Output, r *threatfeeds.PhishTankResult) { o.PhishTank = r },
 		out,
 	)
+	if err == nil && out.PhishTank != nil {
+		out.mu.Lock()
+		out.PhishTank.FromCache = fromCache
+		out.mu.Unlock()
+	}
 	return err
 }
 
