@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/constants"
 	"github.com/abhizaik/SafeSurf/internal/metrics"
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
@@ -58,6 +59,16 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 	}
 
 	in := &Input{URL: normalizedURL, Domain: domain, Cache: cacheInstance}
+
+	// Full-result cache: if we have a recent scan for this URL, return it immediately
+	// without re-running all tasks. TTL is 24h — same as the slowest individual task.
+	resultKey := "analyze_result:" + normalizedURL
+	if cacheInstance != nil {
+		var cached Response
+		if err := cacheInstance.GetJSON(context.Background(), resultKey, &cached); err == nil {
+			return cached, nil
+		}
+	}
 
 	tasks := []Task{
 		rankTask{},
@@ -150,6 +161,11 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		for _, e := range errs {
 			resp.Errors = append(resp.Errors, e.Error())
 		}
+	}
+
+	// Only cache complete results — incomplete scans may be missing signals.
+	if cacheInstance != nil && !resp.Incomplete {
+		_ = cacheInstance.SetJSON(context.Background(), resultKey, resp, constants.AnalyzeResultTTL)
 	}
 
 	return resp, errs

@@ -28,3 +28,6 @@ const PhishTankTTL = 1 * time.Hour
 
 // ContentAnalysisTTL - Page content can change, but usually stays consistent for a while
 const ContentAnalysisTTL = 1 * time.Hour
+
+// AnalyzeResultTTL - Full scan result cache: avoids re-running all 17 tasks for the same URL
+const AnalyzeResultTTL = 24 * time.Hour
