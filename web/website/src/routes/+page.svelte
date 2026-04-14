@@ -5,12 +5,15 @@
   import { api } from "../lib/api";
   import ResultSection from "../lib/components/ResultSection.svelte";
   import type { AnalyzeResult } from "../lib/types";
-  import { formatUrl, formatUrlForShare, getDomainFromUrl, isValidUrl } from "../lib/utils";
+  import { formatUrl, formatUrlForShare, isValidUrl } from "../lib/utils";
+
+  // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
+  export let data: { queryDomain: string; queryUrl: string; formattedQueryUrl: string };
 
   let input = "";
   let loading = false;
   let error: string | null = null;
-  let data: AnalyzeResult | null = null;
+  let scanResult: AnalyzeResult | null = null;
   let screenshotUrl: string | null = null;
   let screenshotLoading = false;
 
@@ -50,35 +53,19 @@
     }
   }
 
-  $: verdict = normalizeVerdict(data?.result?.verdict);
+  $: verdict = normalizeVerdict(scanResult?.result?.verdict);
   $: accent = ACCENTS[verdict];
-  $: isLanding = !data && !loading && !error;
+  $: isLanding = !scanResult && !loading && !error;
 
-  // Get current URL and domain for meta tags
+  // currentUrl is only available in the browser; SSR og:url falls back to the canonical base.
   $: currentUrl = browser ? window.location.href : "";
-  $: queryParam = browser
-    ? (() => {
-        try {
-          const params = new URLSearchParams(window.location.search);
-          return params.get("q") || "";
-        } catch {
-          return "";
-        }
-      })()
-    : "";
-  $: shareDomain = data?.domain || (queryParam ? getDomainFromUrl(formatUrl(queryParam)) : "");
-  $: inputUrl = data?.url || queryParam;
-  $: formattedInput = inputUrl
-    ? formatUrlForShare(inputUrl)
-    : shareDomain
-      ? formatUrlForShare(shareDomain)
-      : "";
 
-  function buildScreenshotUrl(targetUrl: string): string | null {
-    // If backend exposes screenshot, define pattern here later; placeholder for now
-    // e.g., `${PUBLIC_BASE_URL.replace(/\/api\/v1$/, '')}/api/v1/screenshot?url=...`
-    return null;
-  }
+  // shareDomain: scan result domain after a scan, or the SSR-provided query domain for bots.
+  $: shareDomain = scanResult?.domain || data.queryDomain;
+  // formattedInput: defanged URL for display in meta description.
+  $: formattedInput = scanResult?.url
+    ? formatUrlForShare(scanResult.url)
+    : data.formattedQueryUrl;
 
   async function runAnalyze(q: string) {
     const url = formatUrl(q);
@@ -89,8 +76,7 @@
 
     loading = true;
     error = null;
-    data = null;
-    // Clean up previous screenshot blob URL if it exists
+    scanResult = null;
     if (screenshotUrl) {
       URL.revokeObjectURL(screenshotUrl);
       screenshotUrl = null;
@@ -98,29 +84,21 @@
     screenshotLoading = true;
 
     try {
-      // kick off screenshot but don't block on it
+      // Kick off screenshot in parallel — don't block on it.
       api
         .screenshot(url)
         .then((res) => {
-          if (res.data) {
-            screenshotUrl = res.data as string;
-          }
+          if (res.data) screenshotUrl = res.data as string;
         })
-        .catch(() => {
-          console.warn("Screenshot request failed");
-        })
-        .finally(() => {
-          screenshotLoading = false;
-        });
+        .catch(() => console.warn("Screenshot request failed"))
+        .finally(() => { screenshotLoading = false; });
 
-      // await analyze so loading reflects this call only
       const res = await api.analyze(url);
 
       if (res.error) {
         error = res.error;
       } else {
-        data = res.data as AnalyzeResult;
-
+        scanResult = res.data as AnalyzeResult;
         const share = new URL(window.location.href);
         share.searchParams.set("q", url);
         replaceState(share.toString(), {});
@@ -164,39 +142,31 @@
 </script>
 
 <svelte:head>
-  <title
-    >{shareDomain
-      ? `SafeSurf Scan Report - ${shareDomain}`
-      : "SafeSurf - Check if a link is safe"}</title
-  >
   {#if shareDomain}
-    <meta property="og:title" content="SafeSurf Phishing Scan Report" />
-    <meta
-      property="og:description"
-      content={formattedInput
-        ? `Shareable report for ${formattedInput}. Do NOT click the input URL directly if you are unsure about legitimacy.`
-        : `Shareable report for ${shareDomain}. Do NOT click the input URL directly if you are unsure about legitimacy.`}
-    />
+    {@const desc = formattedInput
+      ? `Security scan report for ${formattedInput}. Check if this URL is safe, phishing, or suspicious.`
+      : `Security scan report for ${shareDomain}. Check if this URL is safe, phishing, or suspicious.`}
+    <title>SafeSurf — Is {shareDomain} safe?</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={currentUrl || "https://safesurf.vercel.app"} />
+    <meta property="og:url" content={currentUrl || `https://safesurf.vercel.app/?q=${encodeURIComponent(data.queryUrl)}`} />
     <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="SafeSurf Phishing Scan Report" />
-    <meta
-      name="twitter:description"
-      content={formattedInput
-        ? `Shareable report for ${formattedInput}. Do NOT click the input URL directly if you are unsure about legitimacy.`
-        : `Shareable report for ${shareDomain}. Do NOT click the input URL directly if you are unsure about legitimacy.`}
-    />
+    <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta name="twitter:description" content={desc} />
   {:else}
-    <meta property="og:title" content="SafeSurf" />
-    <meta property="og:description" content="Check if a link is safe." />
+    <title>SafeSurf — Check if a link is safe</title>
+    <meta name="description" content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence." />
+    <meta property="og:title" content="SafeSurf — Check if a link is safe" />
+    <meta property="og:description" content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={currentUrl || "https://safesurf.vercel.app"} />
+    <meta property="og:url" content="https://safesurf.vercel.app" />
     <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="SafeSurf" />
-    <meta name="twitter:description" content="Check if a link is safe." />
+    <meta name="twitter:title" content="SafeSurf — Check if a link is safe" />
+    <meta name="twitter:description" content="Instantly check if a URL is safe, phishing, or suspicious." />
   {/if}
 </svelte:head>
 
@@ -371,7 +341,7 @@
     </style>
 
     <div class="mt-8" aria-live="polite">
-      <ResultSection {data} {loading} {error} {screenshotUrl} {screenshotLoading} />
+      <ResultSection data={scanResult} {loading} {error} {screenshotUrl} {screenshotLoading} />
     </div>
   </div>
 </section>
