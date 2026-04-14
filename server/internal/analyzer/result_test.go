@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
-	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 )
 
@@ -153,39 +152,40 @@ func TestGenerateResult_Verdict(t *testing.T) {
 			wantRiskMin: 40,
 		},
 		{
-			// Top-10k trust can offset phishtank risk in the scoring formula.
-			// Assert risk is maxed; on an unranked domain this would be "Risky".
-			name: "phishtank confirmed active phish - max risk signal",
+			// valid=true + verified=true → confirmed phishing, max risk.
+			name: "phishtank confirmed phishing (valid+verified)",
 			modify: func(r *Response) {
-				r.ThreatIntel.PhishTank = &threatfeeds.PhishTankResult{
+				r.Phishing = &PhishingResult{
 					InDatabase: true,
 					Verified:   true,
-					IsOnline:   true,
+					Valid:       true,
 				}
 			},
 			wantRiskMin: 100,
 		},
 		{
-			name: "phishtank verified but offline",
+			// valid=true + verified=false → reported but not yet reviewed.
+			name: "phishtank reported phishing awaiting verification",
 			modify: func(r *Response) {
-				r.ThreatIntel.PhishTank = &threatfeeds.PhishTankResult{
-					InDatabase: true,
-					Verified:   true,
-					IsOnline:   false,
-				}
-			},
-			wantRiskMin: 80,
-		},
-		{
-			name: "phishtank unverified listing",
-			modify: func(r *Response) {
-				r.ThreatIntel.PhishTank = &threatfeeds.PhishTankResult{
+				r.Phishing = &PhishingResult{
 					InDatabase: true,
 					Verified:   false,
-					IsOnline:   false,
+					Valid:       true,
 				}
 			},
-			wantRiskMin: 40,
+			wantRiskMin: 50,
+		},
+		{
+			// valid=false → NOT phishing regardless of verified; no risk penalty.
+			name: "phishtank in database but confirmed not phishing",
+			modify: func(r *Response) {
+				r.Phishing = &PhishingResult{
+					InDatabase: true,
+					Verified:   true,
+					Valid:       false,
+				}
+			},
+			wantRiskMin: 0,
 		},
 		{
 			name: "new domain (<=30 days)",
@@ -293,7 +293,7 @@ func TestGenerateResult_ScoreClamping(t *testing.T) {
 	resp.Features.URL.UsesIP = true        // +100
 	resp.Features.URL.ContainsPunycode = true // +100
 	resp.Features.URL.HasHomoglyph = true   // +60
-	resp.ThreatIntel.PhishTank = &threatfeeds.PhishTankResult{InDatabase: true, Verified: true, IsOnline: true} // +100
+	resp.Phishing = &PhishingResult{InDatabase: true, Verified: true, Valid: true} // +100
 	resp.ContentData = &checks.PageFormResult{
 		BrandCheck: checks.BrandResult{IsMismatch: true, BrandFound: "PayPal"},
 		HasForms:   true,

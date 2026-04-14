@@ -286,7 +286,8 @@ func extractFormInfo(form *html.Node, base *url.URL, pageHost string) FormInfo {
 					if looksLikeLoginText(l) {
 						info.SubmitTexts = append(info.SubmitTexts, txt)
 					}
-					if strings.Contains(l, "pay") || strings.Contains(l, "checkout") {
+					if strings.Contains(l, "pay now") || strings.Contains(l, "pay $") ||
+						strings.Contains(l, "complete payment") || strings.Contains(l, "checkout") {
 						info.ContainsPayment = true
 					}
 				}
@@ -355,6 +356,9 @@ func nodeText(n *html.Node) string {
 	var b strings.Builder
 	var walker func(*html.Node)
 	walker = func(nn *html.Node) {
+		if nn.Type == html.ElementNode && (nn.Data == "style" || nn.Data == "script") {
+			return
+		}
 		if nn.Type == html.TextNode {
 			b.WriteString(nn.Data)
 		}

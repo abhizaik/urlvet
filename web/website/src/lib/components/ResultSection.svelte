@@ -6,7 +6,6 @@
   import VerdictCard from "./sections/VerdictCard.svelte";
   import FlagsGrid from "./sections/FlagsGrid.svelte";
   import ScreenshotViewer from "./sections/ScreenshotViewer.svelte";
-  import ThreatIntelSection from "./sections/ThreatIntelSection.svelte";
   import DomainInfoSection from "./sections/DomainInfoSection.svelte";
   import RedirectionSection from "./sections/RedirectionSection.svelte";
   import SecuritySection from "./sections/SecuritySection.svelte";
@@ -33,19 +32,13 @@
   });
 
   $: availableTabs = [
-    {
-      id: "threat",
-      label: "Threat Intel",
-      icon: "🛡️",
-      condition: data?.threat_intel?.phishtank?.in_database,
-    },
     { id: "domain", label: "Domain Info", icon: "🏷️", condition: data?.domain_info },
     { id: "analysis", label: "Redirection", icon: "🔀", condition: data?.analysis },
     {
       id: "security",
       label: "Security/SSL",
       icon: "🔒",
-      condition: data?.ssl_info || data?.tls_info,
+      condition: data?.ssl_info || data?.tls_info || data?.phishing,
     },
     { id: "content", label: "Page Content", icon: "📄", condition: data?.content_data },
     { id: "features", label: "URL Signals", icon: "📡", condition: data?.features },
@@ -235,10 +228,9 @@
 
         <!-- Section Content -->
         <div class="p-6 space-y-6">
-          <ThreatIntelSection threatIntel={data.threat_intel} />
           <DomainInfoSection domainInfo={data.domain_info} rank={data.features?.rank} />
           <RedirectionSection analysis={data.analysis} domain={data.domain} />
-          <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
+          <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} phishing={data.phishing} />
           <ContentSection contentData={data.content_data} />
           <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} typosquatResult={data.typosquat_result} />
           <InfrastructureSection infrastructure={data.infrastructure} />

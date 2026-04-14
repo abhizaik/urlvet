@@ -27,7 +27,7 @@ export interface AnalyzeResult {
   content_data?: ContentData;
   domain_randomness?: DomainRandomness;
   typosquat_result?: TyposquatResult;
-  threat_intel?: ThreatIntel;
+  phishing?: PhishingResult;
   incomplete?: boolean;
   errors?: any;
 }
@@ -102,13 +102,17 @@ export interface DomainRandomness {
   entropy: number;
 }
 
-export interface ThreatIntel {
-  phishtank?: {
-    in_database: boolean;
-    verified: boolean;
-    is_online: boolean;
-    target: string;
-  };
+export interface PhishingResult {
+  in_database: boolean;
+  phish_id: number;
+  phish_detail_page: string;
+  verified: boolean;
+  verified_at: string;
+  valid: boolean;
+  target: string;
+  source: string;
+  from_cache: boolean;
+  raw_response?: unknown;
 }
 
 export interface ScreenshotResponse {

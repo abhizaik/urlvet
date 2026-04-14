@@ -81,6 +81,30 @@ func (c *Cache) Expire(ctx context.Context, key string, ttl time.Duration) error
 	return c.client.Expire(ctx, key, ttl).Err()
 }
 
+// Scan returns all keys matching the given glob pattern using SCAN (non-blocking).
+func (c *Cache) Scan(ctx context.Context, pattern string) ([]string, error) {
+	var keys []string
+	var cursor uint64
+	for {
+		var batch []string
+		var err error
+		batch, cursor, err = c.client.Scan(ctx, cursor, pattern, 100).Result()
+		if err != nil {
+			return nil, err
+		}
+		keys = append(keys, batch...)
+		if cursor == 0 {
+			break
+		}
+	}
+	return keys, nil
+}
+
+// TTL returns the remaining time-to-live for a key. Returns -1 if no expiry, -2 if key missing.
+func (c *Cache) TTL(ctx context.Context, key string) (time.Duration, error) {
+	return c.client.TTL(ctx, key).Result()
+}
+
 // GetJSON retrieves a JSON value from cache and unmarshals it into the provided pointer
 func (c *Cache) GetJSON(ctx context.Context, key string, dest interface{}) error {
 	val, err := c.Get(ctx, key)

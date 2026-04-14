@@ -6,8 +6,70 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 )
+
+// ── IANA RDAP bootstrap cache ──────────────────────────────────────────────
+
+var (
+	ianaBootstrapMu     sync.RWMutex
+	ianaBootstrapCache  map[string]string // lowercase TLD → base RDAP URL
+	ianaBootstrapExpiry time.Time
+)
+
+// ianaBootstrapJSON is the shape of https://data.iana.org/rdap/dns.json.
+type ianaBootstrapJSON struct {
+	Services [][][]string `json:"services"`
+}
+
+// loadIANABootstrap fetches and parses the IANA RDAP bootstrap file.
+// Results are cached in memory for 24 hours; stale data is returned on error.
+func loadIANABootstrap() map[string]string {
+	ianaBootstrapMu.RLock()
+	if ianaBootstrapCache != nil && time.Now().Before(ianaBootstrapExpiry) {
+		m := ianaBootstrapCache
+		ianaBootstrapMu.RUnlock()
+		return m
+	}
+	ianaBootstrapMu.RUnlock()
+
+	ianaBootstrapMu.Lock()
+	defer ianaBootstrapMu.Unlock()
+
+	// Double-check under write lock.
+	if ianaBootstrapCache != nil && time.Now().Before(ianaBootstrapExpiry) {
+		return ianaBootstrapCache
+	}
+
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Get("https://data.iana.org/rdap/dns.json")
+	if err != nil {
+		return ianaBootstrapCache // return stale data rather than nothing
+	}
+	defer resp.Body.Close()
+
+	var bootstrap ianaBootstrapJSON
+	if err := json.NewDecoder(resp.Body).Decode(&bootstrap); err != nil {
+		return ianaBootstrapCache
+	}
+
+	result := make(map[string]string, 1500)
+	for _, service := range bootstrap.Services {
+		if len(service) != 2 || len(service[1]) == 0 {
+			continue
+		}
+		// Use the first server URL, strip trailing slash.
+		server := strings.TrimSuffix(service[1][0], "/")
+		for _, tld := range service[0] {
+			result[strings.ToLower(tld)] = server
+		}
+	}
+
+	ianaBootstrapCache = result
+	ianaBootstrapExpiry = time.Now().Add(24 * time.Hour)
+	return result
+}
 
 type rdapResponse struct {
 	LDHName     string `json:"ldhName"`
@@ -138,27 +200,34 @@ func fetchRDAPWithContext(ctx context.Context, domain string) (*RegistrationData
 	}, nil
 }
 
-// getRDAPServer returns the RDAP server URL for a given TLD
-func getRDAPServer(tld string) (string, error) {
-	// Common RDAP servers for popular TLDs
-	rdapServers := map[string]string{
-		"com":  "https://rdap.verisign.com/com/v1",
-		"net":  "https://rdap.verisign.com/net/v1",
-		"org":  "https://rdap.pir.org/rdap/org/v1",
-		"info": "https://rdap.afilias.net/rdap/info/v1",
-		"biz":  "https://rdap.afilias.net/rdap/biz/v1",
-		"io":   "https://rdap.nic.io/v1",
-		"co":   "https://rdap.nic.co/v1",
-		"me":   "https://rdap.nic.me/v1",
-		"tv":   "https://rdap.nic.tv/v1",
-		"cc":   "https://rdap.nic.cc/v1",
-	}
+// wellKnownRDAP is a fast-path cache for the most common TLDs, avoiding a
+// network round-trip to the IANA bootstrap service on every request.
+var wellKnownRDAP = map[string]string{
+	"com": "https://rdap.verisign.com/com/v1",
+	"net": "https://rdap.verisign.com/net/v1",
+	"org": "https://rdap.pir.org/rdap/org/v1",
+	"io":  "https://rdap.nic.io/v1",
+	"co":  "https://rdap.nic.co/v1",
+	"me":  "https://rdap.nic.me/v1",
+	"tv":  "https://rdap.nic.tv/v1",
+	"cc":  "https://rdap.nic.cc/v1",
+}
 
-	if server, exists := rdapServers[tld]; exists {
+// getRDAPServer returns the RDAP base URL for a TLD.
+// It checks the well-known map first, then falls back to the IANA bootstrap.
+func getRDAPServer(tld string) (string, error) {
+	tld = strings.ToLower(tld)
+
+	if server, ok := wellKnownRDAP[tld]; ok {
 		return server, nil
 	}
 
-	// For TLDs not in our list, we could implement IANA bootstrap file lookup
-	// For now, return an error indicating RDAP is not supported
-	return "", fmt.Errorf("no RDAP server configured for .%s", tld)
+	bootstrap := loadIANABootstrap()
+	if bootstrap != nil {
+		if server, ok := bootstrap[tld]; ok {
+			return server, nil
+		}
+	}
+
+	return "", fmt.Errorf("no RDAP server found for .%s", tld)
 }

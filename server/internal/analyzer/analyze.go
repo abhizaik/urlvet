@@ -8,7 +8,28 @@ import (
 	"github.com/abhizaik/SafeSurf/internal/metrics"
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
+	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
 )
+
+// buildPhishingResult converts the internal PhishTankResult into the public PhishingResult.
+// Returns nil when no check was performed (cache miss + fetch error).
+func buildPhishingResult(r *threatfeeds.PhishTankResult) *PhishingResult {
+	if r == nil {
+		return nil
+	}
+	return &PhishingResult{
+		InDatabase:      r.InDatabase,
+		PhishID:         r.PhishID,
+		PhishDetailPage: r.PhishDetailPage,
+		Verified:        r.Verified,
+		VerifiedAt:      r.VerifiedAt,
+		Valid:           r.Valid,
+		Target:          r.Target,
+		Source:          "phishtank",
+		FromCache:       r.FromCache,
+		RawResponse:     r.RawResponse,
+	}
+}
 
 // Analyze runs all tasks and builds the final response
 func Analyze(ctx context.Context, rawURL string) (Response, []error) {
@@ -112,9 +133,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		ContentData:      out.ContentData,
 		DomainRandomness: out.DomainRandomness,
 		TyposquatResult:  out.TyposquatResult,
-		ThreatIntel: ThreatIntel{
-			PhishTank: out.PhishTank,
-		},
+		Phishing: buildPhishingResult(out.PhishTank),
 		Performance: Performance{
 			TotalTime: time.Since(start).String(),
 			Timings:   ConvertTimings(out.Timings),
