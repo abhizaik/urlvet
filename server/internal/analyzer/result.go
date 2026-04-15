@@ -178,14 +178,14 @@ func GenerateResult(resp Response) Result {
 		if resp.Phishing.Valid && resp.Phishing.Verified {
 			// Reviewed and confirmed as phishing — highest risk.
 			badReasons = append(badReasons, "CONFIRMED PHISHING: This is a verified phishing URL.")
-			riskScore += 100
+			riskScore += 200
 			if resp.Phishing.Target != "" {
 				badReasons = append(badReasons, fmt.Sprintf("Reported Target: %s", resp.Phishing.Target))
 			}
 		} else if resp.Phishing.Valid && !resp.Phishing.Verified {
 			// Reported as phishing but not yet reviewed.
 			badReasons = append(badReasons, "This URL has been reported as phishing, awaiting community verification.")
-			riskScore += 50
+			riskScore += 70
 		}
 		// valid=false (regardless of verified) → confirmed NOT phishing → no penalty.
 		// A verified=true, valid=false entry means PhishTank reviewed it and cleared it.
@@ -240,7 +240,7 @@ func GenerateResult(resp Response) Result {
 				}
 				if form.ContainsPassword && !resp.SSLInfo.HasTLS {
 					badReasons = append(badReasons, "DANGEROUS: Password form detected over insecure connection!")
-					riskScore += 100
+					riskScore += 200
 				}
 			}
 		}
@@ -250,32 +250,22 @@ func GenerateResult(resp Response) Result {
 	riskScore = clamp(riskScore)
 	trustScore = clamp(trustScore)
 
-	// 1
-	// combined := int(riskScore - trustScore) // -100..100
-	// finalScore := (combined + 100) / 2
+	// Balanced formula: neutral point is 50.
+	// trustScore pulls score up, riskScore pulls it down.
+	// A site with no signals either way scores 50 → "Suspicious".
+	finalScore := clamp(50 + int(math.Round(float64(trustScore-riskScore)*0.5)))
 
-	// 2
-	// trustContribution := 100 - trustScore
-	// finalScore := int(float64(riskScore)*0.7 + float64(trustContribution)*0.3)
-
-	// 3
-	finalScore := int(float64(trustScore) - float64(riskScore)*0.2)
-
-	finalScore = clamp(finalScore)
 	var verdict string
 	switch {
-	// Very risky: high risk, low trust
-	case finalScore < 50:
+	// High risk, low trust
+	case finalScore < 30:
 		verdict = "Risky"
-	// Suspicious: moderate risk OR conflicting signals
-	case finalScore < 80:
+	// Moderate risk OR conflicting/insufficient signals
+	case finalScore < 65:
 		verdict = "Suspicious"
-	// Safe: low risk, high trust
-	case finalScore >= 80 && finalScore <= 100:
-		verdict = "Safe"
-	// Unclear / low trust but also low risk
+	// Low risk, sufficient trust
 	default:
-		verdict = "Unclear"
+		verdict = "Safe"
 	}
 
 	res := Result{
