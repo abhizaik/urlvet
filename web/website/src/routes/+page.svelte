@@ -63,9 +63,7 @@
   // shareDomain: scan result domain after a scan, or the SSR-provided query domain for bots.
   $: shareDomain = scanResult?.domain || data.queryDomain;
   // formattedInput: defanged URL for display in meta description.
-  $: formattedInput = scanResult?.url
-    ? formatUrlForShare(scanResult.url)
-    : data.formattedQueryUrl;
+  $: formattedInput = scanResult?.url ? formatUrlForShare(scanResult.url) : data.formattedQueryUrl;
 
   async function runAnalyze(q: string) {
     const url = formatUrl(q);
@@ -91,7 +89,9 @@
           if (res.data) screenshotUrl = res.data as string;
         })
         .catch(() => console.warn("Screenshot request failed"))
-        .finally(() => { screenshotLoading = false; });
+        .finally(() => {
+          screenshotLoading = false;
+        });
 
       const res = await api.analyze(url);
 
@@ -143,30 +143,40 @@
 
 <svelte:head>
   {#if shareDomain}
-    {@const desc = formattedInput
-      ? `Security scan report for ${formattedInput}. Check if this URL is safe, phishing, or suspicious.`
-      : `Security scan report for ${shareDomain}. Check if this URL is safe, phishing, or suspicious.`}
+    {@const desc = `Security scan report for ${shareDomain}. Check if this URL is safe, phishing, or suspicious.`}
     <title>SafeSurf — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
     <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={currentUrl || `https://safesurf.vercel.app/?q=${encodeURIComponent(data.queryUrl)}`} />
+    <meta
+      property="og:url"
+      content={currentUrl || `https://safesurf.vercel.app/?q=${encodeURIComponent(data.queryUrl)}`}
+    />
     <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
     <meta name="twitter:description" content={desc} />
   {:else}
     <title>SafeSurf — Check if a link is safe</title>
-    <meta name="description" content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence." />
+    <meta
+      name="description"
+      content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence."
+    />
     <meta property="og:title" content="SafeSurf — Check if a link is safe" />
-    <meta property="og:description" content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence." />
+    <meta
+      property="og:description"
+      content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://safesurf.vercel.app" />
     <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="SafeSurf — Check if a link is safe" />
-    <meta name="twitter:description" content="Instantly check if a URL is safe, phishing, or suspicious." />
+    <meta
+      name="twitter:description"
+      content="Instantly check if a URL is safe, phishing, or suspicious."
+    />
   {/if}
 </svelte:head>
 
@@ -271,10 +281,12 @@
           <input
             id="url-input"
             type="text"
-            class={`flex-1 rounded-lg bg-gray-900 border px-4 py-3 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 focus:shadow-lg ${error ? 'border-red-600 focus:ring-red-600' : `border-gray-800 ${accent.ring}`}`}
+            class={`flex-1 rounded-lg bg-gray-900 border px-4 py-3 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 focus:shadow-lg ${error ? "border-red-600 focus:ring-red-600" : `border-gray-800 ${accent.ring}`}`}
             placeholder="Enter a URL (e.g. example.com)"
             bind:value={input}
-            on:input={() => { if (error) error = null; }}
+            on:input={() => {
+              if (error) error = null;
+            }}
             autocomplete="url"
             inputmode="url"
             aria-invalid={error ? "true" : undefined}

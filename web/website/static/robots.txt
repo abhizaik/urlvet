@@ -1,0 +1,51 @@
+# SafeSurf robots.txt
+
+# Default: allow search engines to index the main app
+User-agent: *
+Disallow: /admin
+Disallow: /admin/
+
+# ── AI training / LLM scrapers ──────────────────────────────────────────────
+# OpenAI
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+# Google AI / Gemini
+User-agent: Google-Extended
+Disallow: /
+
+# Anthropic
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+# Meta AI
+User-agent: FacebookBot
+Disallow: /
+
+# Bytedance
+User-agent: Bytespider
+Disallow: /
+
+# Common Research crawlers
+User-agent: CCBot
+Disallow: /
+
+User-agent: DataForSeoBot
+Disallow: /
+
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+Sitemap: https://safesurf.vercel.app/sitemap.xml

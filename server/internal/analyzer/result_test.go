@@ -42,10 +42,10 @@ func TestGenerateResult_Verdict(t *testing.T) {
 			name: "unranked domain",
 			modify: func(r *Response) {
 				r.Features.Rank = 0
-				// drop trust from rank (was +90), now only NS+MX (+20) → trust=20, risk=20
-				// finalScore = 20 - 20*0.2 = 16 → "Risky"
+				// no rank trust (was +90), trust=0, risk=20
+				// finalScore = 50 + (0-20)*0.5 = 40 → "Suspicious"
 			},
-			wantVerdict: "Risky",
+			wantVerdict: "Suspicious",
 			wantRiskMin: 20,
 		},
 		{
@@ -310,12 +310,12 @@ func TestGenerateResult_ScoreClamping(t *testing.T) {
 }
 
 func TestGenerateResult_VerdictBoundaries(t *testing.T) {
-	// finalScore = trust - risk*0.2
+	// finalScore = clamp(50 + (trust-risk)*0.5)
 	// Build a response that lands exactly in each verdict bucket.
 
-	// "Risky": finalScore < 50
+	// "Risky": finalScore < 30
 	// rank=0 → risk=20 trust=0; NS invalid → risk+10; non-ICANN → risk+30; MX invalid → risk+5
-	// total risk=65, trust=0; final = 0 - 65*0.2 = -13 → clamped 0 → Risky
+	// total risk=65, trust=0; final = 50 + (0-65)*0.5 = 17.5 → 18 → Risky
 	riskyResp := Response{
 		Features: Features{
 			Rank: 0,
@@ -327,8 +327,8 @@ func TestGenerateResult_VerdictBoundaries(t *testing.T) {
 		t.Errorf("expected Risky, got %s (final=%d)", r.Verdict, r.FinalScore)
 	}
 
-	// "Safe": finalScore >= 80
-	// top-10k rank: trust=90; NS+MX: +20; HSTS: +20 → trust=130→100; risk=0; final=100 → Safe
+	// "Safe": finalScore >= 65
+	// top-10k rank: trust=90; HSTS: +20 → trust=110→100; risk=0; final=50+50=100 → Safe
 	safeResp := safeBase()
 	safeResp.Analysis.SupportsHSTS = true
 	if r := GenerateResult(safeResp); r.Verdict != "Safe" {

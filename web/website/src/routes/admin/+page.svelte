@@ -115,6 +115,7 @@
 
 <svelte:head>
   <title>Cache Admin — SafeSurf</title>
+  <meta name="robots" content="noindex, nofollow, noarchive" />
 </svelte:head>
 
 <div class="min-h-screen bg-gray-950 text-gray-200 p-6">
