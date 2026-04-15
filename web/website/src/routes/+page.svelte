@@ -143,7 +143,7 @@
 
 <svelte:head>
   {#if shareDomain}
-    {@const desc = `Security scan report for ${shareDomain}. Check if this URL is safe, phishing, or suspicious.`}
+    {@const desc = `Security scan report for ${shareDomain}. Check whether this URL is safe, suspicious, or risky.`}
     <title>SafeSurf — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
     <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
@@ -161,12 +161,12 @@
     <title>SafeSurf — Check if a link is safe</title>
     <meta
       name="description"
-      content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence."
+      content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
     />
     <meta property="og:title" content="SafeSurf — Check if a link is safe" />
     <meta
       property="og:description"
-      content="Instantly check if a URL is safe, phishing, or suspicious. Free URL scanner with threat intelligence."
+      content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://safesurf.vercel.app" />
@@ -175,7 +175,7 @@
     <meta name="twitter:title" content="SafeSurf — Check if a link is safe" />
     <meta
       name="twitter:description"
-      content="Instantly check if a URL is safe, phishing, or suspicious."
+      content="Instantly check if a URL is safe, suspicious, or risky."
     />
   {/if}
 </svelte:head>
