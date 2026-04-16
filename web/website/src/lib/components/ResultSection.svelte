@@ -2,7 +2,6 @@
   import { onDestroy } from "svelte";
   import { browser } from "$app/environment";
   import type { AnalyzeResult } from "../types";
-  import { formatUrlForShare } from "../utils";
   import VerdictCard from "./sections/VerdictCard.svelte";
   import FlagsGrid from "./sections/FlagsGrid.svelte";
   import ScreenshotViewer from "./sections/ScreenshotViewer.svelte";
@@ -66,33 +65,12 @@
   async function shareLink() {
     if (!browser) return;
 
-    const currentUrl = window.location.href;
-    const inputUrl = data?.url || data?.domain || "";
-    const formattedInput = formatUrlForShare(inputUrl);
-    const shareText = `🛡️ SafeSurf Scan Result\n\nTarget: ${formattedInput}\nView Report: `;
-    const clipboardText = `${shareText}${currentUrl}`;
-
-    const copyToClipboard = async () => {
-      try {
-        await navigator.clipboard.writeText(clipboardText);
-        shareCopied = true;
-        setTimeout(() => (shareCopied = false), 2000);
-      } catch (err) {
-        console.error("Clipboard copy failed:", err);
-      }
-    };
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: "SafeSurf", text: shareText, url: currentUrl });
-      } catch (err: unknown) {
-        if (err instanceof Error && err.name !== "AbortError") {
-          console.error("Share failed:", err);
-        }
-        await copyToClipboard();
-      }
-    } else {
-      await copyToClipboard();
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      shareCopied = true;
+      setTimeout(() => (shareCopied = false), 2000);
+    } catch (err) {
+      console.error("Clipboard copy failed:", err);
     }
   }
 
