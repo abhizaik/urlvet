@@ -66,6 +66,17 @@ up: start-timer ## Start production (detached)
 	$(success "Production started")
 	$(timer)
 
+build-b: start-timer ## Build backend containers only (backend, chrome, valkey)
+	$(info "Building backend containers...")
+	$(compose-prod) build backend chrome valkey
+	$(timer)
+
+up-b: start-timer ## Start backend containers only (backend, chrome, valkey)
+	$(info "Starting backend containers...")
+	$(compose-prod) up -d backend chrome valkey
+	$(success "Backend containers started")
+	$(timer)
+
 down: ## Stop production
 	$(info "Stopping production...")
 	$(compose-prod) down
