@@ -186,7 +186,7 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	}
 
 	// Brand Check
-	res.BrandCheck = CheckBrandMismatch(pageHost, res.Title, bodyText.String())
+	res.BrandCheck = CheckBrandMismatch(pageHost, res.Title)
 
 	return res, nil
 }

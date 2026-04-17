@@ -2,66 +2,42 @@ package checks
 
 import (
 	"strings"
+
+	"github.com/abhizaik/SafeSurf/internal/constants"
 )
 
 type BrandResult struct {
-	BrandFound    string `json:"brand_found"`
-	IsMismatch    bool   `json:"is_mismatch"`
+	BrandFound    string   `json:"brand_found"`
+	IsMismatch    bool     `json:"is_mismatch"`
 	DetectedNames []string `json:"detected_names"`
 }
 
-var highValueBrands = map[string][]string{
-	"Google":    {"google", "gmail", "youtube"},
-	"Microsoft": {"microsoft", "outlook", "office365", "azure", "windows"},
-	"Apple":     {"apple", "icloud", "itunes", "iphone"},
-	"Amazon":    {"amazon", "aws"},
-	"Facebook":  {"facebook", "meta", "instagram", "whatsapp"},
-	"PayPal":    {"paypal"},
-	"Netflix":   {"netflix"},
-	"Adobe":     {"adobe"},
-	"Bank":      {"sbi", "hdfc", "icici", "chase", "bank of america", "wells fargo", "hsbc", "citibank"},
-	"Binance":   {"binance", "coinbase", "kraken"},
+func isOfficialDomain(domain string, officialDomains []string) bool {
+	for _, official := range officialDomains {
+		if domain == official || strings.HasSuffix(domain, "."+official) {
+			return true
+		}
+	}
+	return false
 }
 
-// CheckBrandMismatch looks for brand keywords in the page content/title
-// and compares them against the domain.
-func CheckBrandMismatch(domain string, pageTitle string, bodyText string) BrandResult {
+func CheckBrandMismatch(domain string, pageTitle string) BrandResult {
 	domain = strings.ToLower(domain)
 	pageTitle = strings.ToLower(pageTitle)
-	bodyText = strings.ToLower(bodyText)
 
 	res := BrandResult{
 		DetectedNames: []string{},
 	}
 
-	for brand, keywords := range highValueBrands {
-		brandFound := false
-		for _, kw := range keywords {
-			if strings.Contains(pageTitle, kw) || strings.Contains(bodyText, " "+kw+" ") {
-				brandFound = true
+	for brand, entry := range constants.HighValueBrands {
+		for _, kw := range entry.TitleKeywords {
+			if strings.Contains(pageTitle, kw) {
 				res.DetectedNames = append(res.DetectedNames, brand)
-				break
-			}
-		}
-
-		if brandFound {
-			// Check if the domain actually belongs to this brand
-			isOfficial := false
-			brandLower := strings.ToLower(brand)
-			if strings.Contains(domain, brandLower) {
-				isOfficial = true
-			}
-			for _, kw := range keywords {
-				if strings.Contains(domain, kw) {
-					isOfficial = true
-					break
+				if !isOfficialDomain(domain, entry.OfficialDomains) {
+					res.BrandFound = brand
+					res.IsMismatch = true
 				}
-			}
-
-			// If brand found but domain doesn't match known brand domains, it's a mismatch
-			if !isOfficial {
-				res.BrandFound = brand
-				res.IsMismatch = true
+				break
 			}
 		}
 	}
