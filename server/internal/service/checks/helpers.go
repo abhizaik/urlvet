@@ -178,6 +178,8 @@ func newSafeHTTPClient(timeout time.Duration) *http.Client {
 // Use when building a custom http.Client (e.g. one with a CheckRedirect hook).
 func newSafeTransport() *http.Transport {
 	return &http.Transport{
-		DialContext: ssrfSafeDialContext(&net.Dialer{Timeout: 10 * time.Second}),
+		DialContext:           ssrfSafeDialContext(&net.Dialer{Timeout: 5 * time.Second}),
+		ResponseHeaderTimeout: 5 * time.Second,
+		TLSHandshakeTimeout:   5 * time.Second,
 	}
 }

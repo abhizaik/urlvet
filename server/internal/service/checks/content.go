@@ -1,7 +1,6 @@
 package checks
 
 import (
-	"context"
 	"io"
 	"log"
 	"net/http"
@@ -55,10 +54,7 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	start := time.Now()
 	log.Printf("Starting content analysis for: %s", pageURL)
 
-	// HTTP client with timeout
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, "GET", pageURL, nil)
+	req, err := http.NewRequest("GET", pageURL, nil)
 	if err != nil {
 		log.Printf("Failed to create request for %s: %v", pageURL, err)
 		return nil, err
@@ -68,7 +64,7 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
 	req.Header.Set("Accept-Language", "en-US,en;q=0.9")
 
-	client := newSafeHTTPClient(15 * time.Second)
+	client := newSafeHTTPClient(10 * time.Second)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -186,7 +182,7 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	}
 
 	// Brand Check
-	res.BrandCheck = CheckBrandMismatch(pageHost, res.Title, bodyText.String())
+	res.BrandCheck = CheckBrandMismatch(pageHost, res.Title)
 
 	return res, nil
 }
