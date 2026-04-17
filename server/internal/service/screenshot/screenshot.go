@@ -299,6 +299,6 @@ func TakeScreenshotAndSave(url string) string {
 		return ""
 	}
 
-	fmt.Println("Screenshot saved")
+	log.Println("Screenshot saved")
 	return fullPath
 }

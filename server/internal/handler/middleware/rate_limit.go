@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -14,7 +15,7 @@ import (
 func RateLimiter(limit int64, window time.Duration) gin.HandlerFunc {
 	c, err := cache.New()
 	if err != nil {
-		fmt.Printf("Warning: Rate limiter failed to connect to cache: %v. Rate limiting disabled.\n", err)
+		log.Printf("Warning: Rate limiter failed to connect to cache: %v. Rate limiting disabled.\n", err)
 		return func(ctx *gin.Context) { ctx.Next() }
 	}
 
