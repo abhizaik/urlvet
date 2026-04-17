@@ -1,7 +1,14 @@
 export function isValidUrl(url: string): boolean {
   try {
-    new URL(url);
-    return true;
+    const parsed = new URL(url);
+    const hostname = parsed.hostname;
+    // IPv4
+    if (/^(\d{1,3}\.){3}\d{1,3}$/.test(hostname)) return true;
+    // IPv6 (brackets stripped by URL parser, e.g. [::1] -> ::1)
+    if (hostname.includes(':')) return true;
+    // Must have a dot and a TLD of at least 2 chars
+    const lastDot = hostname.lastIndexOf('.');
+    return lastDot !== -1 && hostname.length - lastDot - 1 >= 2;
   } catch {
     return false;
   }
