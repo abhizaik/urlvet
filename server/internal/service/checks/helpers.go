@@ -43,15 +43,28 @@ func GetHost(rawURL string) (string, error) {
 
 func IsValidURL(rawURL string) (*url.URL, bool, error) {
 	if !strings.Contains(rawURL, "://") {
-		rawURL = "https://" + rawURL // assume https by default
+		rawURL = "https://" + rawURL
 	}
 
 	parsed, err := url.ParseRequestURI(rawURL)
 	if err != nil {
 		return nil, false, err
 	}
-	// parsed url, is valid url, err
-	return parsed, parsed.Scheme != "" && parsed.Host != "", nil
+	if parsed.Scheme == "" || parsed.Host == "" {
+		return nil, false, nil
+	}
+
+	host := parsed.Hostname()
+	// Allow bare IPs (IPv4 or IPv6)
+	if net.ParseIP(host) != nil {
+		return parsed, true, nil
+	}
+	// Require at least one dot and a TLD of ≥2 chars (rejects "financialcomm", "localhost", etc.)
+	dot := strings.LastIndex(host, ".")
+	if dot < 0 || len(host)-dot-1 < 2 {
+		return nil, false, nil
+	}
+	return parsed, true, nil
 }
 
 func GetDomainAge(created time.Time) (string, int, error) {
