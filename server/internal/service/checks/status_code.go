@@ -1,9 +1,13 @@
 package checks
 
-import "net/http"
+import (
+	"net/http"
+	"time"
+)
 
-func GetStatusCode(url string) (int, string, bool, bool, error) {
-	resp, err := http.Head(url)
+func GetStatusCode(rawURL string) (int, string, bool, bool, error) {
+	client := newSafeHTTPClient(5 * time.Second)
+	resp, err := client.Head(rawURL)
 	if err != nil {
 		return 0, "", false, false, err
 	}

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"golang.org/x/net/html"
+	"golang.org/x/net/publicsuffix"
 )
 
 // FormInfo describes a discovered form
@@ -323,7 +324,16 @@ func extractFormInfo(form *html.Node, base *url.URL, pageHost string) FormInfo {
 // helpers
 
 func sameHost(a, b string) bool {
-	return strings.EqualFold(a, b)
+	if strings.EqualFold(a, b) {
+		return true
+	}
+	// Compare by registered domain so www.nasa.gov and nasa.gov are treated the same.
+	domA, errA := publicsuffix.EffectiveTLDPlusOne(strings.ToLower(a))
+	domB, errB := publicsuffix.EffectiveTLDPlusOne(strings.ToLower(b))
+	if errA != nil || errB != nil {
+		return false
+	}
+	return strings.EqualFold(domA, domB)
 }
 
 func resolveAction(base *url.URL, raw string) string {

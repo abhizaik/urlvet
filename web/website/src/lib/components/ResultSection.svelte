@@ -102,7 +102,7 @@
       </div>
 
       <button
-        class="group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-400 focus:ring-offset-gray-950 disabled:opacity-50 {shareCopied
+        class="self-end md:self-auto group inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-400 focus:ring-offset-gray-950 disabled:opacity-50 {shareCopied
           ? 'from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 animate-pulse'
           : ''}"
         on:click={shareLink}

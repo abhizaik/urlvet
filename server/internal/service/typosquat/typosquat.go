@@ -38,6 +38,7 @@ type topEntry struct {
 }
 
 var topEntries []topEntry
+var topSLDSet map[string]struct{}
 
 // LoadTopDomains reads the Tranco CSV (rank,domain — no header) and populates
 // the in-memory list used by CheckTyposquatting.  Call once at startup.
@@ -72,6 +73,13 @@ func LoadTopDomains() error {
 	}
 
 	topEntries = entries
+
+	sldSet := make(map[string]struct{}, len(entries))
+	for _, e := range entries {
+		sldSet[e.sld] = struct{}{}
+	}
+	topSLDSet = sldSet
+
 	return nil
 }
 
@@ -90,12 +98,12 @@ func CheckTyposquatting(domain string) TyposquatResult {
 		return TyposquatResult{}
 	}
 
-	for _, entry := range topEntries {
-		// Skip if it IS the real domain
-		if inputSLD == entry.sld {
-			return TyposquatResult{}
-		}
+	// If the input is itself a well-known domain, it cannot be a typosquat of another.
+	if _, ok := topSLDSet[inputSLD]; ok {
+		return TyposquatResult{}
+	}
 
+	for _, entry := range topEntries {
 		// --- Levenshtein check ---
 		dist := levenshtein(inputSLD, entry.sld)
 		if dist >= 1 && dist <= 2 {
