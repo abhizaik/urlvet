@@ -151,9 +151,9 @@
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content={currentUrl || `https://safesurf.vercel.app/?q=${encodeURIComponent(data.queryUrl)}`}
+      content={currentUrl || `https://safesurf.xorwave.com/?q=${encodeURIComponent(data.queryUrl)}`}
     />
-    <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
+    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
     <meta name="twitter:description" content={desc} />
@@ -172,8 +172,8 @@
       content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://safesurf.vercel.app" />
-    <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
+    <meta property="og:url" content="https://safesurf.xorwave.com" />
+    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
     <meta name="twitter:card" content="summary" />
     <meta
       name="twitter:title"
