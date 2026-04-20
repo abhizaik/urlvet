@@ -151,28 +151,34 @@
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content={currentUrl || `https://safesurf.vercel.app/?q=${encodeURIComponent(data.queryUrl)}`}
+      content={currentUrl || `https://safesurf.xorwave.com/?q=${encodeURIComponent(data.queryUrl)}`}
     />
-    <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
+    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
     <meta name="twitter:description" content={desc} />
   {:else}
-    <title>SafeSurf — Check if a link is safe</title>
+    <title>SafeSurf — Instantly analyze any link.</title>
     <meta
       name="description"
       content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
     />
-    <meta property="og:title" content="SafeSurf — Check if a link is safe" />
+    <meta
+      property="og:title"
+      content="SafeSurf — Instantly analyze any link for phishing, hidden threats, and suspicious behavior before you open it."
+    />
     <meta
       property="og:description"
       content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://safesurf.vercel.app" />
-    <meta property="og:image" content="https://safesurf.vercel.app/safesurf.png" />
+    <meta property="og:url" content="https://safesurf.xorwave.com" />
+    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="SafeSurf — Check if a link is safe" />
+    <meta
+      name="twitter:title"
+      content="SafeSurf — Instantly analyze any link for phishing, hidden threats, and suspicious behavior before you open it."
+    />
     <meta
       name="twitter:description"
       content="Instantly check if a URL is safe, suspicious, or risky."
@@ -208,9 +214,9 @@
 
       <!-- Subheading -->
       <p
-        class="relative mt-4 text-gray-300 md:text-lg text-center md:text-left max-w-xl z-10 animate-fadeIn"
+        class="relative mt-4 text-gray-400 text-lg md:text-l font-light leading-relaxed tracking-wide text-center md:text-left max-w-xl z-10 animate-fadeIn"
       >
-        Check if a link is safe.
+        Instantly scan any link for hidden threats before you open it.
       </p>
     </header>
 

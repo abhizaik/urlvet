@@ -62,10 +62,12 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 
 	// Full-result cache: if we have a recent scan for this URL, return it immediately
 	// without re-running all tasks. TTL is 24h — same as the slowest individual task.
+	start := time.Now()
 	resultKey := "analyze_result:" + normalizedURL
 	if cacheInstance != nil {
 		var cached Response
 		if err := cacheInstance.GetJSON(context.Background(), resultKey, &cached); err == nil {
+			cached.Performance.TotalTime = time.Since(start).String()
 			return cached, nil
 		}
 	}
@@ -91,8 +93,8 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		typosquatTask{},
 	}
 
-	// Start timing right before tasks run
-	start := time.Now()
+	// Reset timer to measure only the actual task execution time
+	start = time.Now()
 	out, errs := runTasks(ctx, in, tasks)
 
 	resp := Response{
