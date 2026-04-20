@@ -4,8 +4,9 @@
   import { onMount } from "svelte";
   import { api } from "../lib/api";
   import ResultSection from "../lib/components/ResultSection.svelte";
+  import Shoutouts from "../lib/components/Shoutouts.svelte";
   import type { AnalyzeResult } from "../lib/types";
-  import { formatUrl, formatUrlForShare, isValidUrl } from "../lib/utils";
+  import { formatUrl, isValidUrl } from "../lib/utils";
 
   // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
   export let data: { queryDomain: string; queryUrl: string; formattedQueryUrl: string };
@@ -17,53 +18,35 @@
   let screenshotUrl: string | null = null;
   let screenshotLoading = false;
 
-  type Verdict = "Safe" | "Risky" | "Unclear" | "Suspicious";
-  const ACCENTS: Record<Verdict, { ring: string; glow: string; badge: string }> = {
-    Safe: {
-      ring: "focus:ring-emerald-600",
-      glow: "from-emerald-600/20",
-      badge: "bg-emerald-600/20 text-emerald-300 border-emerald-700",
-    },
-    Risky: {
-      ring: "focus:ring-red-600",
-      glow: "from-red-600/20",
-      badge: "bg-red-600/20 text-red-300 border-red-700",
-    },
-    Unclear: {
-      ring: "focus:ring-yellow-600",
-      glow: "from-yellow-500/20",
-      badge: "bg-yellow-600/20 text-yellow-300 border-yellow-700",
-    },
-    Suspicious: {
-      ring: "focus:ring-yellow-600",
-      glow: "from-yellow-500/20",
-      badge: "bg-yellow-600/20 text-yellow-300 border-yellow-700",
-    },
+  type Verdict = "Safe" | "Risky" | "Suspicious";
+  const ACCENT_RING: Record<Verdict, string> = {
+    Safe: "focus:ring-emerald-600",
+    Risky: "focus:ring-red-600",
+    Suspicious: "focus:ring-yellow-600",
   };
 
   function normalizeVerdict(v: string | null | undefined): Verdict {
-    switch (v) {
-      case "Safe":
-      case "Risky":
-      case "Unclear":
-      case "Suspicious":
-        return v;
-      default:
-        return "Unclear";
-    }
+    if (v === "Safe" || v === "Risky" || v === "Suspicious") return v;
+    return "Suspicious";
   }
 
   $: verdict = normalizeVerdict(scanResult?.result?.verdict);
-  $: accent = ACCENTS[verdict];
+  $: accentRing = ACCENT_RING[verdict];
   $: isLanding = !scanResult && !loading && !error;
-
-  // currentUrl is only available in the browser; SSR og:url falls back to the canonical base.
   $: currentUrl = browser ? window.location.href : "";
-
-  // shareDomain: scan result domain after a scan, or the SSR-provided query domain for bots.
   $: shareDomain = scanResult?.domain || data.queryDomain;
-  // formattedInput: defanged URL for display in meta description.
-  $: formattedInput = scanResult?.url ? formatUrlForShare(scanResult.url) : data.formattedQueryUrl;
+
+  async function pasteFromClipboard() {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        input = text.trim();
+        error = null;
+      }
+    } catch {
+      /* clipboard access denied */
+    }
+  }
 
   async function runAnalyze(q: string) {
     const url = formatUrl(q);
@@ -82,7 +65,6 @@
     screenshotLoading = true;
 
     try {
-      // Kick off screenshot in parallel — don't block on it.
       api
         .screenshot(url)
         .then((res) => {
@@ -94,7 +76,6 @@
         });
 
       const res = await api.analyze(url);
-
       if (res.error) {
         error = res.error;
       } else {
@@ -103,21 +84,15 @@
         share.searchParams.set("q", url);
         replaceState(share.toString(), {});
       }
-    } catch (err) {
+    } catch {
       error = "Analyze request failed";
     } finally {
       loading = false;
     }
   }
 
-  function onSubmit(e: Event) {
-    e.preventDefault();
-    runAnalyze(input);
-  }
-
   onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("q");
+    const q = new URLSearchParams(window.location.search).get("q");
     if (q) {
       input = q;
       runAnalyze(q);
@@ -129,12 +104,9 @@
         !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)
       ) {
         e.preventDefault();
-        const el = document.getElementById("url-input") as HTMLInputElement | null;
-        el?.focus();
+        (document.getElementById("url-input") as HTMLInputElement | null)?.focus();
       }
-      if (e.key === "Escape") {
-        input = "";
-      }
+      if (e.key === "Escape") input = "";
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -188,21 +160,17 @@
 
 <section>
   <div
-    class={`max-w-4xl mx-auto px-6 ${isLanding ? "min-h-[70vh] flex flex-col justify-center" : "py-12"}`}
+    class={`max-w-4xl mx-auto px-6 ${isLanding ? "min-h-[80vh] flex flex-col items-center justify-center text-center pt-10 pb-6" : "py-12"}`}
   >
-    <header
-      class="relative mb-14 flex flex-col items-center md:items-start text-center md:text-left"
-    >
-      <!-- Background accent -->
+    <header class="relative mb-14 flex flex-col items-center text-center">
       <div
-        class="absolute -top-10 -left-10 w-40 h-40 bg-blue-600/30 rounded-full blur-3xl animate-blob z-0"
+        class="absolute -top-16 -left-8 w-48 h-48 bg-blue-600/20 rounded-full blur-3xl animate-blob z-0"
       ></div>
       <div
-        class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl animate-blob animation-delay-2000 z-0"
+        class="absolute -top-8 right-0 w-36 h-36 bg-emerald-500/15 rounded-full blur-3xl animate-blob animation-delay-2000 z-0"
       ></div>
 
-      <!-- Heading -->
-      <h1 class="relative text-6xl md:text-6xl font-extrabold tracking-tight text-white z-10">
+      <h1 class="relative text-5xl md:text-6xl font-extrabold tracking-tight text-white z-10">
         <a
           href="/"
           on:click={() => (location.href = "/")}
@@ -212,83 +180,24 @@
         </a>
       </h1>
 
-      <!-- Subheading -->
       <p
-        class="relative mt-4 text-gray-400 text-lg md:text-l font-light leading-relaxed tracking-wide text-center md:text-left max-w-xl z-10 animate-fadeIn"
+        class="relative mt-3 text-gray-400 text-base md:text-lg font-light leading-relaxed tracking-wide max-w-md z-10 animate-fadeIn"
       >
-        Instantly scan any link for hidden threats before you open it.
+        Fast, transparent link scans with explainable results.
       </p>
     </header>
 
-    <style>
-      /* Blob animation */
-      @keyframes blob {
-        0%,
-        100% {
-          transform: translate(0px, 0px) scale(1);
-        }
-        33% {
-          transform: translate(20px, -10px) scale(1.1);
-        }
-        66% {
-          transform: translate(-15px, 15px) scale(0.95);
-        }
-      }
-      .animate-blob {
-        animation: blob 8s infinite;
-      }
-      .animation-delay-2000 {
-        animation-delay: 2s;
-      }
-
-      /* Fade-in animation for subheading */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .animate-fadeIn {
-        animation: fadeIn 1s ease-out forwards;
-      }
-
-      /* Autofill fix for dark input added by browsers */
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover,
-      input:-webkit-autofill:focus,
-      input:-webkit-autofill:active {
-        -webkit-text-fill-color: #e5e7eb; /* Tailwind text-gray-200 */
-        transition: background-color 5000s ease-in-out 0s; /* prevent yellow flash */
-        box-shadow: 0 0 0px 1000px #1f2937 inset; /* Tailwind bg-gray-900 */
-        -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset;
-      }
-    </style>
-
     <form
-      class="relative bg-gray-950 rounded-xl border border-gray-800 p-6 md:p-8 overflow-hidden"
-      on:submit|preventDefault={onSubmit}
+      class={isLanding ? "w-full max-w-2xl" : "w-full"}
+      on:submit|preventDefault={() => runAnalyze(input)}
     >
-      <!-- Background accent -->
-      <div
-        class="absolute -top-10 -left-10 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl animate-blob z-0"
-      ></div>
-      <div
-        class="absolute -bottom-10 -right-10 w-28 h-28 bg-purple-500/20 rounded-full blur-3xl animate-blob animation-delay-3000 z-0"
-      ></div>
-
-      <label for="url-input" class="sr-only">URL to analyze</label>
-      <div class="relative flex flex-col gap-2 z-10">
-        <div class="flex flex-col md:flex-row gap-3">
-          <!-- Input -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <div class="relative flex-1">
           <input
             id="url-input"
             type="text"
-            class={`flex-1 rounded-lg bg-gray-900 border px-4 py-3 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 focus:shadow-lg ${error ? "border-red-600 focus:ring-red-600" : `border-gray-800 ${accent.ring}`}`}
-            placeholder="Enter a URL (e.g. example.com)"
+            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${error ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
+            placeholder="Enter a link (e.g. example.com)"
             bind:value={input}
             on:input={() => {
               if (error) error = null;
@@ -299,67 +208,146 @@
             aria-describedby={error ? "url-error" : undefined}
             required
           />
-
-          <!-- Button -->
-          <button
-            type="submit"
-            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-600"
-            disabled={loading}
-            aria-busy={loading}
-            aria-label={loading ? "Scanning URL, please wait" : "Scan Now"}
-          >
-            {#if loading}
+          <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+            {#if !input}
+              <kbd
+                class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-gray-700 bg-gray-800 text-gray-500 text-[10px] font-mono"
+                >/</kbd
+              >
+            {/if}
+            <button
+              type="button"
+              on:click={pasteFromClipboard}
+              class="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-400 hover:text-gray-200 text-[11px] font-medium transition-colors"
+              aria-label="Paste from clipboard"
+              title="Paste from clipboard"
+            >
               <svg
-                class="w-4 h-4 animate-spin text-white"
+                class="w-3 h-3"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
                 viewBox="0 0 24 24"
-                aria-hidden="true"
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M12 4v4m0 8v4m8-8h-4M4 12H0"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
                 />
               </svg>
-              Scanning ..
-            {:else}
-              Scan Now
-            {/if}
-          </button>
+              Paste
+            </button>
+          </div>
         </div>
 
-        {#if error}
-          <p id="url-error" class="text-red-400 text-xs mt-0.5" role="alert">{error}</p>
-        {/if}
+        <button
+          type="submit"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 active:scale-95"
+          disabled={loading}
+          aria-busy={loading}
+          aria-label={loading ? "Scanning URL, please wait" : "Scan Now"}
+        >
+          {#if loading}
+            <svg
+              class="w-4 h-4 animate-spin"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v4m0 8v4m8-8h-4M4 12H0"
+              />
+            </svg>
+            Scanning..
+          {:else}
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+              />
+            </svg>
+            Scan Now
+          {/if}
+        </button>
       </div>
+
+      {#if error}
+        <p id="url-error" class="text-red-400 text-xs mt-2 text-left" role="alert">{error}</p>
+      {/if}
     </form>
 
-    <style>
-      /* Blob animation */
-      @keyframes blob {
-        0%,
-        100% {
-          transform: translate(0px, 0px) scale(1);
-        }
-        33% {
-          transform: translate(20px, -10px) scale(1.1);
-        }
-        66% {
-          transform: translate(-15px, 15px) scale(0.95);
-        }
-      }
-      .animate-blob {
-        animation: blob 8s infinite;
-      }
-      .animation-delay-3000 {
-        animation-delay: 3s;
-      }
-    </style>
+    {#if isLanding}
+      <div class="mt-5 flex flex-col items-center gap-2.5">
+        <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
+          <svg
+            class="w-3 h-3 text-emerald-500 flex-shrink-0"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Try an example — the link is scanned, not visited
+        </span>
+        <div class="flex flex-wrap justify-center gap-2">
+          {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "nasa.gov", url: "nasa.gov", dot: "bg-emerald-500", hint: "Safe" }, { label: "p4ypal.com", url: "p4ypal.com", dot: "bg-red-500", hint: "Risky" }, { label: "faceb00k.com", url: "faceb00k.com", dot: "bg-red-500", hint: "Risky" }] as example}
+            <button
+              type="button"
+              on:click={() => {
+                input = example.url;
+                runAnalyze(example.url);
+              }}
+              title="Expected: {example.hint}"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-400 hover:text-gray-200 text-xs transition-all"
+            >
+              <span class={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${example.dot}`}></span>
+              {example.label}
+            </button>
+          {/each}
+        </div>
+      </div>
 
-    <div class="mt-8" aria-live="polite">
+      <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
+        {#each ["Free & open source", "No signup required", "Explains every verdict", "Live page preview", "Referenced in research"] as pill}
+          <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
+            <svg
+              class="w-3 h-3 text-emerald-500/70 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            {pill}
+          </span>
+        {/each}
+      </div>
+    {/if}
+
+    <div class={`w-full ${isLanding ? "mt-12" : "mt-8"}`} aria-live="polite">
       <ResultSection data={scanResult} {loading} {error} {screenshotUrl} {screenshotLoading} />
     </div>
+
+    {#if isLanding}
+      <div class="mt-8 w-full">
+        <Shoutouts />
+      </div>
+    {/if}
   </div>
 </section>
