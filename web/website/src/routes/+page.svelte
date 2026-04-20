@@ -14,6 +14,7 @@
   let input = "";
   let loading = false;
   let error: string | null = null;
+  let formError: string | null = null;
   let scanResult: AnalyzeResult | null = null;
   let screenshotUrl: string | null = null;
   let screenshotLoading = false;
@@ -32,9 +33,11 @@
 
   $: verdict = normalizeVerdict(scanResult?.result?.verdict);
   $: accentRing = ACCENT_RING[verdict];
-  $: isLanding = !scanResult && !loading && !error;
+  $: isLanding = !scanResult && !loading && !error && !formError;
   $: currentUrl = browser ? window.location.href : "";
   $: shareDomain = scanResult?.domain || data.queryDomain;
+
+  let justPasted = false;
 
   async function pasteFromClipboard() {
     try {
@@ -42,6 +45,9 @@
       if (text) {
         input = text.trim();
         error = null;
+        formError = null;
+        justPasted = true;
+        setTimeout(() => (justPasted = false), 1500);
       }
     } catch {
       /* clipboard access denied */
@@ -51,12 +57,13 @@
   async function runAnalyze(q: string) {
     const url = formatUrl(q);
     if (!isValidUrl(url)) {
-      error = "Please enter a valid URL";
+      formError = "Please enter a valid URL";
       return;
     }
 
     loading = true;
     error = null;
+    formError = null;
     scanResult = null;
     if (screenshotUrl) {
       URL.revokeObjectURL(screenshotUrl);
@@ -181,9 +188,9 @@
       </h1>
 
       <p
-        class="relative mt-3 text-gray-400 text-base md:text-lg font-light leading-relaxed tracking-wide max-w-md z-10 animate-fadeIn"
+        class="relative mt-3 text-gray-300 text-base md:text-lg font-normal leading-relaxed tracking-wide max-w-md z-10 animate-fadeIn"
       >
-        Fast, transparent link scans with explainable results.
+        Scan any link. Understand why it's safe or not.
       </p>
     </header>
 
@@ -196,53 +203,64 @@
           <input
             id="url-input"
             type="text"
-            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${error ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
+            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${formError ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
             placeholder="Enter a link (e.g. example.com)"
             bind:value={input}
             on:input={() => {
-              if (error) error = null;
+              if (formError) formError = null;
             }}
             autocomplete="url"
             inputmode="url"
-            aria-invalid={error ? "true" : undefined}
-            aria-describedby={error ? "url-error" : undefined}
+            aria-invalid={formError ? "true" : undefined}
+            aria-describedby={formError ? "url-error" : undefined}
             required
           />
-          <div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-            {#if !input}
-              <kbd
-                class="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded border border-gray-700 bg-gray-800 text-gray-500 text-[10px] font-mono"
-                >/</kbd
-              >
-            {/if}
+          <div class="absolute right-0 top-0 bottom-0 flex items-center">
             <button
               type="button"
               on:click={pasteFromClipboard}
-              class="inline-flex items-center gap-1 px-2 py-1 rounded bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-400 hover:text-gray-200 text-[11px] font-medium transition-colors"
+              class="h-full flex items-center gap-1.5 px-3.5 rounded-r-xl border-l text-[11px] font-medium transition-all duration-200 {justPasted
+                ? 'border-white/5 bg-emerald-500/10 text-emerald-400'
+                : 'border-white/5 bg-transparent hover:bg-white/5 text-gray-500 hover:text-gray-200'}"
               aria-label="Paste from clipboard"
               title="Paste from clipboard"
             >
-              <svg
-                class="w-3 h-3"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                />
-              </svg>
-              Paste
+              {#if justPasted}
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Pasted
+              {:else}
+                <svg
+                  class="w-3.5 h-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
+                </svg>
+                Paste
+              {/if}
             </button>
           </div>
         </div>
 
         <button
           type="submit"
-          class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 active:scale-95"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 active:scale-95"
           disabled={loading}
           aria-busy={loading}
           aria-label={loading ? "Scanning URL, please wait" : "Scan Now"}
@@ -283,43 +301,28 @@
         </button>
       </div>
 
-      {#if error}
-        <p id="url-error" class="text-red-400 text-xs mt-2 text-left" role="alert">{error}</p>
+      {#if formError}
+        <p id="url-error" class="text-red-400 text-xs mt-2 text-left" role="alert">{formError}</p>
       {/if}
     </form>
 
     {#if isLanding}
-      <div class="mt-5 flex flex-col items-center gap-2.5">
-        <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
-          <svg
-            class="w-3 h-3 text-emerald-500 flex-shrink-0"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+      <div class="mt-5 flex flex-wrap justify-center items-center gap-2">
+        <span class="text-[11px] text-gray-500 mr-0.5">Try:</span>
+        {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "nasa.gov", url: "nasa.gov", dot: "bg-emerald-500", hint: "Safe" }, { label: "microsooft.com", url: "microsooft.com", dot: "bg-red-500", hint: "Risky" }, { label: "faceb00k.com", url: "faceb00k.com", dot: "bg-red-500", hint: "Risky" }] as example}
+          <button
+            type="button"
+            on:click={() => {
+              input = example.url;
+              runAnalyze(example.url);
+            }}
+            title="Expected: {example.hint}"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-400 hover:text-gray-200 text-xs transition-all"
           >
-            <path
-              fill-rule="evenodd"
-              d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          Try an example — the link is scanned, not visited
-        </span>
-        <div class="flex flex-wrap justify-center gap-2">
-          {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "nasa.gov", url: "nasa.gov", dot: "bg-emerald-500", hint: "Safe" }, { label: "p4ypal.com", url: "p4ypal.com", dot: "bg-red-500", hint: "Risky" }, { label: "faceb00k.com", url: "faceb00k.com", dot: "bg-red-500", hint: "Risky" }] as example}
-            <button
-              type="button"
-              on:click={() => {
-                input = example.url;
-                runAnalyze(example.url);
-              }}
-              title="Expected: {example.hint}"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-400 hover:text-gray-200 text-xs transition-all"
-            >
-              <span class={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${example.dot}`}></span>
-              {example.label}
-            </button>
-          {/each}
-        </div>
+            <span class={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${example.dot}`}></span>
+            {example.label}
+          </button>
+        {/each}
       </div>
 
       <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
