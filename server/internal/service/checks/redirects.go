@@ -19,7 +19,7 @@ func CheckRedirects(rawURL string) (RedirectionResult, error) {
 	var redirects []string
 
 	client := &http.Client{
-		Timeout:   30 * time.Second,
+		Timeout:   5 * time.Second,
 		Transport: newSafeTransport(),
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			redirects = append(redirects, req.URL.String())

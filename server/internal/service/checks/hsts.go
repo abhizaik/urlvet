@@ -27,9 +27,9 @@ func SupportsHSTS(rawURL string) (bool, error) {
 	client := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			DialContext:     ssrfSafeDialContext(&net.Dialer{Timeout: 10 * time.Second}),
+			DialContext:     ssrfSafeDialContext(&net.Dialer{Timeout: 5 * time.Second}),
 		},
-		Timeout: 10 * time.Second,
+		Timeout: 5 * time.Second,
 	}
 
 	resp, err := client.Do(req)
