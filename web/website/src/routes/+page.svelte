@@ -314,7 +314,7 @@
     {#if isLanding}
       <div class="mt-5 flex flex-wrap justify-center items-center gap-2">
         <span class="text-[11px] text-gray-500 mr-0.5">Try:</span>
-        {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "аррӏе.com", url: "аррӏе.com", dot: "bg-red-500", hint: "Risky" }, { label: "kernel.org", url: "kernel.org", dot: "bg-emerald-500", hint: "Safe" }, { label: "fаcebook.com", url: "fаcebook.com", dot: "bg-red-500", hint: "Risky" }] as example}
+        {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "аррӏе.com", url: "аррӏе.com", dot: "bg-red-500", hint: "Risky" }, { label: "wikipedia.org", url: "wikipedia.org", dot: "bg-emerald-500", hint: "Safe" }, { label: "pаypal.com", url: "pаypal.com", dot: "bg-red-500", hint: "Risky" }] as example}
           <button
             type="button"
             on:click={() => {
