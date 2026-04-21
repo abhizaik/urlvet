@@ -63,9 +63,12 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/status-code", CheckStatusCodeHandler)
 		v1.GET("/domain-info", DomainInfoHandler)
 
-		// Admin — cache management
+		// Admin
 		admin := v1.Group("/admin")
 		{
+			admin.GET("/stats", AdminStatsHandler)
+			admin.GET("/recent", AdminRecentHandler)
+			admin.GET("/errors", AdminErrorsHandler)
 			admin.GET("/cache", ListCacheHandler)
 			admin.DELETE("/cache", FlushCacheHandler)
 			admin.DELETE("/cache/*key", DeleteCacheKeyHandler)

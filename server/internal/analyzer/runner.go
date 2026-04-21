@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/abhizaik/SafeSurf/internal/metrics"
+	"github.com/abhizaik/SafeSurf/internal/store"
 )
 
 // runTasks runs all tasks in parallel, collects timings and non-fatal errors
@@ -21,6 +22,21 @@ func runTasks(ctx context.Context, in *Input, tasks []Task) (*Output, []error) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
+			defer func() {
+				if r := recover(); r != nil {
+					msg := fmt.Sprintf("%s: panic: %v", t.Name(), r)
+					mu.Lock()
+					errs = append(errs, fmt.Errorf("%s", msg))
+					mu.Unlock()
+					metrics.TaskErrors.WithLabelValues(t.Name()).Inc()
+					store.AddError(store.ErrorRecord{
+						Task:  t.Name(),
+						Error: msg,
+						URL:   in.URL,
+						Time:  time.Now(),
+					})
+				}
+			}()
 			select {
 			case <-ctx.Done():
 				return

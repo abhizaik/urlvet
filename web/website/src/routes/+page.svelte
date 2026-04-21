@@ -18,6 +18,7 @@
   let scanResult: AnalyzeResult | null = null;
   let screenshotUrl: string | null = null;
   let screenshotLoading = false;
+  let screenshotFailed = false;
 
   type Verdict = "Safe" | "Risky" | "Suspicious";
   const ACCENT_RING: Record<Verdict, string> = {
@@ -70,14 +71,18 @@
       screenshotUrl = null;
     }
     screenshotLoading = true;
+    screenshotFailed = false;
 
     try {
       api
         .screenshot(url)
         .then((res) => {
           if (res.data) screenshotUrl = res.data as string;
+          else screenshotFailed = true;
         })
-        .catch(() => console.warn("Screenshot request failed"))
+        .catch(() => {
+          screenshotFailed = true;
+        })
         .finally(() => {
           screenshotLoading = false;
         });
@@ -190,7 +195,7 @@
       <p
         class="relative mt-3 text-gray-300 text-base md:text-lg font-normal leading-relaxed tracking-wide max-w-md z-10 animate-fadeIn"
       >
-        Scan any link. Understand why it's safe or not.
+        Is this link safe? Find out in seconds.
       </p>
     </header>
 
@@ -309,7 +314,7 @@
     {#if isLanding}
       <div class="mt-5 flex flex-wrap justify-center items-center gap-2">
         <span class="text-[11px] text-gray-500 mr-0.5">Try:</span>
-        {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "nasa.gov", url: "nasa.gov", dot: "bg-emerald-500", hint: "Safe" }, { label: "microsooft.com", url: "microsooft.com", dot: "bg-red-500", hint: "Risky" }, { label: "faceb00k.com", url: "faceb00k.com", dot: "bg-red-500", hint: "Risky" }] as example}
+        {#each [{ label: "google.com", url: "google.com", dot: "bg-emerald-500", hint: "Safe" }, { label: "wikipedia.org", url: "wikipedia.org", dot: "bg-emerald-500", hint: "Safe" }, { label: "microsooft.com", url: "microsooft.com", dot: "bg-red-500", hint: "Risky" }, { label: "paypal.verify-account.co", url: "paypal.verify-account.co", dot: "bg-red-500", hint: "Risky" }] as example}
           <button
             type="button"
             on:click={() => {
@@ -326,7 +331,7 @@
       </div>
 
       <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
-        {#each ["Free & open source", "No signup required", "Explains every verdict", "Live page preview", "Referenced in research"] as pill}
+        {#each ["Free & open source", "No signup required", "Explains every verdict", "Live page preview"] as pill}
           <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
             <svg
               class="w-3 h-3 text-emerald-500/70 flex-shrink-0"
@@ -344,7 +349,14 @@
     {/if}
 
     <div class={`w-full ${isLanding ? "mt-12" : "mt-8"}`} aria-live="polite">
-      <ResultSection data={scanResult} {loading} {error} {screenshotUrl} {screenshotLoading} />
+      <ResultSection
+        data={scanResult}
+        {loading}
+        {error}
+        {screenshotUrl}
+        {screenshotLoading}
+        {screenshotFailed}
+      />
     </div>
 
     {#if isLanding}

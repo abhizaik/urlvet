@@ -10,6 +10,7 @@ import (
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
+	"github.com/abhizaik/SafeSurf/internal/store"
 )
 
 // buildPhishingResult converts the internal PhishTankResult into the public PhishingResult.
@@ -68,6 +69,15 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		var cached Response
 		if err := cacheInstance.GetJSON(context.Background(), resultKey, &cached); err == nil {
 			cached.Performance.TotalTime = time.Since(start).String()
+			store.AddScan(store.ScanRecord{
+				URL:      normalizedURL,
+				Domain:   domain,
+				Verdict:  cached.Result.Verdict,
+				Score:    cached.Result.FinalScore,
+				Duration: cached.Performance.TotalTime,
+				Time:     time.Now(),
+				Cached:   true,
+			})
 			return cached, nil
 		}
 	}
@@ -168,6 +178,25 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 	// Only cache complete results — incomplete scans may be missing signals.
 	if cacheInstance != nil && !resp.Incomplete {
 		_ = cacheInstance.SetJSON(context.Background(), resultKey, resp, constants.AnalyzeResultTTL)
+	}
+
+	store.AddScan(store.ScanRecord{
+		URL:      normalizedURL,
+		Domain:   domain,
+		Verdict:  result.Verdict,
+		Score:    result.FinalScore,
+		Duration: resp.Performance.TotalTime,
+		Time:     time.Now(),
+		Cached:   false,
+	})
+
+	for _, e := range errs {
+		store.AddError(store.ErrorRecord{
+			Task:  "analyze",
+			Error: e.Error(),
+			URL:   normalizedURL,
+			Time:  time.Now(),
+		})
 	}
 
 	return resp, errs

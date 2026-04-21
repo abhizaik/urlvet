@@ -1,22 +1,23 @@
 <script lang="ts">
-  import { onDestroy } from "svelte";
   import { browser } from "$app/environment";
+  import { onDestroy } from "svelte";
   import type { AnalyzeResult } from "../types";
-  import VerdictCard from "./sections/VerdictCard.svelte";
-  import FlagsGrid from "./sections/FlagsGrid.svelte";
-  import ScreenshotViewer from "./sections/ScreenshotViewer.svelte";
-  import DomainInfoSection from "./sections/DomainInfoSection.svelte";
-  import RedirectionSection from "./sections/RedirectionSection.svelte";
-  import ThreatIntelSection from "./sections/ThreatIntelSection.svelte";
-  import SecuritySection from "./sections/SecuritySection.svelte";
   import ContentSection from "./sections/ContentSection.svelte";
-  import URLSignalsSection from "./sections/URLSignalsSection.svelte";
+  import DomainInfoSection from "./sections/DomainInfoSection.svelte";
+  import FlagsGrid from "./sections/FlagsGrid.svelte";
   import InfrastructureSection from "./sections/InfrastructureSection.svelte";
   import PerformanceSection from "./sections/PerformanceSection.svelte";
+  import RedirectionSection from "./sections/RedirectionSection.svelte";
+  import ScreenshotViewer from "./sections/ScreenshotViewer.svelte";
+  import SecuritySection from "./sections/SecuritySection.svelte";
+  import ThreatIntelSection from "./sections/ThreatIntelSection.svelte";
+  import URLSignalsSection from "./sections/URLSignalsSection.svelte";
+  import VerdictCard from "./sections/VerdictCard.svelte";
 
   export let data: AnalyzeResult | null = null;
   export let screenshotUrl: string | null = null;
   export let screenshotLoading = false;
+  export let screenshotFailed = false;
   export let loading = false;
   export let error: string | null = null;
 
@@ -24,6 +25,13 @@
   let shareCopied = false;
 
   $: primary = data?.result;
+  $: httpStatusCode = data?.analysis?.http_status?.code ?? null;
+  $: screenshotUnavailableReason = (() => {
+    if (!screenshotFailed) return null;
+    if (httpStatusCode === 0 || httpStatusCode === null)
+      return "No web content detected. Preview unavailable.";
+    return "Screenshot unavailable — the site may be blocking automated access or failed to respond.";
+  })();
 
   onDestroy(() => {
     if (screenshotUrl) {
@@ -145,7 +153,12 @@
     <FlagsGrid reasons={primary?.reasons} />
 
     <!-- Screenshot -->
-    <ScreenshotViewer {screenshotUrl} loading={screenshotLoading} />
+    <ScreenshotViewer
+      {screenshotUrl}
+      loading={screenshotLoading}
+      failed={screenshotFailed}
+      unavailableReason={screenshotUnavailableReason}
+    />
 
     <!-- Advanced Panel Toggle -->
     <div class="mt-6 flex justify-center">
@@ -213,7 +226,11 @@
           <ThreatIntelSection phishing={data.phishing} />
           <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
           <ContentSection contentData={data.content_data} />
-          <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} typosquatResult={data.typosquat_result} />
+          <URLSignalsSection
+            features={data.features}
+            domainRandomness={data.domain_randomness}
+            typosquatResult={data.typosquat_result}
+          />
           <InfrastructureSection infrastructure={data.infrastructure} />
           <PerformanceSection performance={data.performance} />
 
