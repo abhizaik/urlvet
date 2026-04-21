@@ -18,6 +18,15 @@ func GetWhoisData(domain string) (*RegistrationData, error) {
 		return nil, err
 	}
 
+	if whoisData.Domain == nil {
+		return nil, err
+	}
+
+	var registrarName string
+	if whoisData.Registrar != nil {
+		registrarName = whoisData.Registrar.Name
+	}
+
 	// Parse WHOIS date strings to time.Time
 	createdDate := parseWhoisDate(whoisData.Domain.CreatedDate)
 	updatedDate := parseWhoisDate(whoisData.Domain.UpdatedDate)
@@ -26,7 +35,7 @@ func GetWhoisData(domain string) (*RegistrationData, error) {
 	// Convert WHOIS data to RegistrationData format
 	registrationData := &RegistrationData{
 		Domain:      whoisData.Domain.Domain,
-		Registrar:   whoisData.Registrar.Name,
+		Registrar:   registrarName,
 		CreatedDate: createdDate,
 		UpdatedDate: updatedDate,
 		ExpiryDate:  expiryDate,
