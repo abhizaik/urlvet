@@ -4,12 +4,13 @@
   import { onMount } from "svelte";
   import { api } from "../lib/api";
   import ResultSection from "../lib/components/ResultSection.svelte";
+  import ScanProgress from "../lib/components/ScanProgress.svelte";
   import Shoutouts from "../lib/components/Shoutouts.svelte";
   import type { AnalyzeResult } from "../lib/types";
   import { formatUrl, isValidUrl } from "../lib/utils";
 
   // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
-  export let data: { queryDomain: string; queryUrl: string; formattedQueryUrl: string };
+  export let data: { queryDomain: string; queryUrl: string; formattedQueryUrl: string; verdict: string; score: string };
 
   let input = "";
   let loading = false;
@@ -19,6 +20,7 @@
   let screenshotUrl: string | null = null;
   let screenshotLoading = false;
   let screenshotFailed = false;
+  let scanDone = false;
 
   type Verdict = "Safe" | "Risky" | "Suspicious";
   const ACCENT_RING: Record<Verdict, string> = {
@@ -63,6 +65,7 @@
     }
 
     loading = true;
+    scanDone = false;
     error = null;
     formError = null;
     scanResult = null;
@@ -94,12 +97,16 @@
         scanResult = res.data as AnalyzeResult;
         const share = new URL(window.location.href);
         share.searchParams.set("q", url);
+        if (scanResult.result?.verdict) share.searchParams.set("v", scanResult.result.verdict);
+        if (scanResult.result?.final_score !== undefined) share.searchParams.set("s", String(scanResult.result.final_score));
         replaceState(share.toString(), {});
       }
     } catch {
       error = "Analyze request failed";
     } finally {
       loading = false;
+      scanDone = true;
+      setTimeout(() => (scanDone = false), 1200);
     }
   }
 
@@ -128,6 +135,9 @@
 <svelte:head>
   {#if shareDomain}
     {@const desc = `Security scan report for ${shareDomain}. Check whether this URL is safe, suspicious, or risky.`}
+    {@const ogVerdict = scanResult?.result?.verdict || data.verdict}
+    {@const ogScore = scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
+    {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ''}${ogScore !== undefined ? `&s=${ogScore}` : ''}`}
     <title>SafeSurf — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
     <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
@@ -137,10 +147,13 @@
       property="og:url"
       content={currentUrl || `https://safesurf.xorwave.com/?q=${encodeURIComponent(data.queryUrl)}`}
     />
-    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
     <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
   {:else}
     <title>SafeSurf — Instantly analyze any link.</title>
     <meta
@@ -349,14 +362,18 @@
     {/if}
 
     <div class={`w-full ${isLanding ? "mt-12" : "mt-8"}`} aria-live="polite">
-      <ResultSection
-        data={scanResult}
-        {loading}
-        {error}
-        {screenshotUrl}
-        {screenshotLoading}
-        {screenshotFailed}
-      />
+      {#if loading || scanDone}
+        <ScanProgress {loading} done={scanDone} />
+      {:else}
+        <ResultSection
+          data={scanResult}
+          {loading}
+          {error}
+          {screenshotUrl}
+          {screenshotLoading}
+          {screenshotFailed}
+        />
+      {/if}
     </div>
 
     {#if isLanding}

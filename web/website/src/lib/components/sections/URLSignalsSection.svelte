@@ -22,7 +22,7 @@
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 max-w-4xl w-full mx-auto">
       {#if features.tld}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Domain Ending (TLD):</span>
@@ -34,7 +34,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>High Trust Domain Ending:</span>
@@ -50,7 +50,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Is Risky TLD:</span>
@@ -66,7 +66,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>TLD Recognized by ICANN:</span>
@@ -84,7 +84,7 @@
 
       {#if features.url}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Uses Link Shortener:</span>
@@ -100,7 +100,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Uses Direct IP Address:</span>
@@ -116,7 +116,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Contains Punycode Characters:</span>
@@ -132,7 +132,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>URL Too Long:</span>
@@ -148,7 +148,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>URL Too Deep (Many Slashes):</span>
@@ -164,7 +164,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Has Look-Alike Letters (Homoglyph):</span>
@@ -180,7 +180,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Subdomain Count:</span>
@@ -194,7 +194,7 @@
 
       {#if domainRandomness && domainRandomness.entropy !== undefined}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Domain Randomness (Entropy):</span>
@@ -215,7 +215,7 @@
 
       {#if typosquatResult}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Typosquatting Check:</span>

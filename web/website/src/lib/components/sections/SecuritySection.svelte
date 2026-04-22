@@ -19,7 +19,7 @@
 
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 max-w-4xl w-full mx-auto">
       {#if sslInfo}
-        <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0">
+        <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0">
           <div class="flex items-center gap-1 text-gray-400">
             <span>SSL Support:</span>
             <TooltipIcon text="Checks if the website supports secure HTTPS connections." />
@@ -32,7 +32,7 @@
         </div>
 
         {#if sslInfo.HasTLS}
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Certificate Chain:</span>
               <TooltipIcon text="Verifies if the SSL certificate is issued by a trusted authority and the full chain is valid." />
@@ -44,7 +44,7 @@
             {/if}
           </div>
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Certificate Issuer:</span>
               <TooltipIcon text="The organization that issued the SSL certificate." />
@@ -52,7 +52,7 @@
             <span class="font-medium text-white">{sslInfo.Issuer || "-"}</span>
           </div>
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Certificate Age:</span>
               <TooltipIcon text="How many days ago the certificate was issued. Recently issued certificates on new domains can be suspicious." />
@@ -60,7 +60,7 @@
             <span class="font-medium text-white">{sslInfo.AgeDays} days</span>
           </div>
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Valid From:</span>
               <TooltipIcon text="The date this certificate first became active." />
@@ -68,7 +68,7 @@
             <span class="font-medium text-white">{sslInfo.NotBefore}</span>
           </div>
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Expiry Date:</span>
               <TooltipIcon text="When the current SSL certificate will expire." />
@@ -76,7 +76,7 @@
             <span class="font-medium text-white">{sslInfo.NotAfter}</span>
           </div>
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Certificate Risk Level:</span>
               <TooltipIcon text="Overall assessment of the certificate's technical integrity." />
@@ -89,7 +89,7 @@
           </div>
 
           {#if sslInfo.Reasons && sslInfo.Reasons.length > 0}
-            <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2">
+            <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2">
               <div class="flex items-center gap-1 text-gray-400">
                 <span>Technical Warnings:</span>
                 <TooltipIcon text="Specific technical reasons why this certificate is flagged." />
@@ -102,7 +102,7 @@
             </div>
           {/if}
 
-          <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+          <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
             <div class="flex items-center gap-1 text-gray-400">
               <span>Certificate Fingerprint:</span>
               <TooltipIcon text="A unique identifier (SHA-256 hash) for this specific certificate." />
@@ -113,7 +113,7 @@
       {/if}
 
       {#if tlsInfo}
-        <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2">
+        <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2">
           <div class="flex items-center gap-1 text-gray-400">
             <span>TLS Issuer (Connection):</span>
             <TooltipIcon text="The certificate issuer detected during the live connection." />
@@ -121,7 +121,7 @@
           <span class="font-medium text-white">{tlsInfo.Issuer || "-"}</span>
         </div>
 
-        <div class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 last:pb-0">
+        <div class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 last:pb-0">
           <div class="flex items-center gap-1 text-gray-400">
             <span>Hostname Match:</span>
             <TooltipIcon text="Ensures the certificate is actually issued for the domain you are visiting." />

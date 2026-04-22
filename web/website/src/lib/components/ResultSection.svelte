@@ -33,6 +33,55 @@
     performance: false,
   };
 
+  function computeExpanded(d: AnalyzeResult | null): Record<string, boolean> {
+    if (!d)
+      return {
+        domain: false,
+        analysis: false,
+        threatintel: false,
+        security: false,
+        content: false,
+        features: false,
+        infrastructure: false,
+        performance: false,
+      };
+    return {
+      domain: d.domain_info?.age_days !== undefined && d.domain_info.age_days < 365,
+      analysis:
+        !!d.analysis?.redirection_result?.has_domain_jump ||
+        (d.analysis?.redirection_result?.chain_length ?? 0) > 3,
+      threatintel: !!d.phishing?.valid,
+      security: !!(
+        d.ssl_info?.IsSuspicious ||
+        d.ssl_info?.KnownBadChain ||
+        (d.ssl_info && !d.ssl_info.HasTLS) ||
+        (d.ssl_info?.HasTLS && !d.ssl_info.ChainValid) ||
+        d.tls_info?.HostnameMismatch
+      ),
+      content: !!(
+        d.content_data?.brand_check?.is_mismatch ||
+        d.content_data?.has_hidden_iframe ||
+        d.content_data?.forms?.some((f) => f.is_external) ||
+        d.content_data?.has_login_form ||
+        d.content_data?.has_payment_form
+      ),
+      features: !!(
+        d.features?.url?.has_homoglyph ||
+        d.features?.url?.contains_punycode ||
+        d.features?.url?.uses_ip ||
+        d.features?.url?.url_shortener ||
+        d.typosquat_result?.is_suspicious ||
+        (d.domain_randomness?.entropy ?? 0) > 3.8 ||
+        d.features?.tld?.is_risky_tld ||
+        (d.features?.tld && !d.features?.tld?.is_icann)
+      ),
+      infrastructure: !!(d.infrastructure && !d.infrastructure.nameservers_valid),
+      performance: false,
+    };
+  }
+
+  $: if (data) sectionExpanded = computeExpanded(data);
+
   $: primary = data?.result;
   $: httpStatusCode = data?.analysis?.http_status?.code ?? null;
   $: screenshotUnavailableReason = (() => {
@@ -65,6 +114,9 @@
 
   function scrollToTop() {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+      (document.getElementById("url-input") as HTMLInputElement | null)?.focus();
+    }, 400);
   }
 
   const CHEVRON_PATH =
@@ -72,8 +124,29 @@
 </script>
 
 {#if error}
-  <div class="max-w-3xl mx-auto p-4 bg-red-900/30 border border-red-700 text-red-200 rounded-md">
-    {error}
+  <div class="max-w-xl mx-auto flex flex-col items-center gap-4 py-10 text-center">
+    <div class="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
+      <svg
+        class="w-6 h-6 text-red-400"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+        />
+      </svg>
+    </div>
+    <div>
+      <p class="text-white font-semibold mb-1">Scan Failed</p>
+      <p class="text-gray-400 text-sm max-w-sm">{error}</p>
+      <p class="text-gray-600 text-xs mt-2">
+        The site may be unreachable, blocking automated access, or the URL may be invalid.
+      </p>
+    </div>
   </div>
 {:else if loading}
   <div class="max-w-3xl mx-auto space-y-4">
@@ -83,7 +156,9 @@
 {:else if data}
   <section class="max-w-4xl mx-auto space-y-8 px-4">
     <!-- Header & Share Button -->
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+    <div
+      class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 animate-fadeIn"
+    >
       <div class="flex flex-col">
         <h2 class="text-2xl font-semibold text-white" id="analysis-summary">Analysis Summary</h2>
         <p class="text-gray-400 text-sm mt-1">Here's the security profile for {data?.domain}</p>
@@ -127,9 +202,13 @@
     </div>
 
     <!-- Verdict + Screenshot side-by-side on desktop, stacked on mobile -->
-    <div class="flex flex-col md:flex-row gap-4 items-stretch">
+    <div class="flex flex-col md:flex-row gap-4 items-stretch animate-fadeIn delay-100">
       <div class="flex-1 min-w-0">
-        <VerdictCard verdict={primary?.verdict} finalScore={primary?.final_score} />
+        <VerdictCard
+          verdict={primary?.verdict}
+          finalScore={primary?.final_score}
+          unreachable={httpStatusCode === 0 || httpStatusCode === null}
+        />
       </div>
       {#if screenshotLoading || screenshotUrl}
         <div
@@ -148,155 +227,358 @@
     </div>
 
     <!-- Red / Green Flags -->
-    <FlagsGrid reasons={primary?.reasons} />
+    <div class="animate-fadeIn delay-200"><FlagsGrid reasons={primary?.reasons} /></div>
 
     <!-- Detailed Sections -->
     {#if data.domain_info || data.analysis || data.phishing || data.ssl_info || data.tls_info || data.content_data || data.features || data.infrastructure}
-      <div class="space-y-2">
-
+      <div class="space-y-2 animate-fadeIn delay-300">
         {#if data.domain_info}
-          <div id="section-domain" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("domain")} aria-expanded={sectionExpanded.domain}>
+          <div
+            id="section-domain"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("domain")}
+              aria-expanded={sectionExpanded.domain}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🏷️</span>
                 <span class="text-sm font-semibold text-gray-100">Domain Info</span>
                 {#if data?.domain_info?.age_days !== undefined && data.domain_info.age_days < 365}
-                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="New domain"></span>
+                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="New domain"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.domain ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.domain
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.domain ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><DomainInfoSection domainInfo={data.domain_info} rank={data.features?.rank} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.domain
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <DomainInfoSection domainInfo={data.domain_info} rank={data.features?.rank} />
+              </div>
             </div>
           </div>
         {/if}
 
         {#if data.analysis}
-          <div id="section-analysis" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("analysis")} aria-expanded={sectionExpanded.analysis}>
+          <div
+            id="section-analysis"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("analysis")}
+              aria-expanded={sectionExpanded.analysis}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🔀</span>
                 <span class="text-sm font-semibold text-gray-100">Redirection</span>
                 {#if data?.analysis?.redirection_result?.has_domain_jump}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="Domain jump detected"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="Domain jump detected"
+                  ></span>
                 {:else if (data?.analysis?.redirection_result?.chain_length ?? 0) > 3}
-                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="Long redirect chain"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"
+                    title="Long redirect chain"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.analysis ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.analysis
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.analysis ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><RedirectionSection analysis={data.analysis} domain={data.domain} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.analysis
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <RedirectionSection analysis={data.analysis} domain={data.domain} />
+              </div>
             </div>
           </div>
         {/if}
 
         {#if data.phishing}
-          <div id="section-threatintel" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("threatintel")} aria-expanded={sectionExpanded.threatintel}>
+          <div
+            id="section-threatintel"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("threatintel")}
+              aria-expanded={sectionExpanded.threatintel}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🛡️</span>
                 <span class="text-sm font-semibold text-gray-100">Threat Intel</span>
                 {#if data?.phishing?.valid}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="Confirmed phishing"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="Confirmed phishing"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.threatintel ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.threatintel
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.threatintel ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><ThreatIntelSection phishing={data.phishing} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.threatintel
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <ThreatIntelSection phishing={data.phishing} />
+              </div>
             </div>
           </div>
         {/if}
 
         {#if data.ssl_info || data.tls_info}
-          <div id="section-security" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("security")} aria-expanded={sectionExpanded.security}>
+          <div
+            id="section-security"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("security")}
+              aria-expanded={sectionExpanded.security}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🔒</span>
                 <span class="text-sm font-semibold text-gray-100">Security & SSL</span>
                 {#if data?.ssl_info?.IsSuspicious || data?.ssl_info?.KnownBadChain || (data?.ssl_info && !data?.ssl_info?.HasTLS) || (data?.ssl_info?.HasTLS && !data?.ssl_info?.ChainValid) || data?.tls_info?.HostnameMismatch}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="SSL/TLS issues detected"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="SSL/TLS issues detected"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.security ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.security
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.security ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.security
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
+              </div>
             </div>
           </div>
         {/if}
 
         {#if data.content_data}
-          <div id="section-content" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("content")} aria-expanded={sectionExpanded.content}>
+          <div
+            id="section-content"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("content")}
+              aria-expanded={sectionExpanded.content}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">📄</span>
                 <span class="text-sm font-semibold text-gray-100">Page Content</span>
-                {#if data?.content_data?.brand_check?.is_mismatch || data?.content_data?.has_hidden_iframe || data?.content_data?.forms?.some(f => f.is_external)}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="Content issues detected"></span>
+                {#if data?.content_data?.brand_check?.is_mismatch || data?.content_data?.has_hidden_iframe || data?.content_data?.forms?.some((f) => f.is_external)}
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="Content issues detected"
+                  ></span>
                 {:else if data?.content_data?.has_login_form || data?.content_data?.has_payment_form}
-                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="Sensitive forms present"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0"
+                    title="Sensitive forms present"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.content ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.content
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.content ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><ContentSection contentData={data.content_data} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.content
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <ContentSection contentData={data.content_data} />
+              </div>
             </div>
           </div>
         {/if}
 
         {#if data.features}
-          <div id="section-features" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("features")} aria-expanded={sectionExpanded.features}>
+          <div
+            id="section-features"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("features")}
+              aria-expanded={sectionExpanded.features}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">📡</span>
                 <span class="text-sm font-semibold text-gray-100">URL Signals</span>
                 {#if data?.features?.url?.has_homoglyph || data?.features?.url?.contains_punycode || data?.features?.url?.uses_ip || data?.features?.url?.url_shortener || data?.typosquat_result?.is_suspicious || (data?.domain_randomness?.entropy ?? 0) > 3.8}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="URL signal issues detected"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="URL signal issues detected"
+                  ></span>
                 {:else if data?.features?.tld?.is_risky_tld || (data?.features?.tld && !data?.features?.tld?.is_icann)}
-                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="Risky TLD"></span>
+                  <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="Risky TLD"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.features ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.features
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.features ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.features
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
               <div class="acc-body border-t border-gray-800">
-                <URLSignalsSection features={data.features} domainRandomness={data.domain_randomness} typosquatResult={data.typosquat_result} />
+                <URLSignalsSection
+                  features={data.features}
+                  domainRandomness={data.domain_randomness}
+                  typosquatResult={data.typosquat_result}
+                />
               </div>
             </div>
           </div>
         {/if}
 
         {#if data.infrastructure}
-          <div id="section-infrastructure" class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20">
-            <button type="button" class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400" on:click={() => toggleSection("infrastructure")} aria-expanded={sectionExpanded.infrastructure}>
+          <div
+            id="section-infrastructure"
+            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+          >
+            <button
+              type="button"
+              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              on:click={() => toggleSection("infrastructure")}
+              aria-expanded={sectionExpanded.infrastructure}
+            >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🖥️</span>
                 <span class="text-sm font-semibold text-gray-100">Hosting & Server</span>
                 {#if data?.infrastructure && !data?.infrastructure?.nameservers_valid}
-                  <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="DNS issue detected"></span>
+                  <span
+                    class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
+                    title="DNS issue detected"
+                  ></span>
                 {/if}
               </div>
-              <svg class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.infrastructure ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+              <svg
+                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.infrastructure
+                  ? 'rotate-180'
+                  : ''}"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+              >
             </button>
-            <div class="transition-all duration-300 ease-in-out {sectionExpanded.infrastructure ? 'max-h-[5000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}">
-              <div class="acc-body border-t border-gray-800"><InfrastructureSection infrastructure={data.infrastructure} /></div>
+            <div
+              class="transition-all duration-300 ease-in-out {sectionExpanded.infrastructure
+                ? 'max-h-[5000px] opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'}"
+            >
+              <div class="acc-body border-t border-gray-800">
+                <InfrastructureSection infrastructure={data.infrastructure} />
+              </div>
             </div>
           </div>
         {/if}
 
         <!-- Back to top -->
         <div class="pt-2 flex justify-center">
-          <button class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-800/50 hover:bg-gray-700 text-gray-500 hover:text-gray-200 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition-colors duration-150" on:click={scrollToTop} aria-label="Scroll to top">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 12.79a.75.75 0 001.06.02L10 8.812l3.71 3.998a.75.75 0 101.08-1.04l-4.25-4.53a.75.75 0 00-1.08 0l-4.25 4.53a.75.75 0 00.02 1.06z" clip-rule="evenodd" /></svg>
+          <button
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-800/50 hover:bg-gray-700 text-gray-500 hover:text-gray-200 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition-colors duration-150"
+            on:click={scrollToTop}
+            aria-label="Scroll to top"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor"
+              ><path
+                fill-rule="evenodd"
+                d="M5.23 12.79a.75.75 0 001.06.02L10 8.812l3.71 3.998a.75.75 0 101.08-1.04l-4.25-4.53a.75.75 0 00-1.08 0l-4.25 4.53a.75.75 0 00.02 1.06z"
+                clip-rule="evenodd"
+              /></svg
+            >
             Back to top
           </button>
         </div>
       </div>
     {/if}
+
+    <!-- Scan another CTA -->
+    <div class="flex flex-col items-center gap-3 pt-4 pb-2 border-t border-gray-800/50">
+      <p class="text-sm text-gray-500">Want to scan another link?</p>
+      <button
+        type="button"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        on:click={scrollToTop}
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+          />
+        </svg>
+        Scan Another Link
+      </button>
+    </div>
 
     <!-- Performance timings — dev/power user only -->
     {#if data.performance}
@@ -306,7 +588,14 @@
           class="inline-flex items-center gap-1.5 text-[11px] text-gray-600 hover:text-gray-400 transition-colors focus:outline-none"
           on:click={() => toggleSection("performance")}
         >
-          <svg class="w-3 h-3 transition-transform duration-200 {sectionExpanded.performance ? 'rotate-180' : ''}" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg>
+          <svg
+            class="w-3 h-3 transition-transform duration-200 {sectionExpanded.performance
+              ? 'rotate-180'
+              : ''}"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            ><path fill-rule="evenodd" d={CHEVRON_PATH} clip-rule="evenodd" /></svg
+          >
           Performance timings
         </button>
         {#if sectionExpanded.performance}

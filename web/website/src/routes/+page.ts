@@ -7,10 +7,14 @@ export const load: PageLoad = ({ url }) => {
   const normalized = q ? formatUrl(q) : '';
   const domain = normalized ? getDomainFromUrl(normalized) : '';
   const formatted = domain ? formatUrlForShare(normalized) : '';
+  const verdict = url.searchParams.get('v') ?? '';
+  const score = url.searchParams.get('s') ?? '';
 
   return {
     queryDomain: domain,
     queryUrl: normalized,
     formattedQueryUrl: formatted,
+    verdict,
+    score,
   };
 };

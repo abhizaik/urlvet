@@ -1,74 +1,71 @@
 <script lang="ts">
+  import { tick } from "svelte";
   export let text: string;
-  let bubble: HTMLDivElement;
-  let arrow: HTMLDivElement;
 
-  function adjustPosition() {
-    if (!bubble || !arrow) return;
+  let iconEl: HTMLElement;
+  let tooltipEl: HTMLDivElement;
+  let visible = false;
+  let tipLeft = 0;
+  let tipTop = 0;
+  let arrowLeft = "50%";
 
-    // Reset to calculate natural position
-    bubble.style.transform = "translateX(-50%)";
-    arrow.style.left = "50%";
+  async function show() {
+    visible = true;
+    await tick();
+    if (!iconEl || !tooltipEl) return;
 
-    const rect = bubble.getBoundingClientRect();
+    const icon = iconEl.getBoundingClientRect();
+    const tw = tooltipEl.offsetWidth;
+    const th = tooltipEl.offsetHeight;
     const vw = window.innerWidth;
     const padding = 10;
 
-    let shift = 0;
-    if (rect.left < padding) {
-      shift = padding - rect.left;
-    } else if (rect.right > vw - padding) {
-      shift = vw - padding - rect.right;
-    }
+    const naturalLeft = icon.left + icon.width / 2 - tw / 2;
+    const clampedLeft = Math.max(padding, Math.min(vw - padding - tw, naturalLeft));
+    const shift = clampedLeft - naturalLeft;
 
-    if (shift !== 0) {
-      bubble.style.transform = `translateX(calc(-50% + ${shift}px))`;
-      // Keep arrow over the icon but within bubble bounds
-      const arrowShift = -shift;
-      const halfWidth = rect.width / 2;
-      // 12px padding from edges of bubble
-      const safeArrowShift = Math.max(-halfWidth + 12, Math.min(halfWidth - 12, arrowShift));
-      arrow.style.left = `calc(50% + ${safeArrowShift}px)`;
-    }
+    tipLeft = clampedLeft;
+    tipTop = icon.top - th - 8;
+
+    const arrowPos = tw / 2 - shift;
+    arrowLeft = `${Math.max(12, Math.min(tw - 12, arrowPos))}px`;
+  }
+
+  function hide() {
+    visible = false;
   }
 </script>
 
-<div
-  class="relative inline-flex items-center group z-[99999]"
-  role="presentation"
-  on:mouseenter={adjustPosition}
-  on:focusin={adjustPosition}
->
-  <!-- Info icon — keyboard focusable -->
+<div class="relative inline-flex items-center" bind:this={iconEl}>
   <div
     class="w-4 h-4 flex items-center justify-center rounded-full
            bg-gray-700 text-gray-200 text-[10px] font-bold cursor-pointer
-           hover:bg-gray-600 focus-within:bg-gray-600 transition-colors duration-150 select-none"
+           hover:bg-gray-600 transition-colors duration-150 select-none"
     role="button"
     tabindex="0"
     aria-label={text}
-    aria-describedby="tooltip-bubble"
+    on:mouseenter={show}
+    on:mouseleave={hide}
+    on:focusin={show}
+    on:focusout={hide}
   >
     i
   </div>
+</div>
 
-  <!-- Tooltip bubble — visible on hover OR focus -->
+{#if visible}
   <div
-    bind:this={bubble}
-    id="tooltip-bubble"
+    bind:this={tooltipEl}
     role="tooltip"
-    class="absolute left-1/2 bottom-full mb-2 w-max max-w-[85vw] md:max-w-xs -translate-x-1/2
-           opacity-0 group-hover:opacity-100 group-focus-within:opacity-100
-           translate-y-1 group-hover:translate-y-0 group-focus-within:translate-y-0
+    class="fixed w-max max-w-[85vw] md:max-w-xs
            bg-gray-800 text-gray-100 text-xs px-3 py-1.5 rounded-lg shadow-lg
-           border border-gray-700 transition-all duration-200 ease-out
-           pointer-events-none z-[99999] whitespace-normal"
+           border border-gray-700 pointer-events-none z-[99999] whitespace-normal"
+    style="left: {tipLeft}px; top: {tipTop}px;"
   >
     {text}
     <div
-      bind:this={arrow}
-      class="absolute left-1/2 top-full -translate-x-1/2 w-2 h-2
-             bg-gray-800 border-b border-r border-gray-700 rotate-45"
+      class="absolute top-full w-2 h-2 bg-gray-800 border-b border-r border-gray-700"
+      style="left: {arrowLeft}; transform: translateX(-50%) rotate(45deg);"
     ></div>
   </div>
-</div>
+{/if}
