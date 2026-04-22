@@ -10,7 +10,13 @@
   import { formatUrl, isValidUrl } from "../lib/utils";
 
   // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
-  export let data: { queryDomain: string; queryUrl: string; formattedQueryUrl: string; verdict: string; score: string };
+  export let data: {
+    queryDomain: string;
+    queryUrl: string;
+    formattedQueryUrl: string;
+    verdict: string;
+    score: string;
+  };
 
   let input = "";
   let loading = false;
@@ -98,7 +104,8 @@
         const share = new URL(window.location.href);
         share.searchParams.set("q", url);
         if (scanResult.result?.verdict) share.searchParams.set("v", scanResult.result.verdict);
-        if (scanResult.result?.final_score !== undefined) share.searchParams.set("s", String(scanResult.result.final_score));
+        if (scanResult.result?.final_score !== undefined)
+          share.searchParams.set("s", String(scanResult.result.final_score));
         replaceState(share.toString(), {});
       }
     } catch {
@@ -134,10 +141,13 @@
 
 <svelte:head>
   {#if shareDomain}
-    {@const desc = `Security scan report for ${shareDomain}. Check whether this URL is safe, suspicious, or risky.`}
     {@const ogVerdict = scanResult?.result?.verdict || data.verdict}
-    {@const ogScore = scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
-    {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ''}${ogScore !== undefined ? `&s=${ogScore}` : ''}`}
+    {@const ogScore =
+      scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
+    {@const desc = ogVerdict
+      ? `SafeSurf verdict: ${ogVerdict} — see the full breakdown for ${shareDomain}.`
+      : `SafeSurf scanned ${shareDomain}. Is it safe to open? See the full phishing detection report.`}
+    {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
     <title>SafeSurf — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
     <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
