@@ -28,7 +28,7 @@
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 max-w-4xl w-full mx-auto">
       {#if analysis.redirection_result}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Redirected:</span>
@@ -45,7 +45,7 @@
 
         {#if analysis.redirection_result.final_url}
           <div
-            class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+            class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
           >
             <div class="flex items-center gap-1 text-gray-400">
               <span>Final URL Domain:</span>
@@ -58,7 +58,7 @@
             >
           </div>
           <div
-            class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+            class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
           >
             <div class="flex items-center gap-1 text-gray-400">
               <span>Final URL:</span>
@@ -73,7 +73,7 @@
         {/if}
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Domain Jumped to Another Domain:</span>
@@ -89,7 +89,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Redirection Chain Length:</span>
@@ -102,7 +102,7 @@
 
         {#if analysis.redirection_result.chain?.length}
           <div
-            class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+            class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
           >
             <div class="flex items-center gap-1 text-gray-400">
               <span>Redirection Chain:</span>
@@ -155,7 +155,7 @@
 
       {#if analysis.http_status}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>HTTP Status Code:</span>
@@ -169,7 +169,7 @@
         </div>
 
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Redirection Status Code (3xx):</span>
@@ -187,7 +187,7 @@
 
       {#if analysis.is_hsts_supported !== undefined}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>HSTS Supported (HTTPS Only):</span>

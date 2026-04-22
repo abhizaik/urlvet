@@ -18,7 +18,7 @@
 
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 max-w-4xl w-full mx-auto">
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Domain:</span>
@@ -31,7 +31,7 @@
 
       {#if rank !== undefined}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Global Traffic Rank:</span>
@@ -44,7 +44,7 @@
       {/if}
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Registrar:</span>
@@ -56,7 +56,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Domain Age:</span>
@@ -68,7 +68,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>DNSSEC Enabled:</span>
@@ -84,7 +84,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Created:</span>
@@ -96,7 +96,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Updated:</span>
@@ -108,7 +108,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Expiry:</span>
@@ -121,7 +121,7 @@
 
       {#if domainInfo.nameservers?.length}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Nameservers:</span>
@@ -139,7 +139,7 @@
 
       {#if domainInfo.status?.length}
         <div
-          class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+          class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
         >
           <div class="flex items-center gap-1 text-gray-400">
             <span>Status:</span>

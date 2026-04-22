@@ -19,7 +19,7 @@
 
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 max-w-4xl w-full mx-auto">
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Page Title:</span>
@@ -29,7 +29,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Brand Verification:</span>
@@ -51,7 +51,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Forms Detected:</span>
@@ -61,7 +61,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Login Form Presence:</span>
@@ -77,7 +77,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Payment Form Presence:</span>
@@ -93,7 +93,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Personal Info Collection:</span>
@@ -109,7 +109,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Hidden Elements:</span>
@@ -131,7 +131,7 @@
       </div>
 
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2"
       >
         <div class="flex items-center gap-1 text-gray-400">
           <span>Tracking Beacons:</span>
@@ -163,7 +163,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Submission Method:</span>
@@ -175,7 +175,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Submission Endpoint:</span>
@@ -185,7 +185,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Data Flow:</span>
@@ -201,7 +201,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Security Analysis:</span>
@@ -233,7 +233,7 @@
 
                 {#if form.inputs && form.inputs.length > 0}
                   <div
-                    class="flex flex-col md:grid md:grid-cols-[350px,1fr] gap-2 md:gap-4 px-4 py-2"
+                    class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] gap-2 md:gap-4 px-4 py-2"
                   >
                     <div class="flex items-center gap-1 text-gray-400">
                       <span>Detected Data Fields:</span>
@@ -253,7 +253,7 @@
 
                 {#if form.submit_texts && form.submit_texts.length > 0}
                   <div
-                    class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                    class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                   >
                     <div class="flex items-center gap-1 text-gray-400">
                       <span>Submission Buttons:</span>
@@ -295,7 +295,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Visibility Status:</span>
@@ -311,7 +311,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Source (URL):</span>
@@ -321,7 +321,7 @@
                 </div>
 
                 <div
-                  class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
+                  class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 px-4 py-2"
                 >
                   <div class="flex items-center gap-1 text-gray-400">
                     <span>Dimensions:</span>

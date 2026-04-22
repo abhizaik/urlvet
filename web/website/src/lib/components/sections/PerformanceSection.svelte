@@ -8,7 +8,7 @@
   >
     <div class="space-y-0 divide-y divide-gray-800 text-sm text-gray-200 px-5 py-4">
       <div
-        class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+        class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
       >
         <span class="text-gray-400">Total time:</span>
         <span class="font-medium text-white">{performance.total_time}</span>
@@ -17,7 +17,7 @@
       {#if performance.timings && performance.timings.length > 0}
         {#each performance.timings as timing}
           <div
-            class="flex flex-col md:grid md:grid-cols-[350px,1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
+            class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
           >
             <span class="text-gray-400">{timing.task}</span>
             <span class="font-medium text-white">{timing.time}</span>
