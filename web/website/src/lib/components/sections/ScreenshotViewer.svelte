@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onDestroy } from "svelte";
+
   export let screenshotUrl: string | null = null;
   export let loading = false;
   export let failed = false;
@@ -6,6 +8,27 @@
   export let compact = false;
 
   let showModal = false;
+
+  function portal(node: HTMLElement) {
+    document.body.appendChild(node);
+    return {
+      destroy() {
+        if (node.parentNode) node.parentNode.removeChild(node);
+      },
+    };
+  }
+
+  function handleKey(e: KeyboardEvent) {
+    if (e.key === "Escape") showModal = false;
+  }
+
+  $: if (showModal) {
+    document.addEventListener("keydown", handleKey);
+  } else {
+    document.removeEventListener("keydown", handleKey);
+  }
+
+  onDestroy(() => document.removeEventListener("keydown", handleKey));
 </script>
 
 {#if compact}
@@ -95,20 +118,25 @@
 
 {#if showModal}
   <div
-    class="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+    use:portal
+    class="fixed inset-0 bg-black/85 flex items-center justify-center z-[9999]"
     role="presentation"
     on:click={() => (showModal = false)}
   >
     <button
-      class="absolute top-4 right-4 text-gray-300 hover:text-white text-2xl leading-none"
+      class="fixed top-4 right-4 z-[10000] flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 transition-colors backdrop-blur-sm"
       on:click={() => (showModal = false)}
-      aria-label="Close screenshot">×</button
+      aria-label="Close screenshot"
     >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
     <div role="presentation" on:click|stopPropagation>
       <img
         src={screenshotUrl}
         alt="Full screenshot"
-        class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-lg"
+        class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-2xl"
       />
     </div>
   </div>

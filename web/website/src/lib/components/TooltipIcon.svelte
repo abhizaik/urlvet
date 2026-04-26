@@ -9,6 +9,15 @@
   let tipTop = 0;
   let arrowLeft = "50%";
 
+  function portal(node: HTMLElement) {
+    document.body.appendChild(node);
+    return {
+      destroy() {
+        if (node.parentNode) node.parentNode.removeChild(node);
+      },
+    };
+  }
+
   async function show() {
     visible = true;
     await tick();
@@ -55,6 +64,7 @@
 
 {#if visible}
   <div
+    use:portal
     bind:this={tooltipEl}
     role="tooltip"
     class="fixed w-max max-w-[85vw] md:max-w-xs
