@@ -8,7 +8,9 @@ let fontData: ArrayBuffer | null = null;
 async function getFont(): Promise<ArrayBuffer | null> {
   if (fontData) return fontData;
   try {
-    const res = await fetch('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZJhjp-Ek-_EeA.woff');
+    const res = await fetch(
+      'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZJhjp-Ek-_EeA.woff'
+    );
     fontData = await res.arrayBuffer();
     return fontData;
   } catch {
@@ -17,18 +19,18 @@ async function getFont(): Promise<ArrayBuffer | null> {
 }
 
 const VERDICT_COLORS: Record<string, { bg: string; accent: string; label: string }> = {
-  Safe:       { bg: '#022c22', accent: '#10b981', label: 'Trusted' },
-  Risky:      { bg: '#2d0a0a', accent: '#ef4444', label: 'High Risk' },
+  Safe: { bg: '#022c22', accent: '#10b981', label: 'Trusted' },
+  Risky: { bg: '#2d0a0a', accent: '#ef4444', label: 'High Risk' },
   Suspicious: { bg: '#1c1408', accent: '#eab308', label: 'Be Cautious' },
 };
 
 export const GET: RequestHandler = async ({ url }) => {
-  const domain  = url.searchParams.get('domain') ?? 'unknown';
+  const domain = url.searchParams.get('domain') ?? 'unknown';
   const verdict = url.searchParams.get('v') ?? 'Suspicious';
-  const score   = parseInt(url.searchParams.get('s') ?? '0', 10);
+  const score = parseInt(url.searchParams.get('s') ?? '0', 10);
 
   const colors = VERDICT_COLORS[verdict] ?? VERDICT_COLORS.Suspicious;
-  const font   = await getFont();
+  const font = await getFont();
 
   const svg = await satori(
     {
@@ -69,7 +71,12 @@ export const GET: RequestHandler = async ({ url }) => {
           {
             type: 'div',
             props: {
-              style: { color: '#6b7280', fontSize: '20px', letterSpacing: '0.1em', textTransform: 'uppercase' },
+              style: {
+                color: '#6b7280',
+                fontSize: '20px',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+              },
               children: 'SafeSurf',
             },
           },
@@ -77,7 +84,17 @@ export const GET: RequestHandler = async ({ url }) => {
           {
             type: 'div',
             props: {
-              style: { color: '#ffffff', fontSize: '52px', fontWeight: '800', letterSpacing: '-0.02em', maxWidth: '900px', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+              style: {
+                color: '#ffffff',
+                fontSize: '52px',
+                fontWeight: '800',
+                letterSpacing: '-0.02em',
+                maxWidth: '900px',
+                textAlign: 'center',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
               children: domain,
             },
           },

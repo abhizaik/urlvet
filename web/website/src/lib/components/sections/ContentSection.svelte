@@ -181,7 +181,9 @@
                     <span>Submission Endpoint:</span>
                     <TooltipIcon text="The destination URL where the form data will be sent." />
                   </div>
-                  <span class="font-mono text-white break-all">{form.action || "(Current Page)"}</span>
+                  <span class="font-mono text-white break-all"
+                    >{form.action || "(Current Page)"}</span
+                  >
                 </div>
 
                 <div
@@ -217,7 +219,9 @@
                       <span class="text-red-400 font-bold">👻 HIDDEN FORM</span>
                     {/if}
                     {#if form.has_password}
-                      <span class="text-yellow-400 flex items-center gap-1">🔒 Collects Passwords</span>
+                      <span class="text-yellow-400 flex items-center gap-1"
+                        >🔒 Collects Passwords</span
+                      >
                     {/if}
                     {#if form.has_user_like}
                       <span class="text-blue-400 flex items-center gap-1">👤 Identity Fields</span>
@@ -237,7 +241,9 @@
                   >
                     <div class="flex items-center gap-1 text-gray-400">
                       <span>Detected Data Fields:</span>
-                      <TooltipIcon text="Full technical map of input fields found within this form." />
+                      <TooltipIcon
+                        text="Full technical map of input fields found within this form."
+                      />
                     </div>
                     <div class="flex flex-col gap-1.5">
                       {#each form.inputs as input}

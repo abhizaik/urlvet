@@ -1,100 +1,165 @@
 const TRACKER_PARAMS = new Set([
   // UTM (universal)
-  "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id",
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+  'utm_id',
   // Google Ads / Google Analytics
-  "gclid", "gbraid", "wbraid", "gclsrc", "gad_source", "dclid",
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'gclsrc',
+  'gad_source',
+  'dclid',
   // Facebook / Meta
-  "fbclid", "fb_action_ids", "fb_action_types", "fb_source",
+  'fbclid',
+  'fb_action_ids',
+  'fb_action_types',
+  'fb_source',
   // Microsoft / Bing Ads
-  "msclkid",
+  'msclkid',
   // Microsoft Shopping
-  "_hvadid", "_hvdev", "_hvkeyword", "_hvnetw", "_hvqmt", "_hvbmt", "_hvpos", "_hvtargid", "_hvcamid", "_hvadgrpid", "_hvpid",
+  '_hvadid',
+  '_hvdev',
+  '_hvkeyword',
+  '_hvnetw',
+  '_hvqmt',
+  '_hvbmt',
+  '_hvpos',
+  '_hvtargid',
+  '_hvcamid',
+  '_hvadgrpid',
+  '_hvpid',
   // TikTok
-  "ttclid",
+  'ttclid',
   // Twitter / X
-  "twclid",
+  'twclid',
   // LinkedIn
-  "li_fat_id",
+  'li_fat_id',
   // HubSpot (email & ads)
-  "_hsenc", "_hsmi", "hsa_acc", "hsa_cam", "hsa_grp", "hsa_ad", "hsa_src",
-  "hsa_tgt", "hsa_kw", "hsa_mt", "hsa_net", "hsa_ver",
+  '_hsenc',
+  '_hsmi',
+  'hsa_acc',
+  'hsa_cam',
+  'hsa_grp',
+  'hsa_ad',
+  'hsa_src',
+  'hsa_tgt',
+  'hsa_kw',
+  'hsa_mt',
+  'hsa_net',
+  'hsa_ver',
   // Mailchimp
-  "mc_eid", "mc_cid",
+  'mc_eid',
+  'mc_cid',
   // Marketo
-  "mkt_tok",
+  'mkt_tok',
   // Pardot (Salesforce)
-  "pi_campaign_id", "pi_list_email_id", "pi_list_id", "pi_uid", "pi_utid",
+  'pi_campaign_id',
+  'pi_list_email_id',
+  'pi_list_id',
+  'pi_uid',
+  'pi_utid',
   // Oracle Eloqua
-  "elqtrackid", "elqaid", "elqat", "elqcampaignid",
+  'elqtrackid',
+  'elqaid',
+  'elqat',
+  'elqcampaignid',
   // Klaviyo
-  "_kx", "klaviyo_id",
+  '_kx',
+  'klaviyo_id',
   // Iterable
-  "iterableemailcampaignid", "iterabletemplateid", "iterablemessageid",
+  'iterableemailcampaignid',
+  'iterabletemplateid',
+  'iterablemessageid',
   // Sailthru
-  "sailthru_mid",
+  'sailthru_mid',
   // Customer.io
-  "cio_id",
+  'cio_id',
   // ConvertKit
-  "ck_subscriber_id",
+  'ck_subscriber_id',
   // Drip
-  "__s",
+  '__s',
   // ActiveCampaign
-  "vgo_ee",
+  'vgo_ee',
   // Brevo / Sendinblue
-  "sib_id",
+  'sib_id',
   // GetResponse
-  "gr_pk",
+  'gr_pk',
   // AWeber
-  "awc",
+  'awc',
   // Omnisend
-  "omnisendcontactid",
+  'omnisendcontactid',
   // Instagram
-  "igshid", "igsh",
+  'igshid',
+  'igsh',
   // Pinterest
-  "epik", "e_t",
+  'epik',
+  'e_t',
   // Snapchat
-  "sc_channel", "sccid",
+  'sc_channel',
+  'sccid',
   // Reddit
-  "rdt_cid",
+  'rdt_cid',
   // Yandex
-  "yclid", "ymclid",
+  'yclid',
+  'ymclid',
   // Baidu
-  "bd_vid", "bd_source",
+  'bd_vid',
+  'bd_source',
   // Adobe Analytics
-  "s_kwcid", "ef_id", "s_cid",
+  's_kwcid',
+  'ef_id',
+  's_cid',
   // IBM / Acoustic
-  "cm_mmc", "cm_mmca1", "cm_mmca2",
+  'cm_mmc',
+  'cm_mmca1',
+  'cm_mmca2',
   // Criteo
-  "cto_pld", "cto_tld", "cto_gum",
+  'cto_pld',
+  'cto_tld',
+  'cto_gum',
   // AppsFlyer (mobile deep links)
-  "af_sub1", "af_sub2", "af_sub3", "af_sub4", "af_sub5", "af_siteid",
+  'af_sub1',
+  'af_sub2',
+  'af_sub3',
+  'af_sub4',
+  'af_sub5',
+  'af_siteid',
   // Adjust (mobile)
-  "adj_t",
+  'adj_t',
   // Branch.io (mobile deep links)
-  "_branch_match_id", "_branch_referrer",
+  '_branch_match_id',
+  '_branch_referrer',
   // Kochava
-  "ko_click_id",
+  'ko_click_id',
   // Singular
-  "singular_click_id",
+  'singular_click_id',
   // Impact / Radius (affiliate)
-  "irclickid",
+  'irclickid',
   // Commission Junction (affiliate)
-  "cjuid", "cjevent",
+  'cjuid',
+  'cjevent',
   // ShareASale (affiliate)
-  "sscid",
+  'sscid',
   // Rakuten (affiliate)
-  "ransiteid", "ranmid", "raneaid", "ranlinkid",
+  'ransiteid',
+  'ranmid',
+  'raneaid',
+  'ranlinkid',
   // Tradedoubler (affiliate)
-  "tduid",
+  'tduid',
   // Awin (affiliate)
-  "awin_mid",
+  'awin_mid',
   // Partnerize (affiliate)
-  "pf_id",
+  'pf_id',
 ]);
 
 export function stripTrackers(raw: string): { cleaned: string; removed: string[] } {
   try {
-    const url = new URL(raw.startsWith("http") ? raw : `https://${raw}`);
+    const url = new URL(raw.startsWith('http') ? raw : `https://${raw}`);
     const removed: string[] = [];
     for (const key of [...url.searchParams.keys()]) {
       if (TRACKER_PARAMS.has(key.toLowerCase())) {
@@ -108,8 +173,8 @@ export function stripTrackers(raw: string): { cleaned: string; removed: string[]
   }
 }
 
-const VERDICT_ENCODE: Record<string, string> = { Safe: "f3", Risky: "9c", Suspicious: "7b" };
-const VERDICT_DECODE: Record<string, string> = { f3: "Safe", "9c": "Risky", "7b": "Suspicious" };
+const VERDICT_ENCODE: Record<string, string> = { Safe: 'f3', Risky: '9c', Suspicious: '7b' };
+const VERDICT_DECODE: Record<string, string> = { f3: 'Safe', '9c': 'Risky', '7b': 'Suspicious' };
 
 export function encodeVerdict(v: string): string {
   return VERDICT_ENCODE[v] ?? v;

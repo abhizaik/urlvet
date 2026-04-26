@@ -37,11 +37,7 @@
       class="rounded-xl border border-emerald-700 bg-emerald-900/20 p-5 shadow-md hover:shadow-lg hover:scale-[1.01] transition-all"
     >
       <div class="flex items-center gap-3 mb-3">
-        <svg
-          class="w-5 h-5 text-emerald-400 flex-shrink-0"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
+        <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
           <path
             fill-rule="evenodd"
             d="M16.704 5.29a1 1 0 010 1.42l-7.388 7.388a1 1 0 01-1.42 0L3.296 9.498a1 1 0 111.408-1.42L8.5 11.874l6.796-6.795a1 1 0 011.408 0z"

@@ -62,9 +62,7 @@
           >
             <div class="flex items-center gap-1 text-gray-400">
               <span>Final URL:</span>
-              <TooltipIcon
-                text="The complete URL where the user ends up after all redirections."
-              />
+              <TooltipIcon text="The complete URL where the user ends up after all redirections." />
             </div>
             <span class="font-medium text-white break-all"
               >{analysis.redirection_result.final_url}</span
