@@ -15,7 +15,7 @@ import (
 // topN controls how many Tranco entries are loaded and compared against.
 // 500 covers essentially all consumer-facing brands worth impersonating while
 // keeping false-positive rates low.
-const topN = 1000000
+const topN = 5000
 
 // minSLDLen is the minimum SLD character length required before running any
 // string-distance comparison.  Short SLDs (e.g. "io", "ai") produce too many
