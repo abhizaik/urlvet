@@ -47,23 +47,23 @@ var HighValueBrands = map[string]BrandEntry{
 
 	// ── Social Media ─────────────────────────────────────────────────────────
 	"Facebook": {
-		TitleKeywords:   []string{"facebook", "facebook login", "facebook sign in"},
+		TitleKeywords:   []string{"facebook login", "facebook sign in"},
 		OfficialDomains: []string{"facebook.com", "fb.com"},
 	},
 	"Instagram": {
-		TitleKeywords:   []string{"instagram", "instagram login"},
+		TitleKeywords:   []string{"instagram login"},
 		OfficialDomains: []string{"instagram.com"},
 	},
 	"Twitter": {
-		TitleKeywords:   []string{"twitter", "x login", "x sign in", "sign in to x"},
+		TitleKeywords:   []string{"x login", "x sign in", "sign in to x"},
 		OfficialDomains: []string{"twitter.com", "x.com"},
 	},
 	"LinkedIn": {
-		TitleKeywords:   []string{"linkedin", "linkedin sign in", "linkedin login"},
+		TitleKeywords:   []string{"linkedin sign in", "linkedin login"},
 		OfficialDomains: []string{"linkedin.com", "lnkd.in"},
 	},
 	"TikTok": {
-		TitleKeywords:   []string{"tiktok", "tiktok login"},
+		TitleKeywords:   []string{"tiktok login"},
 		OfficialDomains: []string{"tiktok.com"},
 	},
 	"Snapchat": {
@@ -89,11 +89,11 @@ var HighValueBrands = map[string]BrandEntry{
 
 	// ── Messaging & Chat ──────────────────────────────────────────────────────
 	"WhatsApp": {
-		TitleKeywords:   []string{"whatsapp", "whatsapp login", "whatsapp web"},
+		TitleKeywords:   []string{"whatsapp login", "whatsapp web"},
 		OfficialDomains: []string{"whatsapp.com", "web.whatsapp.com"},
 	},
 	"Telegram": {
-		TitleKeywords:   []string{"telegram", "telegram login", "telegram web"},
+		TitleKeywords:   []string{"telegram login", "telegram web"},
 		OfficialDomains: []string{"telegram.org", "web.telegram.org", "t.me"},
 	},
 	"Signal": {
@@ -101,7 +101,7 @@ var HighValueBrands = map[string]BrandEntry{
 		OfficialDomains: []string{"signal.org"},
 	},
 	"Discord": {
-		TitleKeywords:   []string{"discord", "discord login", "discord sign in"},
+		TitleKeywords:   []string{"discord login", "discord sign in"},
 		OfficialDomains: []string{"discord.com", "discordapp.com"},
 	},
 	"Messenger": {

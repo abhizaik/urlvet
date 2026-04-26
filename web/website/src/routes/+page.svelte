@@ -7,7 +7,7 @@
   import ScanProgress from "../lib/components/ScanProgress.svelte";
   import Shoutouts from "../lib/components/Shoutouts.svelte";
   import type { AnalyzeResult } from "../lib/types";
-  import { formatUrl, isValidUrl } from "../lib/utils";
+  import { encodeVerdict, formatUrl, isValidUrl, stripTrackers } from "../lib/utils";
 
   // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
   export let data: {
@@ -45,6 +45,22 @@
   $: isLanding = !scanResult && !loading && !error && !formError;
   $: currentUrl = browser ? window.location.href : "";
   $: shareDomain = scanResult?.domain || data.queryDomain;
+  $: trackers = input ? stripTrackers(formatUrl(input)) : { cleaned: "", removed: [] };
+  $: hasTrackers = trackers.removed.length > 0;
+
+  let trackerCopied = false;
+  let trackerDismissed = false;
+  $: if (input === "") trackerDismissed = false;
+  async function copyCleanUrl() {
+    try {
+      await navigator.clipboard.writeText(trackers.cleaned);
+      trackerCopied = true;
+      setTimeout(() => {
+        trackerCopied = false;
+        trackerDismissed = true;
+      }, 1200);
+    } catch {}
+  }
 
   let justPasted = false;
 
@@ -103,7 +119,8 @@
         scanResult = res.data as AnalyzeResult;
         const share = new URL(window.location.href);
         share.searchParams.set("q", url);
-        if (scanResult.result?.verdict) share.searchParams.set("v", scanResult.result.verdict);
+        if (scanResult.result?.verdict)
+          share.searchParams.set("v", encodeVerdict(scanResult.result.verdict));
         if (scanResult.result?.final_score !== undefined)
           share.searchParams.set("s", String(scanResult.result.final_score));
         replaceState(share.toString(), {});
@@ -146,7 +163,7 @@
       scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
     {@const desc = ogVerdict
       ? `SafeSurf verdict: ${ogVerdict} — see the full breakdown for ${shareDomain}.`
-      : `SafeSurf scanned ${shareDomain}. Is it safe to open? See the full phishing detection report.`}
+      : `SafeSurf scanned ${shareDomain}. Is it safe to open? Check the full report.`}
     {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
     <title>SafeSurf — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
@@ -165,30 +182,24 @@
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>SafeSurf — Instantly analyze any link.</title>
+    <title>SafeSurf — Know if any link is safe before you click it.</title>
     <meta
       name="description"
-      content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
+      content="Free real-time URL scanner. Detect phishing, malware, and suspicious links in seconds — with transparent scoring."
     />
-    <meta
-      property="og:title"
-      content="SafeSurf — Instantly analyze any link for phishing, hidden threats, and suspicious behavior before you open it."
-    />
+    <meta property="og:title" content="SafeSurf — Scan any link for threats before you click." />
     <meta
       property="og:description"
-      content="Instantly check whether this URL is safe, suspicious, or risky. Free URL scanner with threat intelligence."
+      content="Paste any link. Get an instant verdict — safe, suspicious, or risky. Free & transparent."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://safesurf.xorwave.com" />
     <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
     <meta name="twitter:card" content="summary" />
-    <meta
-      name="twitter:title"
-      content="SafeSurf — Instantly analyze any link for phishing, hidden threats, and suspicious behavior before you open it."
-    />
+    <meta name="twitter:title" content="SafeSurf — Scan any link for threats before you click." />
     <meta
       name="twitter:description"
-      content="Instantly check if a URL is safe, suspicious, or risky."
+      content="Scan any URL for phishing and hidden threats. Free, instant, transparent."
     />
   {/if}
 </svelte:head>
@@ -216,9 +227,9 @@
       </h1>
 
       <p
-        class="relative mt-3 text-gray-300 text-base md:text-lg font-normal leading-relaxed tracking-wide max-w-md z-10 animate-fadeIn"
+        class="relative mt-1 text-gray-400 text-sm md:text-base font-light italic tracking-tight z-10 animate-fadeIn"
       >
-        Is this link safe? Find out in seconds.
+        Every link wears a mask. Take it off.
       </p>
     </header>
 
@@ -232,7 +243,7 @@
             id="url-input"
             type="text"
             class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${formError ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
-            placeholder="Enter a link (e.g. example.com)"
+            placeholder="Paste a link (e.g. example.com)"
             bind:value={input}
             on:input={() => {
               if (formError) formError = null;
@@ -331,6 +342,27 @@
 
       {#if formError}
         <p id="url-error" class="text-red-400 text-xs mt-2 text-left" role="alert">{formError}</p>
+      {/if}
+
+      {#if hasTrackers && !trackerDismissed}
+        <div class="mt-2 px-1 text-xs space-y-1.5 text-center">
+          <p class="text-gray-500">
+            <span class="text-gray-400 font-medium"
+              >{trackers.removed.length} tracker{trackers.removed.length > 1 ? "s" : ""} found —</span
+            >
+            <span class="break-all"> {trackers.removed.join(", ")}</span>
+          </p>
+          <p class="text-gray-600">Click to copy the clean link</p>
+          <button
+            type="button"
+            on:click={copyCleanUrl}
+            class="w-full font-mono text-[10px] break-all transition-colors cursor-copy {trackerCopied
+              ? 'text-emerald-400'
+              : 'text-gray-500 hover:text-gray-300'}"
+          >
+            {trackerCopied ? "Copied!" : trackers.cleaned}
+          </button>
+        </div>
       {/if}
     </form>
 

@@ -1,3 +1,124 @@
+const TRACKER_PARAMS = new Set([
+  // UTM (universal)
+  "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "utm_id",
+  // Google Ads / Google Analytics
+  "gclid", "gbraid", "wbraid", "gclsrc", "gad_source", "dclid",
+  // Facebook / Meta
+  "fbclid", "fb_action_ids", "fb_action_types", "fb_source",
+  // Microsoft / Bing Ads
+  "msclkid",
+  // Microsoft Shopping
+  "_hvadid", "_hvdev", "_hvkeyword", "_hvnetw", "_hvqmt", "_hvbmt", "_hvpos", "_hvtargid", "_hvcamid", "_hvadgrpid", "_hvpid",
+  // TikTok
+  "ttclid",
+  // Twitter / X
+  "twclid",
+  // LinkedIn
+  "li_fat_id",
+  // HubSpot (email & ads)
+  "_hsenc", "_hsmi", "hsa_acc", "hsa_cam", "hsa_grp", "hsa_ad", "hsa_src",
+  "hsa_tgt", "hsa_kw", "hsa_mt", "hsa_net", "hsa_ver",
+  // Mailchimp
+  "mc_eid", "mc_cid",
+  // Marketo
+  "mkt_tok",
+  // Pardot (Salesforce)
+  "pi_campaign_id", "pi_list_email_id", "pi_list_id", "pi_uid", "pi_utid",
+  // Oracle Eloqua
+  "elqtrackid", "elqaid", "elqat", "elqcampaignid",
+  // Klaviyo
+  "_kx", "klaviyo_id",
+  // Iterable
+  "iterableemailcampaignid", "iterabletemplateid", "iterablemessageid",
+  // Sailthru
+  "sailthru_mid",
+  // Customer.io
+  "cio_id",
+  // ConvertKit
+  "ck_subscriber_id",
+  // Drip
+  "__s",
+  // ActiveCampaign
+  "vgo_ee",
+  // Brevo / Sendinblue
+  "sib_id",
+  // GetResponse
+  "gr_pk",
+  // AWeber
+  "awc",
+  // Omnisend
+  "omnisendcontactid",
+  // Instagram
+  "igshid", "igsh",
+  // Pinterest
+  "epik", "e_t",
+  // Snapchat
+  "sc_channel", "sccid",
+  // Reddit
+  "rdt_cid",
+  // Yandex
+  "yclid", "ymclid",
+  // Baidu
+  "bd_vid", "bd_source",
+  // Adobe Analytics
+  "s_kwcid", "ef_id", "s_cid",
+  // IBM / Acoustic
+  "cm_mmc", "cm_mmca1", "cm_mmca2",
+  // Criteo
+  "cto_pld", "cto_tld", "cto_gum",
+  // AppsFlyer (mobile deep links)
+  "af_sub1", "af_sub2", "af_sub3", "af_sub4", "af_sub5", "af_siteid",
+  // Adjust (mobile)
+  "adj_t",
+  // Branch.io (mobile deep links)
+  "_branch_match_id", "_branch_referrer",
+  // Kochava
+  "ko_click_id",
+  // Singular
+  "singular_click_id",
+  // Impact / Radius (affiliate)
+  "irclickid",
+  // Commission Junction (affiliate)
+  "cjuid", "cjevent",
+  // ShareASale (affiliate)
+  "sscid",
+  // Rakuten (affiliate)
+  "ransiteid", "ranmid", "raneaid", "ranlinkid",
+  // Tradedoubler (affiliate)
+  "tduid",
+  // Awin (affiliate)
+  "awin_mid",
+  // Partnerize (affiliate)
+  "pf_id",
+]);
+
+export function stripTrackers(raw: string): { cleaned: string; removed: string[] } {
+  try {
+    const url = new URL(raw.startsWith("http") ? raw : `https://${raw}`);
+    const removed: string[] = [];
+    for (const key of [...url.searchParams.keys()]) {
+      if (TRACKER_PARAMS.has(key.toLowerCase())) {
+        removed.push(key);
+        url.searchParams.delete(key);
+      }
+    }
+    return { cleaned: url.toString(), removed };
+  } catch {
+    return { cleaned: raw, removed: [] };
+  }
+}
+
+const VERDICT_ENCODE: Record<string, string> = { Safe: "f3", Risky: "9c", Suspicious: "7b" };
+const VERDICT_DECODE: Record<string, string> = { f3: "Safe", "9c": "Risky", "7b": "Suspicious" };
+
+export function encodeVerdict(v: string): string {
+  return VERDICT_ENCODE[v] ?? v;
+}
+
+export function decodeVerdict(v: string): string {
+  return VERDICT_DECODE[v] ?? v;
+}
+
 export function isValidUrl(url: string): boolean {
   try {
     const parsed = new URL(url);

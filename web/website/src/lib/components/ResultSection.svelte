@@ -103,8 +103,17 @@
 
   async function shareLink() {
     if (!browser) return;
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: document.title, url });
+        return;
+      } catch {
+        // user cancelled or share failed — fall through to clipboard
+      }
+    }
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url);
       shareCopied = true;
       setTimeout(() => (shareCopied = false), 2000);
     } catch (err) {
@@ -214,7 +223,7 @@
         <div
           class="md:w-56 md:flex-shrink-0 rounded-xl border border-gray-800 bg-gray-900/70 p-3 shadow-md flex flex-col gap-2"
         >
-          <p class="text-xs font-semibold text-gray-400">Preview</p>
+          <p class="text-xs font-semibold text-gray-400">Real-time Preview</p>
           <ScreenshotViewer
             {screenshotUrl}
             loading={screenshotLoading}
