@@ -1,16 +1,21 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
 import satori from 'satori';
 import sharp from 'sharp';
 
+// Cache font in memory after first fetch
 let fontData: ArrayBuffer | null = null;
 
-function getFont(): ArrayBuffer {
+async function getFont(): Promise<ArrayBuffer | null> {
   if (fontData) return fontData;
-  const buf = readFileSync(resolve('static/inter.woff'));
-  fontData = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) as ArrayBuffer;
-  return fontData;
+  try {
+    const res = await fetch(
+      'https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuFuYAZJhjp-Ek-_EeA.woff'
+    );
+    fontData = await res.arrayBuffer();
+    return fontData;
+  } catch {
+    return null;
+  }
 }
 
 const VERDICT_COLORS: Record<string, { bg: string; accent: string; label: string }> = {
@@ -25,7 +30,7 @@ export const GET: RequestHandler = async ({ url }) => {
   const score = parseInt(url.searchParams.get('s') ?? '0', 10);
 
   const colors = VERDICT_COLORS[verdict] ?? VERDICT_COLORS.Suspicious;
-  const font = getFont();
+  const font = await getFont();
 
   const svg = await satori(
     {
@@ -69,7 +74,7 @@ export const GET: RequestHandler = async ({ url }) => {
               style: {
                 color: '#6b7280',
                 fontSize: '28px',
-                letterSpacing: '0.12em',
+                letterSpacing: '0.1em',
                 textTransform: 'uppercase',
               },
               children: 'SafeSurf',
@@ -81,10 +86,10 @@ export const GET: RequestHandler = async ({ url }) => {
             props: {
               style: {
                 color: '#ffffff',
-                fontSize: '72px',
+                fontSize: '52px',
                 fontWeight: '800',
                 letterSpacing: '-0.02em',
-                maxWidth: '1000px',
+                maxWidth: '900px',
                 textAlign: 'center',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -97,7 +102,7 @@ export const GET: RequestHandler = async ({ url }) => {
           {
             type: 'div',
             props: {
-              style: { display: 'flex', alignItems: 'center', gap: '20px', marginTop: '8px' },
+              style: { display: 'flex', alignItems: 'center', gap: '16px', marginTop: '8px' },
               children: [
                 {
                   type: 'div',
@@ -111,11 +116,11 @@ export const GET: RequestHandler = async ({ url }) => {
                   props: {
                     style: {
                       background: colors.bg,
-                      border: `2px solid ${colors.accent}40`,
+                      border: `1.5px solid ${colors.accent}40`,
                       color: colors.accent,
                       fontSize: '22px',
                       fontWeight: '700',
-                      padding: '8px 22px',
+                      padding: '8px 20px',
                       borderRadius: '999px',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -146,7 +151,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
   const png = await sharp(Buffer.from(svg)).png().toBuffer();
 
-  return new Response(new Uint8Array(png), {
+  return new Response(png, {
     headers: {
       'Content-Type': 'image/png',
       'Cache-Control': 'public, max-age=3600',
