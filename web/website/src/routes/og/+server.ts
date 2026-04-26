@@ -73,7 +73,7 @@ export const GET: RequestHandler = async ({ url }) => {
             props: {
               style: {
                 color: '#6b7280',
-                fontSize: '28px',
+                fontSize: '20px',
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
               },
@@ -107,7 +107,7 @@ export const GET: RequestHandler = async ({ url }) => {
                 {
                   type: 'div',
                   props: {
-                    style: { color: colors.accent, fontSize: '56px', fontWeight: '800' },
+                    style: { color: colors.accent, fontSize: '40px', fontWeight: '800' },
                     children: verdict,
                   },
                 },
@@ -118,9 +118,9 @@ export const GET: RequestHandler = async ({ url }) => {
                       background: colors.bg,
                       border: `1.5px solid ${colors.accent}40`,
                       color: colors.accent,
-                      fontSize: '22px',
+                      fontSize: '16px',
                       fontWeight: '700',
-                      padding: '8px 20px',
+                      padding: '6px 16px',
                       borderRadius: '999px',
                       letterSpacing: '0.08em',
                       textTransform: 'uppercase',
@@ -135,7 +135,7 @@ export const GET: RequestHandler = async ({ url }) => {
           {
             type: 'div',
             props: {
-              style: { color: '#6b7280', fontSize: '26px', marginTop: '4px' },
+              style: { color: '#6b7280', fontSize: '20px', marginTop: '4px' },
               children: `Trust Score: ${score}/100`,
             },
           },

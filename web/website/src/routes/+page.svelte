@@ -243,7 +243,7 @@
             id="url-input"
             type="text"
             class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${formError ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
-            placeholder="Paste a link (e.g. example.com)"
+            placeholder="Paste link (e.g. example.com)"
             bind:value={input}
             on:input={() => {
               if (formError) formError = null;

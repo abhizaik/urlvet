@@ -85,7 +85,7 @@ func GetDomainAge(created time.Time) (string, int, error) {
 	if years <= 0 && months <= 0 {
 		switch {
 		case days == 0:
-			return "registered today", days, nil
+			return "today", days, nil
 		case days == 1:
 			return "1 day old", days, nil
 		case days < 30:

@@ -23,6 +23,8 @@ Open-source and production-ready. Analyze URLs in under a second with transparen
 
 ![Phishing Detection Demo](assets/demo.gif)
 
+
+https://safesurf.xorwave.com
 ---
 
 ## Quick Start
