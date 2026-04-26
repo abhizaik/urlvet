@@ -134,7 +134,9 @@
   async function deleteKey(key: string) {
     deletingKey = key;
     try {
-      const res = await fetch(`${BASE}/admin/cache/${encodeURIComponent(key)}`, { method: "DELETE" });
+      const res = await fetch(`${BASE}/admin/cache/${encodeURIComponent(key)}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       cacheEntries = cacheEntries.filter((e) => e.key !== key);
       expandedKeys.delete(key);
@@ -221,7 +223,11 @@
   }
 
   function formatJSON(val: unknown): string {
-    try { return JSON.stringify(val, null, 2); } catch { return String(val); }
+    try {
+      return JSON.stringify(val, null, 2);
+    } catch {
+      return String(val);
+    }
   }
 
   onMount(() => fetchStats());
@@ -237,8 +243,18 @@
   <div class="border-b border-gray-800 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-10">
     <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-14">
       <div class="flex items-center gap-3">
-        <a href="/" aria-label="Back to SafeSurf" class="text-gray-500 hover:text-gray-300 transition-colors">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <a
+          href="/"
+          aria-label="Back to SafeSurf"
+          class="text-gray-500 hover:text-gray-300 transition-colors"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </a>
@@ -249,8 +265,18 @@
         on:click={refresh}
         class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-medium text-gray-300 transition-colors"
       >
-        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        <svg
+          class="w-3.5 h-3.5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
         </svg>
         Refresh
       </button>
@@ -258,25 +284,31 @@
   </div>
 
   <div class="max-w-7xl mx-auto px-6 py-8">
-
     <!-- Tabs -->
     <nav class="flex gap-1 mb-8 bg-gray-900 rounded-xl p-1 w-fit border border-gray-800">
-      {#each [
-        { id: "overview", label: "Overview", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
-        { id: "recent", label: "Recent Scans", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" },
-        { id: "errors", label: "Errors", icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" },
-        { id: "cache", label: "Cache", icon: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" },
-      ] as tab}
+      {#each [{ id: "overview", label: "Overview", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" }, { id: "recent", label: "Recent Scans", icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" }, { id: "errors", label: "Errors", icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" }, { id: "cache", label: "Cache", icon: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" }] as tab}
         <button
           on:click={() => switchTab(tab.id as Tab)}
-          class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 {activeTab === tab.id ? 'bg-gray-800 text-white shadow-sm' : 'text-gray-500 hover:text-gray-300'}"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 {activeTab ===
+          tab.id
+            ? 'bg-gray-800 text-white shadow-sm'
+            : 'text-gray-500 hover:text-gray-300'}"
         >
-          <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg
+            class="w-4 h-4 flex-shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d={tab.icon} />
           </svg>
           {tab.label}
           {#if tab.id === "errors" && recentErrors.length > 0}
-            <span class="ml-0.5 px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-semibold">{recentErrors.length}</span>
+            <span
+              class="ml-0.5 px-1.5 py-0.5 rounded-full bg-red-500/20 text-red-400 text-[10px] font-semibold"
+              >{recentErrors.length}</span
+            >
           {/if}
         </button>
       {/each}
@@ -284,12 +316,21 @@
 
     <!-- Global error -->
     {#if globalError}
-      <div class="flex items-center gap-3 bg-red-900/20 border border-red-800 rounded-xl px-4 py-3 text-sm text-red-300 mb-6">
+      <div
+        class="flex items-center gap-3 bg-red-900/20 border border-red-800 rounded-xl px-4 py-3 text-sm text-red-300 mb-6"
+      >
         <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          <path
+            fill-rule="evenodd"
+            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+            clip-rule="evenodd"
+          />
         </svg>
         {globalError}
-        <button on:click={() => (globalError = null)} class="ml-auto text-red-500 hover:text-red-300">✕</button>
+        <button
+          on:click={() => (globalError = null)}
+          class="ml-auto text-red-500 hover:text-red-300">✕</button
+        >
       </div>
     {/if}
 
@@ -305,22 +346,36 @@
         <!-- Stat cards -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Scans Today</p>
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+              Scans Today
+            </p>
             <p class="text-3xl font-bold text-white">{stats.total_scans_today}</p>
           </div>
           <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Total Scans</p>
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+              Total Scans
+            </p>
             <p class="text-3xl font-bold text-white">{stats.total_scans_all}</p>
             <p class="text-xs text-gray-600 mt-1">in memory</p>
           </div>
           <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Cache Hit Rate</p>
-            <p class="text-3xl font-bold text-white">{stats.cache_hit_rate.toFixed(1)}<span class="text-lg text-gray-500">%</span></p>
-            <p class="text-xs text-gray-600 mt-1">{stats.cache_hits} hits · {stats.cache_misses} misses</p>
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+              Cache Hit Rate
+            </p>
+            <p class="text-3xl font-bold text-white">
+              {stats.cache_hit_rate.toFixed(1)}<span class="text-lg text-gray-500">%</span>
+            </p>
+            <p class="text-xs text-gray-600 mt-1">
+              {stats.cache_hits} hits · {stats.cache_misses} misses
+            </p>
           </div>
           <div class="bg-gray-900 border border-gray-800 rounded-xl p-5">
-            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">Avg Duration</p>
-            <p class="text-3xl font-bold text-white">{stats.avg_duration_ms.toFixed(0)}<span class="text-lg text-gray-500">ms</span></p>
+            <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+              Avg Duration
+            </p>
+            <p class="text-3xl font-bold text-white">
+              {stats.avg_duration_ms.toFixed(0)}<span class="text-lg text-gray-500">ms</span>
+            </p>
           </div>
         </div>
 
@@ -337,12 +392,24 @@
                   {@const pct = total > 0 ? (count / total) * 100 : 0}
                   <div>
                     <div class="flex justify-between items-center mb-1">
-                      <span class="text-sm font-medium {verdict === 'Safe' ? 'text-emerald-400' : verdict === 'Risky' ? 'text-red-400' : 'text-yellow-400'}">{verdict}</span>
-                      <span class="text-xs text-gray-500">{count} <span class="text-gray-600">({pct.toFixed(0)}%)</span></span>
+                      <span
+                        class="text-sm font-medium {verdict === 'Safe'
+                          ? 'text-emerald-400'
+                          : verdict === 'Risky'
+                            ? 'text-red-400'
+                            : 'text-yellow-400'}">{verdict}</span
+                      >
+                      <span class="text-xs text-gray-500"
+                        >{count} <span class="text-gray-600">({pct.toFixed(0)}%)</span></span
+                      >
                     </div>
                     <div class="h-1.5 rounded-full bg-gray-800 overflow-hidden">
                       <div
-                        class="h-full rounded-full transition-all duration-500 {verdict === 'Safe' ? 'bg-emerald-500' : verdict === 'Risky' ? 'bg-red-500' : 'bg-yellow-500'}"
+                        class="h-full rounded-full transition-all duration-500 {verdict === 'Safe'
+                          ? 'bg-emerald-500'
+                          : verdict === 'Risky'
+                            ? 'bg-red-500'
+                            : 'bg-yellow-500'}"
                         style="width: {pct}%"
                       ></div>
                     </div>
@@ -369,7 +436,10 @@
                         <span class="text-xs text-gray-500 ml-2 flex-shrink-0">{item.count}</span>
                       </div>
                       <div class="h-1 rounded-full bg-gray-800 overflow-hidden">
-                        <div class="h-full rounded-full bg-blue-500/60" style="width: {(item.count / maxCount) * 100}%"></div>
+                        <div
+                          class="h-full rounded-full bg-blue-500/60"
+                          style="width: {(item.count / maxCount) * 100}%"
+                        ></div>
                       </div>
                     </div>
                   </div>
@@ -384,7 +454,7 @@
         </div>
       {/if}
 
-    <!-- ── RECENT SCANS TAB ──────────────────────────────────────────────── -->
+      <!-- ── RECENT SCANS TAB ──────────────────────────────────────────────── -->
     {:else if activeTab === "recent"}
       {#if loadingRecent}
         <div class="space-y-2">
@@ -394,15 +464,27 @@
         </div>
       {:else if recentScans.length === 0}
         <div class="text-center py-24 text-gray-600">
-          <svg class="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            class="w-10 h-10 mx-auto mb-3 opacity-30"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <p class="text-sm">No scans recorded yet.</p>
         </div>
       {:else}
         <div class="space-y-2">
           {#each recentScans as scan}
-            <div class="bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 flex items-center gap-4 hover:border-gray-700 transition-colors">
+            <div
+              class="bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 flex items-center gap-4 hover:border-gray-700 transition-colors"
+            >
               <!-- Verdict dot -->
               <span class="w-2 h-2 rounded-full flex-shrink-0 {verdictDot(scan.verdict)}"></span>
 
@@ -413,29 +495,46 @@
               </div>
 
               <!-- Verdict badge -->
-              <span class="flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full border {verdictColor(scan.verdict)}">
+              <span
+                class="flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full border {verdictColor(
+                  scan.verdict
+                )}"
+              >
                 {scan.verdict}
               </span>
 
               <!-- Score -->
-              <span class="flex-shrink-0 text-sm font-bold tabular-nums {scan.verdict === 'Safe' ? 'text-emerald-400' : scan.verdict === 'Risky' ? 'text-red-400' : 'text-yellow-400'}">{scan.score}</span>
+              <span
+                class="flex-shrink-0 text-sm font-bold tabular-nums {scan.verdict === 'Safe'
+                  ? 'text-emerald-400'
+                  : scan.verdict === 'Risky'
+                    ? 'text-red-400'
+                    : 'text-yellow-400'}">{scan.score}</span
+              >
 
               <!-- Duration -->
-              <span class="flex-shrink-0 text-xs text-gray-500 tabular-nums w-20 text-right">{scan.duration}</span>
+              <span class="flex-shrink-0 text-xs text-gray-500 tabular-nums w-20 text-right"
+                >{scan.duration}</span
+              >
 
               <!-- Cached badge -->
               {#if scan.cached}
-                <span class="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">cached</span>
+                <span
+                  class="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                  >cached</span
+                >
               {/if}
 
               <!-- Time -->
-              <span class="flex-shrink-0 text-xs text-gray-600 w-16 text-right">{relativeTime(scan.time)}</span>
+              <span class="flex-shrink-0 text-xs text-gray-600 w-16 text-right"
+                >{relativeTime(scan.time)}</span
+              >
             </div>
           {/each}
         </div>
       {/if}
 
-    <!-- ── ERRORS TAB ────────────────────────────────────────────────────── -->
+      <!-- ── ERRORS TAB ────────────────────────────────────────────────────── -->
     {:else if activeTab === "errors"}
       {#if loadingErrors}
         <div class="space-y-2">
@@ -445,8 +544,18 @@
         </div>
       {:else if recentErrors.length === 0}
         <div class="text-center py-24 text-gray-600">
-          <svg class="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            class="w-10 h-10 mx-auto mb-3 opacity-30"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <p class="text-sm">No errors recorded. All good!</p>
         </div>
@@ -457,7 +566,10 @@
               <div class="flex items-start justify-between gap-4">
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center gap-2 mb-1">
-                    <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20">{err.task}</span>
+                    <span
+                      class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20"
+                      >{err.task}</span
+                    >
                     <span class="text-xs text-gray-600">{relativeTime(err.time)}</span>
                   </div>
                   <p class="text-sm text-red-300 font-mono break-all">{err.error}</p>
@@ -471,7 +583,7 @@
         </div>
       {/if}
 
-    <!-- ── CACHE TAB ──────────────────────────────────────────────────────── -->
+      <!-- ── CACHE TAB ──────────────────────────────────────────────────────── -->
     {:else if activeTab === "cache"}
       <!-- Cache header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -488,16 +600,34 @@
               disabled={loadingCache || cacheEntries.length === 0}
               class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-900/30 hover:bg-red-900/60 border border-red-800 text-red-400 text-xs font-medium transition-colors disabled:opacity-40"
             >
-              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
               </svg>
               Flush All
             </button>
           {:else}
             <div class="flex items-center gap-2">
               <span class="text-xs text-red-400">Delete all {cacheEntries.length} keys?</span>
-              <button on:click={flushAll} class="px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-600 text-white text-xs font-semibold transition-colors">Confirm</button>
-              <button on:click={() => (flushConfirm = false)} class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold transition-colors">Cancel</button>
+              <button
+                on:click={flushAll}
+                class="px-3 py-1.5 rounded-lg bg-red-700 hover:bg-red-600 text-white text-xs font-semibold transition-colors"
+                >Confirm</button
+              >
+              <button
+                on:click={() => (flushConfirm = false)}
+                class="px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold transition-colors"
+                >Cancel</button
+              >
             </div>
           {/if}
         </div>
@@ -531,8 +661,18 @@
         </div>
       {:else if !loadingCache && cacheEntries.length === 0}
         <div class="text-center py-24 text-gray-600">
-          <svg class="w-10 h-10 mx-auto mb-3 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+          <svg
+            class="w-10 h-10 mx-auto mb-3 opacity-30"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+            />
           </svg>
           <p class="text-sm">Cache is empty.</p>
         </div>
@@ -542,24 +682,41 @@
         <div class="space-y-2">
           {#each filteredCache as entry (entry.key)}
             {@const expanded = expandedKeys.has(entry.key)}
-            <div class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-colors">
+            <div
+              class="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden hover:border-gray-700 transition-colors"
+            >
               <div class="flex items-center gap-3 px-4 py-3">
                 <button
                   on:click={() => toggleExpand(entry.key)}
                   class="flex-shrink-0 text-gray-600 hover:text-gray-300 transition-colors"
                   aria-label={expanded ? "Collapse" : "Expand"}
                 >
-                  <svg class="w-4 h-4 transition-transform duration-150 {expanded ? 'rotate-90' : ''}" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M7.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L11.586 10 7.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  <svg
+                    class="w-4 h-4 transition-transform duration-150 {expanded ? 'rotate-90' : ''}"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M7.293 4.293a1 1 0 011.414 0l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414-1.414L11.586 10 7.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
                   </svg>
                 </button>
-                <span class="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded bg-gray-800 text-gray-500 border border-gray-700">{entry.prefix}</span>
+                <span
+                  class="flex-shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded bg-gray-800 text-gray-500 border border-gray-700"
+                  >{entry.prefix}</span
+                >
                 <button
                   on:click={() => toggleExpand(entry.key)}
                   class="flex-1 text-left font-mono text-sm text-gray-300 truncate hover:text-white transition-colors"
-                  title={entry.key}
-                >{entry.key}</button>
-                <span class="flex-shrink-0 text-xs font-medium {ttlColor(entry.ttl_seconds)} tabular-nums w-20 text-right">{formatTTL(entry.ttl_seconds)}</span>
+                  title={entry.key}>{entry.key}</button
+                >
+                <span
+                  class="flex-shrink-0 text-xs font-medium {ttlColor(
+                    entry.ttl_seconds
+                  )} tabular-nums w-20 text-right">{formatTTL(entry.ttl_seconds)}</span
+                >
                 <button
                   on:click={() => deleteKey(entry.key)}
                   disabled={deletingKey === entry.key}
@@ -567,14 +724,27 @@
                   aria-label="Delete key"
                   title="Delete key"
                 >
-                  <svg class="w-4 h-4 {deletingKey === entry.key ? 'animate-spin' : ''}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <svg
+                    class="w-4 h-4 {deletingKey === entry.key ? 'animate-spin' : ''}"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                    />
                   </svg>
                 </button>
               </div>
               {#if expanded}
                 <div class="border-t border-gray-800 px-4 py-3">
-                  <pre class="text-xs text-emerald-300 font-mono bg-gray-950 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap break-all leading-relaxed max-h-80 overflow-y-auto">{formatJSON(entry.value)}</pre>
+                  <pre
+                    class="text-xs text-emerald-300 font-mono bg-gray-950 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap break-all leading-relaxed max-h-80 overflow-y-auto">{formatJSON(
+                      entry.value
+                    )}</pre>
                 </div>
               {/if}
             </div>
@@ -582,6 +752,5 @@
         </div>
       {/if}
     {/if}
-
   </div>
 </div>

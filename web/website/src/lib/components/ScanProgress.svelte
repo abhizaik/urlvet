@@ -63,24 +63,52 @@
     {#each STEPS as step, i}
       {@const isCompleted = completedSteps.has(i)}
       {@const isActive = activeStep === i && loading}
-      <div class="flex items-center gap-3 transition-opacity duration-300 {i > activeStep && !isCompleted ? 'opacity-30' : 'opacity-100'}">
+      <div
+        class="flex items-center gap-3 transition-opacity duration-300 {i > activeStep &&
+        !isCompleted
+          ? 'opacity-30'
+          : 'opacity-100'}"
+      >
         <!-- Status icon -->
         <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
           {#if isCompleted}
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <svg
+              class="w-4 h-4 text-emerald-400"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              viewBox="0 0 24 24"
+            >
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           {:else if isActive}
             <svg class="w-4 h-4 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="3"
+              />
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              />
             </svg>
           {:else}
             <span class="w-1.5 h-1.5 rounded-full bg-gray-700 inline-block"></span>
           {/if}
         </div>
         <!-- Label -->
-        <span class="text-sm {isCompleted ? 'text-gray-400 line-through decoration-gray-600' : isActive ? 'text-white font-medium' : 'text-gray-600'}">
+        <span
+          class="text-sm {isCompleted
+            ? 'text-gray-400 line-through decoration-gray-600'
+            : isActive
+              ? 'text-white font-medium'
+              : 'text-gray-600'}"
+        >
           {step}
         </span>
       </div>

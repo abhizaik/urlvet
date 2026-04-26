@@ -65,7 +65,9 @@
           </div>
           <div class="flex flex-wrap gap-2">
             {#each infrastructure.ns_hosts as ns_host}
-              <span class="px-2 py-1 bg-gray-800 text-white rounded text-xs break-all">{ns_host}</span>
+              <span class="px-2 py-1 bg-gray-800 text-white rounded text-xs break-all"
+                >{ns_host}</span
+              >
             {/each}
           </div>
         </div>
@@ -99,7 +101,9 @@
           </div>
           <div class="flex flex-wrap gap-2">
             {#each infrastructure.mx_hosts as mx_host}
-              <span class="px-2 py-1 bg-gray-800 text-white rounded text-xs break-all">{mx_host}</span>
+              <span class="px-2 py-1 bg-gray-800 text-white rounded text-xs break-all"
+                >{mx_host}</span
+              >
             {/each}
           </div>
         </div>

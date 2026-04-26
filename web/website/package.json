@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "svelte-kit sync || echo ''",
+    "prepare": "svelte-kit sync || echo '' && husky",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "format": "prettier --write ."
@@ -20,6 +20,7 @@
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
     "autoprefixer": "^10.4.16",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
     "postcss": "^8.4.31",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",

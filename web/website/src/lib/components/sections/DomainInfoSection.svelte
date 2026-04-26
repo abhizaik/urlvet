@@ -11,7 +11,8 @@
   >
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-base font-semibold text-white">Domain Information</h3>
-      <span class="text-[10px] text-gray-400 uppercase tracking-wide px-2 py-0.5 bg-gray-800 rounded"
+      <span
+        class="text-[10px] text-gray-400 uppercase tracking-wide px-2 py-0.5 bg-gray-800 rounded"
         >{domainInfo.source}</span
       >
     </div>

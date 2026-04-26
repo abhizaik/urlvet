@@ -76,22 +76,26 @@
 </script>
 
 <div
-  class={`flex flex-row items-center gap-6 p-6 rounded-xl border shadow-lg ${style.border} ${style.bg} ${style.shadow}`}
+  class={`flex flex-row items-center gap-4 p-4 sm:gap-6 sm:p-6 rounded-xl border shadow-lg ${style.border} ${style.bg} ${style.shadow}`}
 >
   <!-- Verdict -->
-  <div class="flex-1 flex flex-col gap-2 min-w-0">
-    <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Verdict</span>
-    <div class="flex items-center gap-3 flex-wrap">
-      <span class="text-3xl font-extrabold text-white tracking-tight">{verdict ?? "—"}</span>
+  <div class="flex-1 flex flex-col gap-1.5 min-w-0">
+    <span class="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest"
+      >Verdict</span
+    >
+    <div class="flex items-center gap-2 flex-wrap">
+      <span class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight"
+        >{verdict ?? "—"}</span
+      >
       <span
-        class={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide ${style.badge}`}
+        class={`px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-semibold uppercase tracking-wide whitespace-nowrap ${style.badge}`}
       >
         {style.label}
       </span>
     </div>
-    <p class="text-[11px] text-gray-500 mt-1">{context}</p>
+    <p class="text-[10px] sm:text-[11px] text-gray-500 leading-relaxed">{context}</p>
     {#if unreachable}
-      <p class="text-[11px] text-red-400/80 mt-0.5">
+      <p class="text-[10px] sm:text-[11px] text-red-400/80">
         Site may be unreachable or returning no content.
       </p>
     {/if}
@@ -99,14 +103,12 @@
 
   <!-- Circular Score Ring -->
   <div class="flex flex-col items-center gap-1 flex-shrink-0">
-    <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1"
+    <span class="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1"
       >Trust Score</span
     >
-    <div class="relative w-20 h-20 md:w-24 md:h-24">
+    <div class="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24">
       <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
-        <!-- Track -->
         <circle cx="44" cy="44" r={R} fill="none" stroke="#374151" stroke-width="7" />
-        <!-- Progress -->
         <circle
           cx="44"
           cy="44"
@@ -121,11 +123,11 @@
         />
       </svg>
       <div class="absolute inset-0 flex flex-col items-center justify-center">
-        <span class={`text-2xl font-extrabold leading-none ${style.scoreText}`}
+        <span class={`text-xl font-extrabold leading-none ${style.scoreText}`}
           >{finalScore !== undefined ? displayedScore : "—"}</span
         >
-        <span class="block w-6 border-t border-gray-500 my-0.5"></span>
-        <span class="text-[10px] text-gray-500 font-medium">100</span>
+        <span class="block w-5 border-t border-gray-500 my-0.5"></span>
+        <span class="text-[9px] sm:text-[10px] text-gray-500 font-medium">100</span>
       </div>
     </div>
   </div>
