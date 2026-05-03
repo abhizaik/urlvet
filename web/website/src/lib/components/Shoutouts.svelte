@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  type ItemType = "tweet" | "paper" | "email";
+  type ItemType = "tweet" | "paper" | "email" | "package";
 
   type Item = {
     name: string;
@@ -16,14 +16,14 @@
 
   const items: Item[] = [
     {
-      type: "tweet",
-      name: "Tom Dörr",
-      handle: "@tom_doerr",
-      date: "Jan 16, 2026",
-      text: "Engine for phishing detection with a web UI and browser extension",
-      url: "https://twitter.com/tom_doerr/status/2012050578721915177",
-      accent: "from-blue-500 to-indigo-600",
-      flag: "🇩🇪",
+      type: "email",
+      name: "Raj",
+      handle: "via email",
+      date: "Oct 1, 2023",
+      text: "I am using this project as reference for my BTech final year project.",
+      url: "https://x.com/abhizaik/status/1708401691367022776",
+      accent: "from-emerald-500 to-teal-600",
+      flag: "🇮🇳",
     },
     {
       type: "paper",
@@ -37,6 +37,26 @@
     },
     {
       type: "tweet",
+      name: "Tom Dörr",
+      handle: "@tom_doerr",
+      date: "Jan 16, 2026",
+      text: "Engine for phishing detection with a web UI and browser extension",
+      url: "https://twitter.com/tom_doerr/status/2012050578721915177",
+      accent: "from-blue-500 to-indigo-600",
+      flag: "🇩🇪",
+    },
+    {
+      type: "package",
+      name: "Dika Ardianta",
+      handle: "@DikaArdnt",
+      date: "Apr 28, 2026",
+      text: "I ported the detection engine to PHP and published it as a Composer package on packagist.org",
+      url: "https://packagist.org/packages/safesurf/safesurf",
+      accent: "from-fuchsia-500 to-pink-600",
+      flag: "🇮🇩",
+    },
+    {
+      type: "tweet",
       name: "NeoTeo.com",
       handle: "@NeoteoCom",
       date: "Jan 16, 2026",
@@ -44,16 +64,6 @@
       url: "https://twitter.com/NeoteoCom/status/2012102861807554843",
       accent: "from-violet-500 to-purple-600",
       flag: "🇪🇸",
-    },
-    {
-      type: "email",
-      name: "Raj",
-      handle: "via email",
-      date: "Oct 1, 2023",
-      text: "I am using this project as reference for my BTech final year project.",
-      url: "https://x.com/abhizaik/status/1708401691367022776",
-      accent: "from-emerald-500 to-teal-600",
-      flag: "🇮🇳",
     },
   ];
 
@@ -212,6 +222,20 @@
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
+            {:else if item.type === "package"}
+              <svg
+                class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
+              </svg>
             {:else}
               <svg
                 class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
@@ -223,7 +247,7 @@
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
                 />
               </svg>
             {/if}
