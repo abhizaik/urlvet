@@ -2,6 +2,7 @@
   import { browser } from "$app/environment";
   import { replaceState } from "$app/navigation";
   import { onMount } from "svelte";
+  import { fade } from "svelte/transition";
   import { api } from "../lib/api";
   import ResultSection from "../lib/components/ResultSection.svelte";
   import ScanProgress from "../lib/components/ScanProgress.svelte";
@@ -28,20 +29,6 @@
   let screenshotFailed = false;
   let scanDone = false;
 
-  type Verdict = "Safe" | "Risky" | "Suspicious";
-  const ACCENT_RING: Record<Verdict, string> = {
-    Safe: "focus:ring-emerald-600",
-    Risky: "focus:ring-red-600",
-    Suspicious: "focus:ring-yellow-600",
-  };
-
-  function normalizeVerdict(v: string | null | undefined): Verdict {
-    if (v === "Safe" || v === "Risky" || v === "Suspicious") return v;
-    return "Suspicious";
-  }
-
-  $: verdict = normalizeVerdict(scanResult?.result?.verdict);
-  $: accentRing = ACCENT_RING[verdict];
   $: isLanding = !scanResult && !loading && !error && !formError;
   $: currentUrl = browser ? window.location.href : "";
   $: shareDomain = scanResult?.domain || data.queryDomain;
@@ -63,6 +50,23 @@
   }
 
   let justPasted = false;
+
+  function clearResult() {
+    scanResult = null;
+    input = "";
+    error = null;
+    formError = null;
+    if (screenshotUrl) {
+      URL.revokeObjectURL(screenshotUrl);
+      screenshotUrl = null;
+    }
+    screenshotLoading = false;
+    screenshotFailed = false;
+    if (browser) replaceState(window.location.pathname, {});
+    setTimeout(() => {
+      (document.getElementById("url-input") as HTMLInputElement | null)?.focus();
+    }, 50);
+  }
 
   async function pasteFromClipboard() {
     try {
@@ -139,6 +143,8 @@
     if (q) {
       input = q;
       runAnalyze(q);
+    } else {
+      (document.getElementById("url-input") as HTMLInputElement | null)?.focus();
     }
 
     const onKey = (e: KeyboardEvent) => {
@@ -149,7 +155,10 @@
         e.preventDefault();
         (document.getElementById("url-input") as HTMLInputElement | null)?.focus();
       }
-      if (e.key === "Escape") input = "";
+      if (e.key === "Escape") {
+        if (scanResult || error) clearResult();
+        else input = "";
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -206,7 +215,7 @@
 
 <section>
   <div
-    class={`max-w-4xl mx-auto px-6 ${isLanding ? "min-h-[80vh] flex flex-col items-center justify-center text-center pt-10 pb-6" : "py-12"}`}
+    class={`max-w-4xl mx-auto px-6 ${isLanding ? "flex flex-col items-center text-center pt-16 md:pt-20 pb-12" : "py-12"}`}
   >
     <header class="relative mb-14 flex flex-col items-center text-center">
       <div
@@ -242,7 +251,7 @@
           <input
             id="url-input"
             type="text"
-            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-0 transition-all duration-200 ${formError ? "border-red-600/70 focus:ring-red-600" : `border-gray-700/80 ${accentRing}`}`}
+            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none transition-all duration-200 ${formError ? "border-red-600/70" : "border-gray-700/80"}`}
             placeholder="Paste link (e.g. example.com)"
             bind:value={input}
             on:input={() => {
@@ -342,6 +351,14 @@
 
       {#if formError}
         <p id="url-error" class="text-red-400 text-xs mt-2 text-left" role="alert">{formError}</p>
+      {:else if input.length > 1848}
+        <p
+          class="text-[11px] mt-1.5 text-right {input.length >= 2048
+            ? 'text-red-500'
+            : 'text-gray-500'}"
+        >
+          {2048 - input.length} chars remaining
+        </p>
       {/if}
 
       {#if hasTrackers && !trackerDismissed}
@@ -379,8 +396,11 @@
             title="Expected: {example.hint}"
             class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-400 hover:text-gray-200 text-xs transition-all"
           >
-            <span class={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${example.dot}`}></span>
             {example.label}
+            <span
+              class={`text-[10px] font-semibold ${example.hint === "Safe" ? "text-emerald-500" : "text-red-500"}`}
+              >{example.hint}</span
+            >
           </button>
         {/each}
       </div>
@@ -407,14 +427,17 @@
       {#if loading || scanDone}
         <ScanProgress {loading} done={scanDone} />
       {:else}
-        <ResultSection
-          data={scanResult}
-          {loading}
-          {error}
-          {screenshotUrl}
-          {screenshotLoading}
-          {screenshotFailed}
-        />
+        <div in:fade={{ duration: 180 }}>
+          <ResultSection
+            data={scanResult}
+            {loading}
+            {error}
+            {screenshotUrl}
+            {screenshotLoading}
+            {screenshotFailed}
+            onScanAnother={clearResult}
+          />
+        </div>
       {/if}
     </div>
 

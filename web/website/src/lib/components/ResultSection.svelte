@@ -20,6 +20,7 @@
   export let screenshotFailed = false;
   export let loading = false;
   export let error: string | null = null;
+  export let onScanAnother: (() => void) | undefined = undefined;
 
   let shareCopied = false;
   let sectionExpanded: Record<string, boolean> = {
@@ -576,7 +577,9 @@
       <button
         type="button"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        on:click={scrollToTop}
+        on:click={() => {
+          onScanAnother ? onScanAnother() : scrollToTop();
+        }}
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path

@@ -144,8 +144,8 @@
   }
 </script>
 
-<div class="mt-12 pb-8 md:pb-0">
-  <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-5">
+<div class="pb-8 md:pb-0">
+  <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-5 text-center">
     What people are saying
   </p>
 
