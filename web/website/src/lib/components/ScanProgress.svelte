@@ -1,33 +1,45 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
+  import { onDestroy } from "svelte";
+  import { fade, fly } from "svelte/transition";
 
   export let loading = false;
   export let done = false;
 
   const STEPS = [
-    "Resolving domain & IP addresses",
-    "Checking URL structure & patterns",
-    "Analyzing TLD & DNS records",
-    "Checking redirections & HTTP status",
-    "Looking up WHOIS & domain age",
-    "Checking homoglyphs & typosquatting",
-    "Analyzing SSL & TLS certificate",
-    "Scanning threat intelligence feeds",
-    "Inspecting page content & forms",
+    "Resolving domain & IP",
+    "URL structure & patterns",
+    "TLD & DNS records",
+    "Redirections & HTTP status",
+    "WHOIS & domain age",
+    "Homoglyphs & typosquatting",
+    "SSL & TLS certificate",
+    "Threat intelligence feeds",
+    "Page content & forms",
     "Computing trust score",
   ];
 
-  // -1 = not started, 0..N-1 = current active step
   let activeStep = -1;
   let completedSteps: Set<number> = new Set();
-  let timer: ReturnType<typeof setInterval>;
+  let elapsed = 0;
+  let intervalTimer: ReturnType<typeof setInterval>;
+  let elapsedTimer: ReturnType<typeof setInterval>;
+
+  $: progress =
+    completedSteps.size === STEPS.length
+      ? 100
+      : Math.round((completedSteps.size / STEPS.length) * 100);
+
+  $: elapsedStr = (elapsed / 10).toFixed(1) + "s";
 
   function startProgress() {
     activeStep = 0;
     completedSteps = new Set();
+    elapsed = 0;
+
+    elapsedTimer = setInterval(() => elapsed++, 100);
+
     let stepIdx = 0;
-    // Advance a step roughly every 1.4s, leaving last step for when done arrives
-    timer = setInterval(() => {
+    intervalTimer = setInterval(() => {
       if (stepIdx < STEPS.length - 2) {
         completedSteps = new Set([...completedSteps, stepIdx]);
         stepIdx++;
@@ -37,8 +49,8 @@
   }
 
   function finishProgress() {
-    clearInterval(timer);
-    // Complete all steps quickly
+    clearInterval(intervalTimer);
+    clearInterval(elapsedTimer);
     let i = activeStep;
     const flush = setInterval(() => {
       if (i < STEPS.length) {
@@ -47,71 +59,74 @@
         activeStep = i;
       } else {
         clearInterval(flush);
-        activeStep = STEPS.length; // all done
+        activeStep = STEPS.length;
       }
-    }, 80);
+    }, 60);
   }
 
   $: if (loading) startProgress();
   $: if (done) finishProgress();
 
-  onDestroy(() => clearInterval(timer));
+  onDestroy(() => {
+    clearInterval(intervalTimer);
+    clearInterval(elapsedTimer);
+  });
 </script>
 
 {#if loading || done}
-  <div class="max-w-sm mx-auto mt-6 space-y-2">
-    {#each STEPS as step, i}
-      {@const isCompleted = completedSteps.has(i)}
-      {@const isActive = activeStep === i && loading}
-      <div
-        class="flex items-center gap-3 transition-opacity duration-300 {i > activeStep &&
-        !isCompleted
-          ? 'opacity-30'
-          : 'opacity-100'}"
-      >
-        <!-- Status icon -->
-        <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
-          {#if isCompleted}
-            <svg
-              class="w-4 h-4 text-emerald-400"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              viewBox="0 0 24 24"
+  <div class="max-w-lg mx-auto mt-6 select-none" in:fade={{ duration: 200 }}>
+    <div class="rounded-2xl border border-gray-800 bg-gray-900/60 overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-800/80">
+        <div class="flex items-center gap-2">
+          {#if activeStep < STEPS.length}
+            <span class="relative flex h-2 w-2">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-60"
+              ></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+            </span>
+            <span class="text-xs font-medium text-gray-400 tracking-widest uppercase">Scanning</span
             >
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          {:else if isActive}
-            <svg class="w-4 h-4 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="3"
-              />
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-              />
-            </svg>
           {:else}
-            <span class="w-1.5 h-1.5 rounded-full bg-gray-700 inline-block"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            <span class="text-xs font-medium text-emerald-400 tracking-widest uppercase"
+              >Complete</span
+            >
           {/if}
         </div>
-        <!-- Label -->
-        <span
-          class="text-sm {isCompleted
-            ? 'text-gray-400 line-through decoration-gray-600'
-            : isActive
-              ? 'text-white font-medium'
-              : 'text-gray-600'}"
-        >
-          {step}
-        </span>
+        <span class="text-xs font-mono text-gray-600">{elapsedStr}</span>
       </div>
-    {/each}
+
+      <!-- Active step (prominent) -->
+      <div class="px-5 pt-5 pb-4 min-h-[3.5rem] flex items-center">
+        {#key activeStep}
+          <p class="text-base font-medium text-white leading-snug" in:fly={{ y: 6, duration: 180 }}>
+            {#if activeStep >= 0 && activeStep < STEPS.length}
+              {STEPS[activeStep]}
+            {:else if activeStep === STEPS.length}
+              Analysis complete
+            {:else}
+              Initializing...
+            {/if}
+          </p>
+        {/key}
+      </div>
+
+      <!-- Progress bar -->
+      <div class="px-5 pb-5">
+        <div class="flex justify-end mb-1.5">
+          <span class="text-[10px] font-mono text-gray-600">{progress}%</span>
+        </div>
+        <div class="h-1 bg-gray-800 rounded-full overflow-hidden">
+          <div
+            class="h-full rounded-full transition-all duration-500 ease-out {progress === 100
+              ? 'bg-emerald-500'
+              : 'bg-gradient-to-r from-blue-500 to-indigo-500'}"
+            style="width: {progress}%"
+          ></div>
+        </div>
+      </div>
+    </div>
   </div>
 {/if}
