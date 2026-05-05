@@ -1,10 +1,8 @@
 <div align="center">
 
-# Phishing Detection Engine (Open-Source, Real-Time URL Scanner)
+# Phishing Detection
 
-Fast, explainable phishing detection for URLs — real-time scoring, clear verdicts, full transparency.
-
-Open-source and production-ready. Analyze URLs in under a second with transparent scoring and detailed reports.
+Phishing detection for URLs. Open source, real-time URL scanning, malicious link detection, anti-phishing protection, transparent scoring, clear verdicts, and detailed security report in under a second.
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go\&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
@@ -24,7 +22,7 @@ Open-source and production-ready. Analyze URLs in under a second with transparen
 ![Phishing Detection Demo](assets/demo.gif)
 
 
-https://safesurf.xorwave.com
+Try phishing detection live: https://safesurf.xorwave.com
 ---
 
 ## Quick Start
@@ -55,9 +53,7 @@ Web UI: **[localhost:3000](http://localhost:3000)**
 
 * Scans URLs for **phishing, malicious behavior, and unsafe redirects**
 * Produces a **trust score, clear verdict, and detailed report**
-* Supports **developers and non-technical users** via UI, API, and extension
 * Uses **multiple independent heuristic analyzers** for accurate detection
-* Built with **Go (backend)** and **Svelte (frontend)** for production use
 
 ---
 
