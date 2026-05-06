@@ -1,7 +1,7 @@
 <div align="center">
 
 # Phishing Detection
-Open-source phishing detection engine for real-time URL analysis. Detect malicious links, explain every verdict, and generate a full security report in under a second.
+Open-source phishing detection engine for real-time URL analysis. Detect malicious links, explain every verdict, and generate a security report in real time.
 
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go\&logoColor=white)](https://go.dev)
@@ -19,11 +19,11 @@ Open-source phishing detection engine for real-time URL analysis. Detect malicio
 
 ## Phishing Detection Demo
 
- > Paste a URL → get a **trust score, verdict, and detailed report** in under a second.
+ > Paste a URL → get a **trust score, verdict, and detailed report** in real time.
 
 ![Phishing Detection Demo](assets/demo.gif)
 
-Try phishing detection live: https://safesurf.xorwave.com
+Live demo: https://safesurf.xorwave.com
 
 
 ## Quick Start
@@ -44,47 +44,32 @@ Detailed setup guide: [docs/setup.md](docs/setup.md)
 
 ## At a Glance
 
-- 300–700ms end-to-end scan time
+- Live scan, instant results
 - 20+ heuristic analyzers
 - HTTP API + Web UI + Chrome extension
 - Explainable scoring (no black-box ML)
 - One-command Docker setup
 
 
-
-## Why This Exists
-
-Most phishing tools are either:
-
-- **Closed commercial APIs:** expensive and opaque
-- **Academic prototypes:** not built for production use
-
-This project provides:
-
-- **Explainable detection:** every verdict includes reasons
-- **Real-time performance:** parallel analyzers
-- **Flexible deployment:** API, UI, browser extension
-- **Full control:** open-source and self-hostable
-
-
 ## How It Compares
 
-| Feature | This Project | VirusTotal | Google Safe Browsing | URLVoid | PhishTank | Typical ML Demos |
-|---------|--------------|------------|----------------------|---------|-----------|------------------|
-| Open source | ✅ | ❌ | ❌ | ❌ | Partial | Usually ✅ |
-| Self-hostable | ✅ | ❌ | ❌ | ❌ | ❌ | Usually ✅ |
-| Explainable scoring | ✅ Full | ❌ | ❌ | ❌ | ❌ | Rare |
-| Real-time heuristics | ✅ | Partial | ❌ | ❌ | ❌ | Varies |
-| Live website preview | ✅ | Partial | ❌ | ❌ | ❌ | Rare |
-| Beginner-friendly UI | ✅ | Partial | ❌ | Limited | ❌ | Rare |
-| Browser extension | ✅ | ❌ | ❌ | ❌ | ❌ | Rare |
-| HTTP API | ✅ | ✅ | ✅ | Partial | Limited | Rare |
-| Web UI included | ✅ | ✅ | ❌ | ✅ | ❌ | Rare |
-| Production ready | ✅ | ✅ | ✅ | ✅ | Database only | Rare |
-| Private deployment | ✅ | ❌ | ❌ | ❌ | ❌ | Sometimes |
-| Audit / modify scoring logic | ✅ | ❌ | ❌ | ❌ | ❌ | Partial |
-| Multi-signal analysis | ✅ | ✅ | Database-based | Partial | Database-based | Usually single-model |
-| No API key required | ✅ | ❌ | ❌ | ❌ | ❌ | Usually ✅ |
+| Feature | SafeSurf | VirusTotal | Google Safe Browsing | URLScan.io | CheckPhish |
+|---------|----------|------------|----------------------|------------|------------|
+| Live crawl, instant results | ✅ | Partial | ❌ | Partial | Partial |
+| Explains every verdict | ✅ | Partial | ❌ | Partial | Partial |
+| Beginner-friendly interface | ✅ | Partial | Partial | Partial | Partial |
+| Credential form detection | ✅ | ❌ | ❌ | Partial | ✅ |
+| Follows redirect chains | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Detailed technical insights | ✅ | ❌ | ❌ | ✅ | Partial |
+| Live page preview | ✅ | ❌ | ❌ | ✅ | ✅ |
+| Detection using AI/ML | ❌ | ✅ | ✅ | Partial | ✅ |
+| Known phishing database coverage | Partial | ✅ | ✅ | Partial | Partial |
+| Scan multiple URLs at once | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Browser protection | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Open source | ✅ | ❌ | ❌ | ❌ | ❌ |
+
+Fast scanners give you a verdict with no context. Deep crawlers take too long. SafeSurf bridges the gap by doing live analysis with per-signal explanations in real time — and it's open-source.
+
 
 
 ## Who This Is For
@@ -92,9 +77,7 @@ This project provides:
 - End users checking suspicious links
 - Developers integrating URL analysis
 - Security teams building detection pipelines
-- Researchers studying phishing infrastructure
-
-Academic or research use of this project must cite this repository (see [CITATION.cff](CITATION.cff)).
+- Researchers
 
 
 
@@ -136,15 +119,13 @@ Each analyzer contributes to a final trust score and verdict.
 ## Limitations
 - Heuristic-based detection may produce false positives
 - No ML model (intentional, prioritizes explainability and auditability)
-
-Project is designed to reduce phishing risk, not guarantee safety.
-Always combine automated detection with human review and layered defenses.
+This project is designed to reduce phishing risk, not guarantee safety.
 
 
 ## Architecture
-Modular analyzer-based architecture designed for parallel, real-time URL evaluation.
+SafeSurf runs analyzers in parallel. Here's how the repo is laid out:
 
-High level repository layout:
+High-level repository layout:
 
 ```text
 server/               Go backend 
@@ -175,7 +156,9 @@ Full endpoint reference: [docs/api.md](docs/api.md)
 - Code contributions → [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 - Feedback is always welcome
 
-**If you found this project helpful, consider giving it a star.** It directly helps visibility and continued development.
+> Academic or research use must cite this repository — see [CITATION.cff](CITATION.cff).
+
+**If you found this project helpful, consider giving it a star.**
 
 
 <div align="center">
