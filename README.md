@@ -36,8 +36,6 @@ make build && make up
 
 Open Web UI: **[localhost:3000](http://localhost:3000)** 
 
-No external API keys required.
-
 Detailed setup guide: [docs/setup.md](docs/setup.md) 
 
 
@@ -103,7 +101,7 @@ Full response schema → [docs/api.md#example](docs/api.md#example)
 
 ## Detection Engine
 
-The engine evaluates URLs using multiple independent analyzers, including:
+SafeSurf evaluates URLs using multiple independent analyzers, including:
 
 - Domain reputation & age checks
 - Suspicious URL patterns and homoglyphs
@@ -119,13 +117,12 @@ Each analyzer contributes to a final trust score and verdict.
 ## Limitations
 - Heuristic-based detection may produce false positives
 - No ML model (intentional, prioritizes explainability and auditability)
-This project is designed to reduce phishing risk, not guarantee safety.
+
+Not a safety guarantee. Use alongside other defenses.
 
 
 ## Architecture
-SafeSurf runs analyzers in parallel. Here's how the repo is laid out:
-
-High-level repository layout:
+SafeSurf runs analyzers in parallel. High-level repo layout:
 
 ```text
 server/               Go backend 
@@ -142,30 +139,32 @@ Makefile
 
 ## Documentation
 
-All documentation is under `docs/`. Start here [docs/README.md](docs/README.md) 
+- [docs/README.md](docs/README.md) — start here
+- [docs/api.md](docs/api.md) — full API reference
+- [Swagger UI](https://api.safesurf.xorwave.com/swagger/index.html) — interactive API docs
 
-[Interactive API docs (Swagger UI)](https://api.safesurf.xorwave.com/swagger/index.html)
 
-Full endpoint reference: [docs/api.md](docs/api.md)
+## Citation
+
+If you use this project in academic or research work, please cite it — see [CITATION.cff](CITATION.cff).
 
 
 ## Contributing
 
-- Report bugs → [Issues](https://github.com/abhizaik/phishing-detection/issues) 
-- Discussions → [Discussions](https://github.com/abhizaik/phishing-detection/discussions) 
-- Code contributions → [CONTRIBUTING.md](.github/CONTRIBUTING.md)
-- Feedback is always welcome
+- Found a bug? → [Open an issue](https://github.com/abhizaik/phishing-detection/issues)
+- Have a question or idea? → [Start a discussion](https://github.com/abhizaik/phishing-detection/discussions)
+- Want to contribute code? → [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
-> Academic or research use must cite this repository — see [CITATION.cff](CITATION.cff).
+If you found this project helpful, consider giving it a star.
 
-**If you found this project helpful, consider giving it a star.**
+
 
 
 <div align="center">
   <a href="https://star-history.com/#abhizaik/phishing-detection&Date">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api/star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
     </picture>
   </a>
