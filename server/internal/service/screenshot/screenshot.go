@@ -19,16 +19,16 @@ import (
 
 // Service manages screenshot operations with a shared browser allocator
 type Service struct {
-	allocCtx context.Context
+	allocCtx    context.Context
 	allocCancel context.CancelFunc
-	mu sync.RWMutex
+	mu          sync.RWMutex
 	initialized bool
 }
 
 var (
 	// Default service instance (singleton pattern)
 	defaultService *Service
-	serviceOnce sync.Once
+	serviceOnce    sync.Once
 )
 
 // NewService creates a new screenshot service with a shared browser allocator

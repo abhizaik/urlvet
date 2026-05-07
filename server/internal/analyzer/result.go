@@ -125,7 +125,6 @@ func GenerateResult(resp Response) Result {
 			trustScore += 15
 		}
 
-
 		// DNSSEC Logic Updated
 		if resp.DomainInfo.DNSSEC {
 			goodReasons = append(goodReasons, "Advanced DNS security enabled (DNSSEC).")

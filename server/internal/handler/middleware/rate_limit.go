@@ -41,7 +41,7 @@ func RateLimiter(limit int64, window time.Duration) gin.HandlerFunc {
 
 		if count > limit {
 			ctx.AbortWithStatusJSON(http.StatusTooManyRequests, gin.H{
-				"error": "too many requests",
+				"error":       "too many requests",
 				"retry_after": window.Seconds(),
 			})
 			return

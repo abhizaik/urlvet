@@ -29,14 +29,14 @@ type phishTankRaw struct {
 		Status string `json:"status"`
 	} `json:"meta"`
 	Results struct {
-		URL            string          `json:"url"`
-		InDatabase     bool            `json:"in_database"`
-		PhishID        int64           `json:"phish_id"`
-		PhishDetailPage string         `json:"phish_detail_page"`
-		Verified       json.RawMessage `json:"verified"`
-		VerifiedAt     string          `json:"verified_at"`
-		Valid          json.RawMessage `json:"valid"`
-		Target         string          `json:"target"`
+		URL             string          `json:"url"`
+		InDatabase      bool            `json:"in_database"`
+		PhishID         int64           `json:"phish_id"`
+		PhishDetailPage string          `json:"phish_detail_page"`
+		Verified        json.RawMessage `json:"verified"`
+		VerifiedAt      string          `json:"verified_at"`
+		Valid           json.RawMessage `json:"valid"`
+		Target          string          `json:"target"`
 	} `json:"results"`
 }
 
@@ -129,12 +129,12 @@ func CheckPhishTank(targetURL string) (*PhishTankResult, error) {
 
 	// Only populate phishing details when the URL is actually in the database.
 	if result.InDatabase {
-		result.PhishID        = raw.Results.PhishID
+		result.PhishID = raw.Results.PhishID
 		result.PhishDetailPage = raw.Results.PhishDetailPage
-		result.Verified       = parseBoolField(raw.Results.Verified)
-		result.VerifiedAt     = raw.Results.VerifiedAt
-		result.Valid          = parseBoolField(raw.Results.Valid)
-		result.Target         = raw.Results.Target
+		result.Verified = parseBoolField(raw.Results.Verified)
+		result.VerifiedAt = raw.Results.VerifiedAt
+		result.Valid = parseBoolField(raw.Results.Valid)
+		result.Target = raw.Results.Target
 	}
 
 	return result, nil

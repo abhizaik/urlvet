@@ -156,7 +156,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		ContentData:      out.ContentData,
 		DomainRandomness: out.DomainRandomness,
 		TyposquatResult:  out.TyposquatResult,
-		Phishing: buildPhishingResult(out.PhishTank),
+		Phishing:         buildPhishingResult(out.PhishTank),
 		Performance: Performance{
 			TotalTime: time.Since(start).String(),
 			Timings:   ConvertTimings(out.Timings),

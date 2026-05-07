@@ -11,7 +11,6 @@ import (
 	"time"
 )
 
-// NOT COMPPLETED
 // SSLCertResult holds certificate and chain checks
 type SSLCertResult struct {
 	Domain        string
@@ -123,4 +122,3 @@ func AnalyzeSSLCert(domain string) SSLCertResult {
 
 	return res
 }
-

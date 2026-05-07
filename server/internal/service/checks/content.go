@@ -35,19 +35,19 @@ type IframeInfo struct {
 
 // PageFormResult summarizes page-level findings
 type PageFormResult struct {
-	URL             string         `json:"url"`
-	Title           string         `json:"title"`
-	HasForms        bool           `json:"has_forms"`
-	HasLoginForm    bool           `json:"has_login_form"`
-	HasPaymentForm  bool           `json:"has_payment_form"`
-	HasPersonalForm bool           `json:"has_personal_form"`
-	FormCount       int            `json:"form_count"`
-	Forms           []FormInfo     `json:"forms"`
-	Iframes         []IframeInfo   `json:"iframes"`
-	HasHiddenIframe bool           `json:"has_hidden_iframe"`
-	HasTracking     bool           `json:"has_tracking"` // detection of 1x1 pixels etc.
-	FetchDuration   time.Duration  `json:"fetch_duration" swaggertype:"integer"` // nanoseconds
-	BrandCheck      BrandResult    `json:"brand_check"`
+	URL             string        `json:"url"`
+	Title           string        `json:"title"`
+	HasForms        bool          `json:"has_forms"`
+	HasLoginForm    bool          `json:"has_login_form"`
+	HasPaymentForm  bool          `json:"has_payment_form"`
+	HasPersonalForm bool          `json:"has_personal_form"`
+	FormCount       int           `json:"form_count"`
+	Forms           []FormInfo    `json:"forms"`
+	Iframes         []IframeInfo  `json:"iframes"`
+	HasHiddenIframe bool          `json:"has_hidden_iframe"`
+	HasTracking     bool          `json:"has_tracking"`                         // detection of 1x1 pixels etc.
+	FetchDuration   time.Duration `json:"fetch_duration" swaggertype:"integer"` // nanoseconds
+	BrandCheck      BrandResult   `json:"brand_check"`
 }
 
 // GetPageFormInfo fetches the page (with timeout), parses HTML and returns info.

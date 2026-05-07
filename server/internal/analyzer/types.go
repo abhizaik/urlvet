@@ -14,22 +14,22 @@ import (
 
 // Response and related public types mirror the handler's previous structs
 type Response struct {
-	URL            string                       `json:"url"`
-	Domain         string                       `json:"domain"`
-	Features       Features                     `json:"features"`
-	Infrastructure Infrastructure               `json:"infrastructure"`
-	DomainInfo     *domaininfo.RegistrationData `json:"domain_info"`
-	Analysis       Analysis                     `json:"analysis"`
-	SSLInfo        checks.SSLCertResult         `json:"ssl_info"`
-	TLSInfo        checks.TLSResult             `json:"tls_info"`
-	ContentData    *checks.PageFormResult       `json:"content_data"`
-	DomainRandomness checks.DomainRandomnessResult   `json:"domain_randomness"`
-	TyposquatResult  typosquat.TyposquatResult       `json:"typosquat_result"`
-	Phishing         *PhishingResult                 `json:"phishing"`
-	Performance    Performance                  `json:"performance"`
-	Result         Result                       `json:"result"`
-	Incomplete     bool                         `json:"incomplete"`
-	Errors         []string                     `json:"errors"`
+	URL              string                        `json:"url"`
+	Domain           string                        `json:"domain"`
+	Features         Features                      `json:"features"`
+	Infrastructure   Infrastructure                `json:"infrastructure"`
+	DomainInfo       *domaininfo.RegistrationData  `json:"domain_info"`
+	Analysis         Analysis                      `json:"analysis"`
+	SSLInfo          checks.SSLCertResult          `json:"ssl_info"`
+	TLSInfo          checks.TLSResult              `json:"tls_info"`
+	ContentData      *checks.PageFormResult        `json:"content_data"`
+	DomainRandomness checks.DomainRandomnessResult `json:"domain_randomness"`
+	TyposquatResult  typosquat.TyposquatResult     `json:"typosquat_result"`
+	Phishing         *PhishingResult               `json:"phishing"`
+	Performance      Performance                   `json:"performance"`
+	Result           Result                        `json:"result"`
+	Incomplete       bool                          `json:"incomplete"`
+	Errors           []string                      `json:"errors"`
 }
 
 // PhishingResult is the unified phishing-check output exposed in the API response.
@@ -171,10 +171,10 @@ type Output struct {
 	StatusSuccess     bool
 	StatusIsRedirect  bool
 
-	DomainInfo  *domaininfo.RegistrationData
-	SSLInfo     checks.SSLCertResult
-	ContentData *checks.PageFormResult
-	TLSInfo     checks.TLSResult
+	DomainInfo      *domaininfo.RegistrationData
+	SSLInfo         checks.SSLCertResult
+	ContentData     *checks.PageFormResult
+	TLSInfo         checks.TLSResult
 	PhishTank       *threatfeeds.PhishTankResult
 	TyposquatResult typosquat.TyposquatResult
 }
