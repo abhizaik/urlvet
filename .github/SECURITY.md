@@ -1,15 +1,5 @@
 # Security Policy
 
-##  Supported Versions
-
-We provide security updates for the following versions:
-
-| Version | Supported |
-|---------|-----------|
-| v3.x    | ✅         |
-| v2.x    | ❌         |
-| v1.x    | ❌         |
-
 
 ##  Reporting a Vulnerability
 
