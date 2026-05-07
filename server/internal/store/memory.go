@@ -80,14 +80,14 @@ func RecentErrors() []ErrorRecord {
 }
 
 type Stats struct {
-	TotalScansToday int                `json:"total_scans_today"`
-	TotalScansAll   int                `json:"total_scans_all"`
-	CacheHits       int                `json:"cache_hits"`
-	CacheMisses     int                `json:"cache_misses"`
-	CacheHitRate    float64            `json:"cache_hit_rate"`
-	AvgDurationMs   float64            `json:"avg_duration_ms"`
-	TopDomains      []DomainCount      `json:"top_domains"`
-	VerdictCounts   map[string]int     `json:"verdict_counts"`
+	TotalScansToday int            `json:"total_scans_today"`
+	TotalScansAll   int            `json:"total_scans_all"`
+	CacheHits       int            `json:"cache_hits"`
+	CacheMisses     int            `json:"cache_misses"`
+	CacheHitRate    float64        `json:"cache_hit_rate"`
+	AvgDurationMs   float64        `json:"avg_duration_ms"`
+	TopDomains      []DomainCount  `json:"top_domains"`
+	VerdictCounts   map[string]int `json:"verdict_counts"`
 }
 
 type DomainCount struct {

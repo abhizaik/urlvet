@@ -86,7 +86,7 @@ func main() {
 	// Wait for interrupt signal
 	<-sigChan
 	log.Println("Shutting down server...")
-	
+
 	// Cleanup screenshot service
 	service, _ := screenshot.GetService()
 	if service != nil {

@@ -3,8 +3,8 @@ package analyzer
 import (
 	"testing"
 
-	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
+	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
 )
 
 // safeBase returns a minimal Response that should produce verdict "Safe".
@@ -26,11 +26,11 @@ func safeBase() Response {
 
 func TestGenerateResult_Verdict(t *testing.T) {
 	tests := []struct {
-		name           string
-		modify         func(*Response)
-		wantVerdict    string
-		wantRiskMin    int // risk score must be >= this
-		wantTrustMin   int // trust score must be >= this
+		name         string
+		modify       func(*Response)
+		wantVerdict  string
+		wantRiskMin  int // risk score must be >= this
+		wantTrustMin int // trust score must be >= this
 	}{
 		{
 			name:         "top-ranked safe domain",
@@ -158,7 +158,7 @@ func TestGenerateResult_Verdict(t *testing.T) {
 				r.Phishing = &PhishingResult{
 					InDatabase: true,
 					Verified:   true,
-					Valid:       true,
+					Valid:      true,
 				}
 			},
 			wantRiskMin: 100,
@@ -170,7 +170,7 @@ func TestGenerateResult_Verdict(t *testing.T) {
 				r.Phishing = &PhishingResult{
 					InDatabase: true,
 					Verified:   false,
-					Valid:       true,
+					Valid:      true,
 				}
 			},
 			wantRiskMin: 50,
@@ -182,7 +182,7 @@ func TestGenerateResult_Verdict(t *testing.T) {
 				r.Phishing = &PhishingResult{
 					InDatabase: true,
 					Verified:   true,
-					Valid:       false,
+					Valid:      false,
 				}
 			},
 			wantRiskMin: 0,
@@ -290,9 +290,9 @@ func TestGenerateResult_Verdict(t *testing.T) {
 func TestGenerateResult_ScoreClamping(t *testing.T) {
 	resp := safeBase()
 	// pile on every risk signal
-	resp.Features.URL.UsesIP = true        // +100
-	resp.Features.URL.ContainsPunycode = true // +100
-	resp.Features.URL.HasHomoglyph = true   // +60
+	resp.Features.URL.UsesIP = true                                                // +100
+	resp.Features.URL.ContainsPunycode = true                                      // +100
+	resp.Features.URL.HasHomoglyph = true                                          // +60
 	resp.Phishing = &PhishingResult{InDatabase: true, Verified: true, Valid: true} // +100
 	resp.ContentData = &checks.PageFormResult{
 		BrandCheck: checks.BrandResult{IsMismatch: true, BrandFound: "PayPal"},

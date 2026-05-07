@@ -10,6 +10,8 @@
     "prepare": "svelte-kit sync || echo '' && husky",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "vitest run --passWithNoTests",
+    "test:ui": "vitest --ui",
     "format": "prettier --write ."
   },
   "devDependencies": {
@@ -18,9 +20,14 @@
     "@sveltejs/adapter-vercel": "^5.10.3",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/svelte": "^5.3.1",
+    "@types/node": "^25.6.0",
+    "@vitest/ui": "^4.1.5",
     "autoprefixer": "^10.4.16",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
+    "jsdom": "^29.1.1",
     "postcss": "^8.4.31",
     "prettier": "^3.6.2",
     "prettier-plugin-svelte": "^3.4.0",
@@ -28,7 +35,8 @@
     "svelte-check": "^4.0.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.0.0",
-    "vite": "^6.2.6"
+    "vite": "^6.2.6",
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "satori": "^0.26.0",
