@@ -1,80 +1,97 @@
 # Contributing to SafeSurf
 
-Thank you for your interest in contributing! 
+Thank you for your interest in contributing!
 We welcome bug reports, feature requests, code, documentation, and testing help.
 
 
 ## Project Structure
 
 - `server/` – Backend (Golang)
-- `web/` – Frontend (HTML/CSS/JS or framework)
+- `web/website` – Frontend (Svelte)
 - `docker/` – Dockerfiles & Compose configs
 - `docs/` – Project documentation
 
 
-##  How to Contribute
+## How to Contribute
 
 1. Fork the repo
 2. Clone your fork and create a branch:
    ```bash
    git checkout -b your-feature-name
-    ```
-
+   ```
 3. Make your changes
-4. Run tests:
-
+4. Run CI checks locally:
    ```bash
-   make test
+   make ci
    ```
 5. Push to your fork and open a Pull Request
 
 
-##  Development Setup
+## Development Setup
 
-### Backend (Go)
+Run `make help` to see all available commands.
 
-```bash
-cd server
-go mod tidy
-go run cmd/safesurf/safesurf.go
-```
-
-### Frontend
-
-Serve `web/` using your preferred method (e.g., `live-server`, Python HTTP server, or static hosting).
-
-### Docker (Full Stack)
+### Check prerequisites
 
 ```bash
-docker-compose -f docker/docker-compose.dev.yml up --build
+make doctor
+```
+
+### Dev environment (Docker — recommended)
+
+```bash
+make dev-build   # build dev images
+make dev-up      # start the dev stack
+make dev-logs    # tail logs
+make dev-down    # stop
+```
+
+### Local (no Docker)
+
+```bash
+make tidy                 # go mod tidy
+make local-run-backend    # run backend via Air (hot-reload)
+make local-run-frontend   # run Svelte dev server
 ```
 
 
-##  Code Style & Tools
+## Code Style & Tools
 
-* Format Go code:
+```bash
+make format          # go fmt (backend)
+make format-frontend # prettier (frontend)
+make lint            # go vet
+make check-frontend  # svelte-check + TypeScript
+make ci              # runs all of the above + tests (backend + frontend)
+```
 
-  ```bash
-  gofmt -w .
-  golint ./...
-  ```
-* Write clear commit messages:
+Commit message convention:
 
-  ```
-  feat(auth): add token expiration check
-  fix(api): correct 404 response logic
-  ```
+```
+feat(auth): add token expiration check
+fix(api): correct 404 response logic
+```
+
+
+## Running Tests
+
+```bash
+make test            # backend (Go)
+make test-frontend   # frontend (Vitest)
+make ci              # both + lint + format + type-check
+```
+
+Frontend tests live in `web/website/src/` as `*.test.ts` files.
+Run `make test-frontend` with `--ui` via `npm run test:ui` in `web/website/` for an interactive browser UI.
 
 
 ## Reporting Bugs
 
 1. Search existing issues first
-2. If not found, open a new issue
-3. Include:
-
-   * Steps to reproduce
-   * Logs or screenshots
-   * Your environment (OS, browser, etc.)
+2. If not found, open a new issue with:
+   - Steps to reproduce
+   - Logs or screenshots
+   - Your environment (OS, browser, etc.)
 
 
 <!-- ## Feature Requests
@@ -88,7 +105,6 @@ Describe the use case and expected behavior. -->
 Please follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 
-##  Thanks
+## Thanks
 
-Your contributions make this project better — whether it’s code, feedback, or documentation.
-
+Your contributions make this project better — whether it's code, feedback, or documentation.

@@ -155,19 +155,28 @@ doctor: ## Check dev environment
 	@which go > /dev/null || (echo "Go not installed"; exit 1)
 	$(success "Environment looks good")
 
-fmt:
+format: ## Format backend (go fmt)
 	cd $(BACKEND_DIR) && go fmt ./...
 
-tidy:
+format-frontend: ## Format frontend (prettier)
+	cd $(FRONTEND_DIR) && npm run format
+
+tidy: ## Tidy backend go modules
 	cd $(BACKEND_DIR) && go mod tidy
 
-local-test: ## Run backend tests
+test: ## Run backend tests
 	cd $(BACKEND_DIR) && go test ./...
 
-local-lint: ## Run go vet
+lint: ## Lint backend (go vet)
 	cd $(BACKEND_DIR) && go vet ./...
 
-ci: tidy fmt local-lint local-test ## Run CI checks locally
+check-frontend: ## Type-check frontend (svelte-check)
+	cd $(FRONTEND_DIR) && npm run check
+
+test-frontend: ## Run frontend tests (vitest)
+	cd $(FRONTEND_DIR) && npm run test
+
+ci: tidy format format-frontend lint check-frontend test test-frontend ## Run all CI checks locally (backend + frontend)
 
 
 # ============================================
