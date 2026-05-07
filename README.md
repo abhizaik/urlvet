@@ -43,10 +43,10 @@ Detailed setup guide: [docs/setup.md](docs/setup.md)
 ## At a Glance
 
 - Live scan, instant results
-- 20+ heuristic analyzers
+- 18 analyzers, 33 signals, fully explainable
 - HTTP API + Web UI + Chrome extension
 - Explainable scoring (no black-box ML)
-- One-command Docker setup
+- Simple Docker setup
 
 
 ## How It Compares
@@ -84,7 +84,7 @@ Fast scanners give you a verdict with no context. Deep crawlers take too long. S
 Analyze a URL via HTTP:
 
 ```bash
-curl -X GET http://localhost:8080/api/v1/analyze?url=https://example.com
+curl "http://localhost:8080/api/v1/analyze?url=https://example.com"
 ```
 **Sample Response:**
 <pre><code class="language-json">
@@ -101,16 +101,60 @@ Full response schema → [docs/api.md#example](docs/api.md#example)
 
 ## Detection Engine
 
-SafeSurf evaluates URLs using multiple independent analyzers, including:
+**18 concurrent goroutines** run across **7 signal categories**, producing **33 individual signals**. Every check emits a reason string — good, bad, or neutral — so the final score is always fully explainable. No black-box verdicts.
 
-- Domain reputation & age checks
-- Suspicious URL patterns and homoglyphs
-- Redirect chain analysis
-- HTTPS / certificate anomalies
-- Known phishing indicators and heuristics
-- Content-based signals (HTML, scripts, forms)
+Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → **Risky** < 30 · **Suspicious** 30–64 · **Safe** ≥ 65
 
-Each analyzer contributes to a final trust score and verdict.
+> 50 is the neutral baseline — a URL with no signals scores exactly 50 (Suspicious), the right default for an unknown URL. Trust signals pull the score up, risk signals pull it down, each weighted at 0.5× so neither dominates alone. Both scores are individually clamped to 0–100 before the formula runs, preventing a single catastrophic signal from drowning all other context.
+
+**URL Signals** _(8 checks)_
+1. Raw IP address as hostname _(common evasion tactic)_
+2. Punycode / IDN encoding _(lookalike domain spoofing)_
+3. URL shortener _(hides the true destination)_
+4. Excessive URL length _(abnormally long URLs used to hide destination or confuse parsers)_
+5. Excessive URL path depth _(deeply nested paths used to obscure malicious endpoints)_
+6. Phishing keywords in URL path _(login, verify, secure, update…)_
+7. Excessive subdomain count
+8. Non-ASCII Unicode characters in hostname _(IDN homograph attack, e.g. аpple.com with Cyrillic а)_
+
+**HTTP / Network** _(4 checks, single HTTP request)_
+9. Redirect chain hop count
+10. Cross-domain redirect _(final destination differs from source domain)_
+11. HSTS support
+12. HTTP status code
+
+**DNS** _(3 checks)_
+13. NS record validity
+14. MX record validity
+15. IP resolution
+
+**TLS / SSL** _(2 checks, single TLS handshake)_
+16. TLS presence and hostname mismatch
+17. Certificate chain — validity, expiry, issuer, CT log status, known-bad fingerprints
+
+**Domain Intelligence** _(6 checks)_
+18. Domain rank _(position in top-1M global popularity list)_
+19. TLD trust / risk / ICANN status
+20. Domain age via WHOIS _(newly registered = high risk)_
+21. DNSSEC _(cryptographic DNS response integrity)_
+22. Shannon entropy score _(flags algorithmically generated domains)_
+23. Typosquatting & combo-squatting across 500+ known brands
+
+**Content Analysis** _(8 checks)_
+24. Login form on unranked or newly registered domain
+25. Payment form _(credit card, CVV fields)_
+26. Personal information form
+27. Hidden `<iframe>` _(credential theft / clickjacking vector)_
+28. Tracking pixels _(1×1 hidden images)_
+29. Brand name in page content vs. hosting domain
+30. Form submitting to an external domain
+31. Password field over unencrypted HTTP
+
+**Threat Intelligence** _(2 checks)_
+32. PhishTank confirmed phishing _(community-verified)_
+33. PhishTank reported phishing _(awaiting verification, 3 h cache)_
+
+![SafeSurf Analyzer Pipeline](assets/pipeline.png)
 
 
 
@@ -122,17 +166,41 @@ Not a safety guarantee. Use alongside other defenses.
 
 
 ## Architecture
-SafeSurf runs analyzers in parallel. High-level repo layout:
+
+Four containerized services on a shared Docker bridge network. The Go backend is the only service that makes outbound calls to external APIs — the frontend, Chrome, and cache are strictly internal.
+
+![SafeSurf Architecture](assets/architecture.png)
+
+| Service | Role |
+|---|---|
+| `safesurf-web` | SvelteKit UI — :3000 (prod) · :5173 (dev) |
+| `safesurf-backend` | Go REST API & analyzer engine — :8080 |
+| `safesurf-chrome` | Headless Chrome — WebSocket :9222 |
+| `safesurf-valkey` | Valkey (Redis-compatible) — :6379, LRU cache, volume-persisted |
+
+### Request lifecycle
+1. URL submitted via the UI or REST API
+2. Backend validates and normalizes the URL (scheme inferred if missing)
+3. Valkey cache checked — a hit returns the full result immediately, no re-analysis
+4. On miss: 18 goroutines launch concurrently via `sync.WaitGroup`; panics are recovered per-task without failing the request
+5. Results collected → score aggregated → verdict assigned
+6. Complete result cached in Valkey (24 h TTL) and logged to scan history
+7. Response returned — trust score, verdict, per-signal reasons, redirect chain, page screenshot, per-task timings
 
 ```text
-server/               Go backend 
-  cmd/safesurf        Backend entry point
-  internal/           Analyzers, domaininfo, screenshot
-web/website           SvelteKit UI
-web/chrome-extension  Chrome extension
-docker/               Dev & prod
-docs/                 Setup, architecture, API, security, testing etc.
-Makefile
+server/
+  cmd/safesurf/         entry point
+  internal/analyzer/    goroutine runner, task definitions, score aggregation
+  internal/service/
+    checks/             18 individual analyzer implementations
+    screenshot/         headless Chrome integration
+    cache/              Valkey client
+    threatfeeds/        PhishTank client
+    typosquat/          brand similarity engine
+web/website/            SvelteKit UI
+web/chrome-extension/   browser extension
+docker/                 dev & prod Compose configs
+docs/                   API, setup, architecture, security
 ```
 
 

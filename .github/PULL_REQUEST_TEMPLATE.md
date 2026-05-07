@@ -1,4 +1,4 @@
-# 🛠 Pull Request
+# Pull Request
 
 ## What’s Changed?
 
@@ -7,8 +7,7 @@ Briefly describe what this PR changes and why
 ## Checklist
 
 - [ ] Code compiles
-- [ ] Tests pass (`make test`)
-- [ ] Lint checks pass (`gofmt`, `golint`, etc.)
+- [ ] Tests and lint pass (`make ci`)
 - [ ] Relevant docs updated
 - [ ] PR linked to a GitHub issue (if applicable)
 
