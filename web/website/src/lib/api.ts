@@ -1,20 +1,20 @@
-import { env } from '$env/dynamic/public';
 import type {
-  ApiResponse,
-  DepthResponse,
-  HstsResponse,
+  RankResponse,
   IpCheckResponse,
   IpResolveResponse,
   LengthResponse,
-  PunycodeResponse,
-  RankResponse,
+  DepthResponse,
+  HstsResponse,
   RedirectsResponse,
-  RiskyTldResponse,
-  StatusCodeResponse,
+  PunycodeResponse,
   TrustedTldResponse,
+  RiskyTldResponse,
   UrlShortenerResponse,
+  StatusCodeResponse,
   WhoisResponse,
+  ApiResponse,
 } from './types';
+import { env } from '$env/dynamic/public';
 
 const PUBLIC_BASE_URL = env.PUBLIC_BASE_URL || 'http://localhost:8080/api/v1';
 
