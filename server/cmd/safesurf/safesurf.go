@@ -3,7 +3,7 @@
 //	@title			SafeSurf API
 //	@version		1.0
 //	@description	URL safety analysis API. Checks phishing signals, redirects, TLS, DNS, brand mismatches, and more.
-//	@license.name	MIT
+//	@license.name	AGPL-3.0
 //
 //	@host		localhost:8080
 //	@BasePath	/api/v1

@@ -7,7 +7,7 @@ authors:
     given-names: Abhishek
 repository-code: "https://github.com/abhizaik/phishing-detection"
 url: "https://github.com/abhizaik/phishing-detection"
-license: MIT
+license: AGPL-3.0
 keywords:
   - phishing-detection
   - cybersecurity

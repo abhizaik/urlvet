@@ -36,7 +36,7 @@
           target="_blank"
           class="text-gray-300 hover:text-white transition-colors"
         >
-          MIT
+          AGPL-3.0
         </a>
         © 2023 – {year}
         <a
