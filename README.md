@@ -66,7 +66,7 @@ Detailed setup guide: [docs/setup.md](docs/setup.md)
 | Browser protection | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Open source | ✅ | ❌ | ❌ | ❌ | ❌ |
 
-Fast scanners give you a verdict with no context. Deep crawlers take too long. SafeSurf bridges the gap by doing live analysis with per-signal explanations in real time — and it's open-source.
+Fast scanners (like Google Safe Browsing) give you a verdict from database lookup with no explanation or live scanning. Deep crawlers (like URLScan.io) take too long. SafeSurf bridges the gap by doing live analysis with per-signal explanations in real time — and it's open-source.
 
 
 
@@ -108,6 +108,7 @@ Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → 
 > 50 is the neutral baseline — a URL with no signals scores exactly 50 (Suspicious), the right default for an unknown URL. Trust signals pull the score up, risk signals pull it down, each weighted at 0.5× so neither dominates alone. Both scores are individually clamped to 0–100 before the formula runs, preventing a single catastrophic signal from drowning all other context.
 
 **URL Signals** _(8 checks)_
+
 1. Raw IP address as hostname _(common evasion tactic)_
 2. Punycode / IDN encoding _(lookalike domain spoofing)_
 3. URL shortener _(hides the true destination)_
@@ -118,21 +119,25 @@ Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → 
 8. Non-ASCII Unicode characters in hostname _(IDN homograph attack, e.g. аpple.com with Cyrillic а)_
 
 **HTTP / Network** _(4 checks, single HTTP request)_
+
 9. Redirect chain hop count
 10. Cross-domain redirect _(final destination differs from source domain)_
 11. HSTS support
 12. HTTP status code
 
 **DNS** _(3 checks)_
+
 13. NS record validity
 14. MX record validity
 15. IP resolution
 
 **TLS / SSL** _(2 checks, single TLS handshake)_
+
 16. TLS presence and hostname mismatch
 17. Certificate chain — validity, expiry, issuer, CT log status, known-bad fingerprints
 
 **Domain Intelligence** _(6 checks)_
+
 18. Domain rank _(position in top-1M global popularity list)_
 19. TLD trust / risk / ICANN status
 20. Domain age via WHOIS _(newly registered = high risk)_
@@ -141,6 +146,7 @@ Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → 
 23. Typosquatting & combo-squatting across 500+ known brands
 
 **Content Analysis** _(8 checks)_
+
 24. Login form on unranked or newly registered domain
 25. Payment form _(credit card, CVV fields)_
 26. Personal information form
@@ -151,6 +157,7 @@ Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → 
 31. Password field over unencrypted HTTP
 
 **Threat Intelligence** _(2 checks)_
+
 32. PhishTank confirmed phishing _(community-verified)_
 33. PhishTank reported phishing _(awaiting verification, 3 h cache)_
 
