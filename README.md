@@ -230,7 +230,7 @@ Copyright (C) 2023–2026 Abhishek K P
 SafeSurf is dual-licensed:
 
 - **Community** — [GNU Affero General Public License v3.0](LICENSE). Free to use, modify, and self-host. Any modified version run over a network must make its source code available to users.
-- **Commercial** — A separate commercial license is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS, enterprise deployments). See [LICENSE-COMMERCIAL.md](LICENSE-COMMERCIAL.md) or contact **hi@abhizaik.com** to enquire.
+- **Commercial** — A separate commercial license is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS, enterprise deployments). See [COMMERCIAL.md](COMMERCIAL.md) or contact **hi@abhizaik.com** to enquire.
 
 
 ## Contributing
