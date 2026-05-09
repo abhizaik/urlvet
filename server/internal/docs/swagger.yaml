@@ -423,7 +423,7 @@ info:
   description: URL safety analysis API. Checks phishing signals, redirects, TLS, DNS,
     brand mismatches, and more.
   license:
-    name: MIT
+    name: AGPL-3.0
   title: SafeSurf API
   version: "1.0"
 paths:

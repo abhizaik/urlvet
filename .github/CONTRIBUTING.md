@@ -12,6 +12,11 @@ We welcome bug reports, feature requests, code, documentation, and testing help.
 - `docs/` – Project documentation
 
 
+## Contributor License Agreement
+
+Before your first pull request is merged, you must agree to the [Contributor License Agreement](CLA.md). By opening a PR you confirm you have read and accepted it.
+
+
 ## How to Contribute
 
 1. Fork the repo
@@ -25,6 +30,14 @@ We welcome bug reports, feature requests, code, documentation, and testing help.
    make ci
    ```
 5. Push to your fork and open a Pull Request
+
+### PR checklist
+
+- [ ] `make ci` passes locally (lint, format, type-check, tests)
+- [ ] New behaviour is covered by tests where applicable
+- [ ] PR description explains **what** changed and **why**
+- [ ] No unrelated changes bundled in the same PR
+- [ ] You have read and agree to the [CLA](CLA.md)
 
 
 ## Development Setup

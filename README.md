@@ -6,10 +6,10 @@ Open-source phishing detection engine for real-time URL analysis. Detect malicio
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go\&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-AGPL--3-blue.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/abhizaik/phishing-detection?style=social)](https://github.com/abhizaik/phishing-detection)
 [![Last Commit](https://img.shields.io/github/last-commit/abhizaik/phishing-detection)](https://github.com/abhizaik/phishing-detection/commits/main)
-[![Docs](https://img.shields.io/badge/Swagger-Docs-brightgreen)](https://api.safesurf.xorwave.com/swagger/index.html)
+
 
 [⚡ Quick Start](#quick-start) · [⚙️ Detection Engine](#detection-engine) · [🏛 Architecture](#architecture) · [📚 Docs](#documentation) · [🤝 Contributing](#contributing)
 
@@ -222,6 +222,15 @@ docs/                   API, setup, architecture, security
 ## Citation
 
 If you use this project in academic or research work, please cite it — see [CITATION.cff](CITATION.cff).
+
+## License
+
+Copyright (C) 2023–2026 Abhishek K P
+
+SafeSurf is dual-licensed:
+
+- **Community** — [GNU Affero General Public License v3.0](LICENSE). Free to use, modify, and self-host. Any modified version run over a network must make its source code available to users.
+- **Commercial** — A separate commercial license is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS, enterprise deployments). See [LICENSE-COMMERCIAL.md](LICENSE-COMMERCIAL.md) or contact **hi@abhizaik.com** to enquire.
 
 
 ## Contributing
