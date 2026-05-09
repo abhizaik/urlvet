@@ -25,6 +25,8 @@ vendor/
 .vscode/*
 !.vscode/settings.json
 *.swp
+skills-lock.json
+.agents/
 
 # -----------------
 # Node/Svelte
