@@ -1,141 +1,142 @@
-import type {
-  RankResponse,
-  IpCheckResponse,
-  IpResolveResponse,
-  LengthResponse,
-  DepthResponse,
-  HstsResponse,
-  RedirectsResponse,
-  PunycodeResponse,
-  TrustedTldResponse,
-  RiskyTldResponse,
-  UrlShortenerResponse,
-  StatusCodeResponse,
-  WhoisResponse,
-  ApiResponse,
-} from './types';
-import { env } from '$env/dynamic/public';
+// import { env } from '$env/dynamic/public';
+// import type {
+//   ApiResponse,
+//   DepthResponse,
+//   HstsResponse,
+//   IpCheckResponse,
+//   IpResolveResponse,
+//   LengthResponse,
+//   PunycodeResponse,
+//   RankResponse,
+//   RedirectsResponse,
+//   RiskyTldResponse,
+//   StatusCodeResponse,
+//   TrustedTldResponse,
+//   UrlShortenerResponse,
+//   WhoisResponse,
+// } from './types';
 
-const PUBLIC_BASE_URL = env.PUBLIC_BASE_URL || 'http://localhost:8080/api/v1';
+// const PUBLIC_BASE_URL = env.PUBLIC_BASE_URL || 'http://localhost:8080/api/v1';
 
-async function makeRequest<T>(endpoint: string, url: string): Promise<ApiResponse<T>> {
-  try {
-    // Ensure the URL is properly formatted before encoding
-    const formattedUrl = url.trim();
-    const encodedUrl = encodeURIComponent(formattedUrl);
-    const fullUrl = `${PUBLIC_BASE_URL}${endpoint}?url=${encodedUrl}`;
+// async function makeRequest<T>(endpoint: string, url: string): Promise<ApiResponse<T>> {
+//   try {
+//     // Ensure the URL is properly formatted before encoding
+//     const formattedUrl = url.trim();
+//     const encodedUrl = encodeURIComponent(formattedUrl);
+//     const fullUrl = `${PUBLIC_BASE_URL}${endpoint}?url=${encodedUrl}`;
 
+//     console.log(`Making request to: ${fullUrl}`);
 
-    const response = await fetch(fullUrl);
+//     const response = await fetch(fullUrl);
 
-    
+//     console.log(`Response status: ${response.status}`);
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
-      
-      return { error: errorData.error || `HTTP ${response.status}` };
-    }
+//     if (!response.ok) {
+//       const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
+//       console.error(`API Error:`, errorData);
+//       return { error: errorData.error || `HTTP ${response.status}` };
+//     }
 
-    const data = await response.json();
-  
-    return { data };
-  } catch (error) {
-    
-    return { error: error instanceof Error ? error.message : 'Network error' };
-  }
-}
+//     const data = await response.json();
+//     console.log(`API Success for ${endpoint}:`, data);
+//     return { data };
+//   } catch (error) {
+//     console.error(`API Error for ${endpoint}:`, error);
+//     return { error: error instanceof Error ? error.message : 'Network error' };
+//   }
+// }
 
-async function makeScreenshotRequest(url: string): Promise<ApiResponse<string | null>> {
-  try {
-    const formattedUrl = url.trim();
-    const encodedUrl = encodeURIComponent(formattedUrl);
-    const fullUrl = `${PUBLIC_BASE_URL}/screenshot?url=${encodedUrl}`;
+// async function makeScreenshotRequest(url: string): Promise<ApiResponse<string | null>> {
+//   try {
+//     const formattedUrl = url.trim();
+//     const encodedUrl = encodeURIComponent(formattedUrl);
+//     const fullUrl = `${PUBLIC_BASE_URL}/screenshot?url=${encodedUrl}`;
 
-  
+//     console.log(`Making screenshot request to: ${fullUrl}`);
 
-    const response = await fetch(fullUrl);
+//     const response = await fetch(fullUrl);
 
-    
+//     console.log(`Screenshot response status: ${response.status}`);
 
-    if (!response.ok) {
-    
-      return { error: `HTTP ${response.status}` };
-    }
+//     if (!response.ok) {
+//       console.error(`Screenshot API Error: HTTP ${response.status}`);
+//       return { error: `HTTP ${response.status}` };
+//     }
 
-    // Check if response is an image
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.startsWith('image/')) {
-      // Convert blob to object URL
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-  
-      return { data: blobUrl };
-    }
+//     // Check if response is an image
+//     const contentType = response.headers.get('content-type');
+//     if (contentType && contentType.startsWith('image/')) {
+//       // Convert blob to object URL
+//       const blob = await response.blob();
+//       const blobUrl = URL.createObjectURL(blob);
+//       console.log(`Screenshot received, blob URL created`);
+//       return { data: blobUrl };
+//     }
 
-    // If not an image, return null
-    return { data: null };
-  } catch (error) {
-    
-    return { error: error instanceof Error ? error.message : 'Network error' };
-  }
-}
+//     // If not an image, return null
+//     return { data: null };
+//   } catch (error) {
+//     console.error(`Screenshot API Error:`, error);
+//     return { error: error instanceof Error ? error.message : 'Network error' };
+//   }
+// }
 
-export const api = {
-  async analyze(url: string): Promise<ApiResponse<any>> {
-    return makeRequest<any>('/analyze', url);
-  },
-  async screenshot(url: string): Promise<ApiResponse<string | null>> {
-    return makeScreenshotRequest(url);
-  },
-  async getRank(url: string): Promise<ApiResponse<RankResponse>> {
-    return makeRequest<RankResponse>('/rank', url);
-  },
+// export const api = {
+//   async analyze(url: string): Promise<ApiResponse<any>> {
+//     return makeRequest<any>('/analyze', url);
+//   },
+//   async screenshot(url: string): Promise<ApiResponse<string | null>> {
+//     return makeScreenshotRequest(url);
+//   },
+//   async getRank(url: string): Promise<ApiResponse<RankResponse>> {
+//     return makeRequest<RankResponse>('/rank', url);
+//   },
 
-  async getIpCheck(url: string): Promise<ApiResponse<IpCheckResponse>> {
-    return makeRequest<IpCheckResponse>('/ip/check', url);
-  },
+//   async getIpCheck(url: string): Promise<ApiResponse<IpCheckResponse>> {
+//     return makeRequest<IpCheckResponse>('/ip/check', url);
+//   },
 
-  async getIpResolve(url: string): Promise<ApiResponse<IpResolveResponse>> {
-    return makeRequest<IpResolveResponse>('/ip/resolve', url);
-  },
+//   async getIpResolve(url: string): Promise<ApiResponse<IpResolveResponse>> {
+//     return makeRequest<IpResolveResponse>('/ip/resolve', url);
+//   },
 
-  async getLength(url: string): Promise<ApiResponse<LengthResponse>> {
-    return makeRequest<LengthResponse>('/length', url);
-  },
+//   async getLength(url: string): Promise<ApiResponse<LengthResponse>> {
+//     return makeRequest<LengthResponse>('/length', url);
+//   },
 
-  async getDepth(url: string): Promise<ApiResponse<DepthResponse>> {
-    return makeRequest<DepthResponse>('/depth', url);
-  },
+//   async getDepth(url: string): Promise<ApiResponse<DepthResponse>> {
+//     return makeRequest<DepthResponse>('/depth', url);
+//   },
 
-  async getHsts(url: string): Promise<ApiResponse<HstsResponse>> {
-    return makeRequest<HstsResponse>('/hsts', url);
-  },
+//   async getHsts(url: string): Promise<ApiResponse<HstsResponse>> {
+//     return makeRequest<HstsResponse>('/hsts', url);
+//   },
 
-  async getRedirects(url: string): Promise<ApiResponse<RedirectsResponse>> {
-    return makeRequest<RedirectsResponse>('/redirects', url);
-  },
+//   async getRedirects(url: string): Promise<ApiResponse<RedirectsResponse>> {
+//     return makeRequest<RedirectsResponse>('/redirects', url);
+//   },
 
-  async getPunycode(url: string): Promise<ApiResponse<PunycodeResponse>> {
-    return makeRequest<PunycodeResponse>('/punycode', url);
-  },
+//   async getPunycode(url: string): Promise<ApiResponse<PunycodeResponse>> {
+//     return makeRequest<PunycodeResponse>('/punycode', url);
+//   },
 
-  async getTrustedTld(url: string): Promise<ApiResponse<TrustedTldResponse>> {
-    return makeRequest<TrustedTldResponse>('/trusted-tld', url);
-  },
+//   async getTrustedTld(url: string): Promise<ApiResponse<TrustedTldResponse>> {
+//     return makeRequest<TrustedTldResponse>('/trusted-tld', url);
+//   },
 
-  async getRiskyTld(url: string): Promise<ApiResponse<RiskyTldResponse>> {
-    return makeRequest<RiskyTldResponse>('/risky-tld', url);
-  },
+//   async getRiskyTld(url: string): Promise<ApiResponse<RiskyTldResponse>> {
+//     return makeRequest<RiskyTldResponse>('/risky-tld', url);
+//   },
 
-  async getUrlShortener(url: string): Promise<ApiResponse<UrlShortenerResponse>> {
-    return makeRequest<UrlShortenerResponse>('/url-shortener', url);
-  },
+//   async getUrlShortener(url: string): Promise<ApiResponse<UrlShortenerResponse>> {
+//     return makeRequest<UrlShortenerResponse>('/url-shortener', url);
+//   },
 
-  async getStatusCode(url: string): Promise<ApiResponse<StatusCodeResponse>> {
-    return makeRequest<StatusCodeResponse>('/status-code', url);
-  },
+//   async getStatusCode(url: string): Promise<ApiResponse<StatusCodeResponse>> {
+//     return makeRequest<StatusCodeResponse>('/status-code', url);
+//   },
 
-  async getWhois(url: string): Promise<ApiResponse<WhoisResponse>> {
-    return makeRequest<WhoisResponse>('/whois', url);
-  },
-};
+//   async getWhois(url: string): Promise<ApiResponse<WhoisResponse>> {
+//     return makeRequest<WhoisResponse>('/whois', url);
+//   },
+// };

@@ -17,7 +17,8 @@ document.getElementById("checkBtn").onclick = async () => {
     const verdict = data.result?.verdict ?? "Unknown";
     const finalScore = data.result?.final_score ?? "N/A";
 
-    
+    // resultBox.textContent = `Verdict: ${verdict}\n , Trust Score: ${finalScore}`;
+    // resultBox.textContent = `Verdict: ${verdict}\n , Trust Score: ${finalScore}`;
 
     resultBox.innerHTML = `
       Verdict: <strong>${verdict}</strong><br>
