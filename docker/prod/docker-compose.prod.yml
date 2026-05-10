@@ -5,7 +5,8 @@ services:
       dockerfile: ../docker/prod/go.Dockerfile
     container_name: safesurf-backend
     environment:
-      VALKEY_ADDR: "valkey:6379"
+      CACHE_ADDR: "safesurf-valkey:6379"
+      CACHE_PASSWORD: "${CACHE_PASSWORD}"
       PORT: "8080"
       CHROME_URL: "ws://chrome:9222"
     depends_on:
@@ -43,12 +44,12 @@ services:
   valkey:
     image: valkey/valkey:8.0
     container_name: safesurf-valkey
-    ports:
-      - "6379:6379"
+    environment:
+      REDISCLI_AUTH: "${CACHE_PASSWORD}"
     volumes:
       - valkey_data:/data
       - ./valkey.conf:/usr/local/etc/valkey.conf:ro
-    command: ["valkey-server", "/usr/local/etc/valkey.conf"]
+    command: ["valkey-server", "/usr/local/etc/valkey.conf", "--requirepass", "${CACHE_PASSWORD}"]
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
       interval: 5s

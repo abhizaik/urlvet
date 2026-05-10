@@ -7,7 +7,7 @@ All configuration is via environment variables. Copy `server/.env.example` → `
 | Variable | Required | Description |
 |---|---|---|
 | `CACHE_ADDR` | Yes | Valkey/Redis address — `safesurf-valkey:6379` |
-| `CACHE_PASSWORD` | No | Cache auth password |
+| `CACHE_PASSWORD` | Yes (prod) | Cache auth password — must match `CACHE_PASSWORD` set in `docker-compose.prod.yml` |
 | `CACHE_DB` | No | Redis DB index (default `0`) |
 | `CACHE_POOL_SIZE` | No | Connection pool size (default `50`) |
 | `CACHE_MIN_IDLE_CONNS` | No | Min idle connections (default `10`) |
@@ -16,6 +16,14 @@ All configuration is via environment variables. Copy `server/.env.example` → `
 | `PORT` | No | HTTP port (default `8080`) |
 | `ADMIN_PASSWORD_HASH` | Yes | Argon2id hash of the admin password — see [security.md](security.md#setup) |
 | `ADMIN_JWT_SECRET` | Yes | Signing secret for session tokens — `openssl rand -hex 32` |
+
+## Docker Compose (`docker/prod/.env`)
+
+Create `docker/prod/.env` with secrets used by docker-compose variable substitution:
+
+| Variable | Required | Description |
+|---|---|---|
+| `CACHE_PASSWORD` | Yes | Password set on the Valkey container (`--requirepass`) and passed to the backend as `CACHE_PASSWORD`. Generate with `openssl rand -hex 32`. |
 
 ## Frontend (`web/website/.env`)
 
