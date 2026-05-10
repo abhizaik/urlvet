@@ -5,6 +5,8 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+ENV DOCKER_BUILD=1
+
 # Copy package files first for caching
 COPY web/website/package*.json ./
 
