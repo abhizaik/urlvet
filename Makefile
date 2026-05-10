@@ -66,6 +66,13 @@ up: start-timer ## Start production (detached)
 	$(success "Production started")
 	$(timer)
 
+start: start-timer ## Build and start production stack
+	$(info "Building and starting production stack...")
+	$(compose-prod) build
+	$(compose-prod) up -d
+	$(success "Production started")
+	$(timer)
+
 build-b: start-timer ## Build backend containers only (backend, chrome, valkey)
 	$(info "Building backend containers...")
 	$(compose-prod) build backend chrome valkey
@@ -73,6 +80,13 @@ build-b: start-timer ## Build backend containers only (backend, chrome, valkey)
 
 up-b: start-timer ## Start backend containers only (backend, chrome, valkey)
 	$(info "Starting backend containers...")
+	$(compose-prod) up -d backend chrome valkey
+	$(success "Backend containers started")
+	$(timer)
+
+start-b: start-timer ## Build and start backend containers only
+	$(info "Building and starting backend containers...")
+	$(compose-prod) build backend chrome valkey
 	$(compose-prod) up -d backend chrome valkey
 	$(success "Backend containers started")
 	$(timer)
@@ -93,6 +107,13 @@ logs: ## Tail production logs
 dev-build: start-timer ## Build dev images only
 	$(info "Building dev images...")
 	$(compose-dev) build
+	$(timer)
+
+dev-start: start-timer ## Build and start dev stack
+	$(info "Building and starting dev stack...")
+	$(compose-dev) build
+	$(compose-dev) up -d
+	$(success "Dev environment up")
 	$(timer)
 
 dev-up: start-timer ## Start dev environment

@@ -31,7 +31,7 @@ Live demo: https://safesurf.xorwave.com
 ```bash
 git clone https://github.com/abhizaik/phishing-detection.git
 cd phishing-detection
-make build && make up
+make start
 ```
 
 Open Web UI: **[localhost:3000](http://localhost:3000)** 
