@@ -2,12 +2,12 @@ package checks
 
 import (
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"golang.org/x/net/html"
 	"golang.org/x/net/publicsuffix"
 )
@@ -50,14 +50,22 @@ type PageFormResult struct {
 	BrandCheck      BrandResult   `json:"brand_check"`
 }
 
+// hostOnly returns scheme://host from a URL, used to keep full URLs out of logs.
+func hostOnly(rawURL string) string {
+	if u, err := url.Parse(rawURL); err == nil {
+		return u.Scheme + "://" + u.Host
+	}
+	return rawURL
+}
+
 // GetPageFormInfo fetches the page (with timeout), parses HTML and returns info.
 func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 	start := time.Now()
-	log.Printf("Starting content analysis for: %s", pageURL)
+	logger.Debug("starting content analysis", "host", hostOnly(pageURL))
 
 	req, err := http.NewRequest("GET", pageURL, nil)
 	if err != nil {
-		log.Printf("Failed to create request for %s: %v", pageURL, err)
+		logger.Error("failed to create request", "host", hostOnly(pageURL), "err", err)
 		return nil, err
 	}
 	// Use a common browser User-Agent to avoid blocks
@@ -69,27 +77,27 @@ func GetPageFormInfo(pageURL string) (*PageFormResult, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("HTTP request failed for %s: %v", pageURL, err)
+		logger.Error("HTTP request failed", "host", hostOnly(pageURL), "err", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		log.Printf("Non-200 status code for %s: %d", pageURL, resp.StatusCode)
+		logger.Warn("non-200 status code", "host", hostOnly(pageURL), "status", resp.StatusCode)
 	}
 
 	// read body (limited)
 	body, err := io.ReadAll(io.LimitReader(resp.Body, 5*1024*1024)) // 5MB cap
 	if err != nil {
-		log.Printf("Failed to read body for %s: %v", pageURL, err)
+		logger.Error("failed to read body", "host", hostOnly(pageURL), "err", err)
 		return nil, err
 	}
 
-	log.Printf("Successfully fetched %d bytes from %s", len(body), pageURL)
+	logger.Debug("fetched page content", "bytes", len(body), "host", hostOnly(pageURL))
 
 	doc, err := html.Parse(strings.NewReader(string(body)))
 	if err != nil {
-		log.Printf("Failed to parse HTML for %s: %v", pageURL, err)
+		logger.Error("failed to parse HTML", "host", hostOnly(pageURL), "err", err)
 		return nil, err
 	}
 

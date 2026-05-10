@@ -3,9 +3,11 @@ package handler
 import (
 	"context"
 	"net/http"
+	neturl "net/url"
 	"time"
 
 	"github.com/abhizaik/SafeSurf/internal/analyzer"
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 	"github.com/gin-gonic/gin"
 )
@@ -35,6 +37,15 @@ func AnalyzeURLHandler(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	resp, _ := analyzer.Analyze(ctx, url)
+	resp, errs := analyzer.Analyze(ctx, url)
+	if len(errs) > 0 {
+		origin := url
+		if u, err := neturl.Parse(url); err == nil {
+			origin = u.Scheme + "://" + u.Host
+		}
+		for _, e := range errs {
+			logger.Warn("analyzer error", "origin", origin, "err", e)
+		}
+	}
 	c.JSON(http.StatusOK, resp)
 }
