@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"os"
+	"strings"
 	"time"
 
 	"github.com/abhizaik/SafeSurf/internal/handler/middleware"
@@ -11,14 +13,26 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// allowedOrigins reads CORS_ALLOWED_ORIGINS (comma-separated) from the environment.
+func allowedOrigins() []string {
+	raw := os.Getenv("CORS_ALLOWED_ORIGINS")
+	if raw == "" {
+		return []string{"*"}
+	}
+	origins := strings.Split(raw, ",")
+	for i, o := range origins {
+		origins[i] = strings.TrimSpace(o)
+	}
+	return origins
+}
+
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
 
-	// Allow all origins
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     allowedOrigins(),
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: false,
 		MaxAge:           12 * time.Hour,
@@ -46,7 +60,10 @@ func SetupRouter() *gin.Engine {
 	v1.Use(middleware.URLLengthValidator(2048))
 	{
 		v1.GET("/health", HealthHandler)
-		v1.GET("/test", TestApiHandler)
+
+		if os.Getenv("ENV") == "DEV" {
+			v1.GET("/test", TestApiHandler)
+		}
 
 		v1.GET("/analyze", AnalyzeURLHandler)
 		v1.GET("/rank", GetDomainRankHandler)
@@ -63,8 +80,12 @@ func SetupRouter() *gin.Engine {
 		v1.GET("/status-code", CheckStatusCodeHandler)
 		v1.GET("/domain-info", DomainInfoHandler)
 
-		// Admin
+		// Admin login — issues a signed session token
+		v1.POST("/admin/login", AdminLoginHandler)
+
+		// Admin — all routes require a valid Bearer token
 		admin := v1.Group("/admin")
+		admin.Use(middleware.BearerAuth())
 		{
 			admin.GET("/stats", AdminStatsHandler)
 			admin.GET("/recent", AdminRecentHandler)

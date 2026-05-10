@@ -29,6 +29,7 @@ import (
 	"syscall"
 
 	_ "github.com/abhizaik/SafeSurf/internal/docs" // swagger docs registration
+	"github.com/abhizaik/SafeSurf/internal/admintoken"
 	"github.com/abhizaik/SafeSurf/internal/handler"
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
@@ -41,6 +42,9 @@ func main() {
 	if err := godotenv.Load("/app/.env"); err != nil {
 		log.Println("No .env file found, using environment variables or defaults")
 	}
+
+	// Fail fast if required secrets are missing, before serving any requests.
+	admintoken.Preload()
 
 	// Initialize screenshot service (shared browser allocator)
 	_, err := screenshot.GetService()
