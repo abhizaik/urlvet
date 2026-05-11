@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +15,7 @@ import (
 func RateLimiter(limit int64, window time.Duration) gin.HandlerFunc {
 	c, err := cache.New()
 	if err != nil {
-		fmt.Printf("Warning: Rate limiter failed to connect to cache: %v. Rate limiting disabled.\n", err)
+		logger.Warn("rate limiter cache unavailable, rate limiting disabled", "err", err)
 		return func(ctx *gin.Context) { ctx.Next() }
 	}
 
@@ -51,12 +52,6 @@ func RateLimiter(limit int64, window time.Duration) gin.HandlerFunc {
 	}
 }
 
-func max(a, b int64) int64 {
-	if a > b {
-		return a
-	}
-	return b
-}
 
 // URLLengthValidator returns a middleware that rejects requests where the
 // "url" query parameter exceeds maxLen bytes, preventing DoS via oversized inputs.
