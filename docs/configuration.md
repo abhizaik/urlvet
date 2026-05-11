@@ -17,9 +17,9 @@ All configuration is via environment variables. Copy `server/.env.example` → `
 | `ADMIN_PASSWORD_HASH` | Yes | Argon2id hash of the admin password — see [security.md](security.md#setup) |
 | `ADMIN_JWT_SECRET` | Yes | Signing secret for session tokens — `openssl rand -hex 32` |
 
-## Docker Compose (`docker/prod/.env`)
+## Docker Compose (dev: `docker/dev/.env`, prod: `docker/prod/.env`)
 
-Create `docker/prod/.env` with secrets used by docker-compose variable substitution:
+Create the appropriate `.env` file with secrets used by docker-compose variable substitution:
 
 | Variable | Required | Description |
 |---|---|---|

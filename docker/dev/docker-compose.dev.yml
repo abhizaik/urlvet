@@ -6,7 +6,7 @@ services:
     container_name: safesurf-backend-dev
     environment:
       CACHE_ADDR: "safesurf-valkey-dev:6379"
-      CACHE_PASSWORD: ""
+      CACHE_PASSWORD: "${CACHE_PASSWORD}"
       PORT: "8080"
       CHROME_URL: "ws://chrome:9222"
     volumes:
@@ -51,6 +51,8 @@ services:
   valkey:
     image: valkey/valkey:8.0
     container_name: safesurf-valkey-dev
+    environment:
+      REDISCLI_AUTH: "${CACHE_PASSWORD}"
     ports:
       - "6379:6379"
     volumes:
@@ -59,6 +61,7 @@ services:
       --maxmemory 256mb
       --maxmemory-policy allkeys-lru
       --save 60 1000
+      --requirepass ${CACHE_PASSWORD}
     healthcheck:
       test: ["CMD", "redis-cli", "-h", "localhost", "ping"]
       interval: 5s
