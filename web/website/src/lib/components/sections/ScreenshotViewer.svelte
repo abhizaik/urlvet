@@ -34,7 +34,7 @@
 {#if compact}
   <!-- Compact inline thumbnail for embedding next to VerdictCard -->
   {#if loading && !screenshotUrl}
-    <div class="w-full h-28 md:h-36 animate-pulse bg-gray-800 rounded-lg"></div>
+    <div class="w-full h-28 md:h-36 animate-pulse bg-gray-200 dark:bg-gray-800 rounded-lg"></div>
   {:else if screenshotUrl}
     <button
       type="button"
@@ -45,7 +45,7 @@
       <img
         src={screenshotUrl}
         alt="Website screenshot"
-        class="w-full rounded-lg border border-gray-800 hover:opacity-90 transition-opacity"
+        class="w-full rounded-lg border border-gray-300 dark:border-gray-800 hover:opacity-90 transition-opacity"
         loading="lazy"
       />
     </button>
@@ -71,12 +71,12 @@
   <!-- Full layout -->
   {#if loading && !screenshotUrl}
     <div class="mt-6 rounded-xl border border-gray-800 bg-gray-900/70 p-4 shadow-md">
-      <p class="text-sm font-semibold text-gray-300 mb-2">Website Screenshot</p>
+      <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Website Screenshot</p>
       <div class="animate-pulse w-full h-40 bg-gray-800 rounded-lg"></div>
     </div>
   {:else if failed && !screenshotUrl}
     <div class="mt-6 rounded-xl border border-gray-800 bg-gray-900/70 p-4 shadow-md">
-      <p class="text-sm font-semibold text-gray-300 mb-2">Website Screenshot</p>
+      <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Website Screenshot</p>
       <div class="flex items-center gap-2 text-xs text-gray-500">
         <svg
           class="w-3.5 h-3.5 flex-shrink-0"
@@ -96,7 +96,7 @@
     </div>
   {:else if screenshotUrl}
     <div
-      class="mt-6 rounded-xl border border-gray-800 bg-gray-900/70 p-4 shadow-md hover:shadow-lg transition-all"
+      class="mt-6 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/70 p-4 shadow-md hover:shadow-lg transition-all"
     >
       <h4 class="text-sm font-semibold text-gray-300 mb-2">Website Screenshot</h4>
       <button
@@ -108,7 +108,7 @@
         <img
           src={screenshotUrl}
           alt="Website screenshot"
-          class="w-full rounded-lg border border-gray-800 hover:opacity-90 transition-opacity"
+          class="w-full rounded-lg border border-gray-300 dark:border-gray-800 hover:opacity-90 transition-opacity"
           loading="lazy"
         />
       </button>

@@ -151,8 +151,8 @@
       </svg>
     </div>
     <div>
-      <p class="text-white font-semibold mb-1">Scan Failed</p>
-      <p class="text-gray-400 text-sm max-w-sm">{error}</p>
+      <p class="text-gray-900 dark:text-white font-semibold mb-1">Scan Failed</p>
+      <p class="text-gray-600 dark:text-gray-400 text-sm max-w-sm">{error}</p>
       <p class="text-gray-600 text-xs mt-2">
         The site may be unreachable, blocking automated access, or the URL may be invalid.
       </p>
@@ -160,8 +160,12 @@
   </div>
 {:else if loading}
   <div class="max-w-3xl mx-auto space-y-4">
-    <div class="animate-pulse rounded-xl border border-gray-800 bg-gray-950/60 p-6 h-32"></div>
-    <div class="animate-pulse rounded-xl border border-gray-800 bg-gray-950/60 p-6 h-24"></div>
+    <div
+      class="animate-pulse rounded-xl border border-gray-300 dark:border-gray-800 bg-gray-100/60 dark:bg-gray-950/60 p-6 h-32"
+    ></div>
+    <div
+      class="animate-pulse rounded-xl border border-gray-300 dark:border-gray-800 bg-gray-100/60 dark:bg-gray-950/60 p-6 h-24"
+    ></div>
   </div>
 {:else if data}
   <section class="max-w-4xl mx-auto space-y-8 px-4">
@@ -170,8 +174,12 @@
       class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 animate-fadeIn"
     >
       <div class="flex flex-col">
-        <h2 class="text-2xl font-semibold text-white" id="analysis-summary">Analysis Summary</h2>
-        <p class="text-gray-400 text-sm mt-1">Here's the security profile for {data?.domain}</p>
+        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white" id="analysis-summary">
+          Analysis Summary
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+          Here's the security profile for {data?.domain}
+        </p>
       </div>
 
       <button
@@ -222,9 +230,9 @@
       </div>
       {#if screenshotLoading || screenshotUrl}
         <div
-          class="md:w-56 md:flex-shrink-0 rounded-xl border border-gray-800 bg-gray-900/70 p-3 shadow-md flex flex-col gap-2"
+          class="md:w-56 md:flex-shrink-0 rounded-xl border border-gray-300 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/70 p-3 shadow-md flex flex-col gap-2"
         >
-          <p class="text-xs font-semibold text-gray-400">Real-time Preview</p>
+          <p class="text-xs font-semibold text-gray-600 dark:text-gray-400">Real-time Preview</p>
           <ScreenshotViewer
             {screenshotUrl}
             loading={screenshotLoading}
@@ -245,24 +253,26 @@
         {#if data.domain_info}
           <div
             id="section-domain"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("domain")}
               aria-expanded={sectionExpanded.domain}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🏷️</span>
-                <span class="text-sm font-semibold text-gray-100">Domain Info</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Domain Info</span
+                >
                 {#if data?.domain_info?.age_days !== undefined && data.domain_info.age_days < 365}
                   <span class="w-2 h-2 rounded-full bg-yellow-400 flex-shrink-0" title="New domain"
                   ></span>
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.domain
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.domain
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -275,7 +285,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <DomainInfoSection domainInfo={data.domain_info} rank={data.features?.rank} />
               </div>
             </div>
@@ -285,17 +295,19 @@
         {#if data.analysis}
           <div
             id="section-analysis"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("analysis")}
               aria-expanded={sectionExpanded.analysis}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🔀</span>
-                <span class="text-sm font-semibold text-gray-100">Redirection</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Redirection</span
+                >
                 {#if data?.analysis?.redirection_result?.has_domain_jump}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -309,7 +321,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.analysis
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.analysis
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -322,7 +334,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <RedirectionSection analysis={data.analysis} domain={data.domain} />
               </div>
             </div>
@@ -332,17 +344,19 @@
         {#if data.phishing}
           <div
             id="section-threatintel"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("threatintel")}
               aria-expanded={sectionExpanded.threatintel}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🛡️</span>
-                <span class="text-sm font-semibold text-gray-100">Threat Intel</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Threat Intel</span
+                >
                 {#if data?.phishing?.valid}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -351,7 +365,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.threatintel
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.threatintel
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -364,7 +378,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <ThreatIntelSection phishing={data.phishing} />
               </div>
             </div>
@@ -374,17 +388,19 @@
         {#if data.ssl_info || data.tls_info}
           <div
             id="section-security"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("security")}
               aria-expanded={sectionExpanded.security}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🔒</span>
-                <span class="text-sm font-semibold text-gray-100">Security & SSL</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Security & SSL</span
+                >
                 {#if data?.ssl_info?.IsSuspicious || data?.ssl_info?.KnownBadChain || (data?.ssl_info && !data?.ssl_info?.HasTLS) || (data?.ssl_info?.HasTLS && !data?.ssl_info?.ChainValid) || data?.tls_info?.HostnameMismatch}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -393,7 +409,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.security
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.security
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -406,7 +422,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <SecuritySection sslInfo={data.ssl_info} tlsInfo={data.tls_info} />
               </div>
             </div>
@@ -416,17 +432,19 @@
         {#if data.content_data}
           <div
             id="section-content"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("content")}
               aria-expanded={sectionExpanded.content}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">📄</span>
-                <span class="text-sm font-semibold text-gray-100">Page Content</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Page Content</span
+                >
                 {#if data?.content_data?.brand_check?.is_mismatch || data?.content_data?.has_hidden_iframe || data?.content_data?.forms?.some((f) => f.is_external)}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -440,7 +458,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.content
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.content
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -453,7 +471,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <ContentSection contentData={data.content_data} />
               </div>
             </div>
@@ -463,17 +481,19 @@
         {#if data.features}
           <div
             id="section-features"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("features")}
               aria-expanded={sectionExpanded.features}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">📡</span>
-                <span class="text-sm font-semibold text-gray-100">URL Signals</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >URL Signals</span
+                >
                 {#if data?.features?.url?.has_homoglyph || data?.features?.url?.contains_punycode || data?.features?.url?.uses_ip || data?.features?.url?.url_shortener || data?.typosquat_result?.is_suspicious || (data?.domain_randomness?.entropy ?? 0) > 3.8}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -485,7 +505,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.features
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.features
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -498,7 +518,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <URLSignalsSection
                   features={data.features}
                   domainRandomness={data.domain_randomness}
@@ -512,17 +532,19 @@
         {#if data.infrastructure}
           <div
             id="section-infrastructure"
-            class="rounded-xl border border-gray-800 overflow-hidden scroll-mt-20"
+            class="rounded-xl border border-gray-300 dark:border-gray-800 overflow-hidden scroll-mt-20"
           >
             <button
               type="button"
-              class="w-full flex items-center justify-between px-5 py-4 bg-gray-900/50 hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
+              class="w-full flex items-center justify-between px-5 py-4 bg-white dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-emerald-400"
               on:click={() => toggleSection("infrastructure")}
               aria-expanded={sectionExpanded.infrastructure}
             >
               <div class="flex items-center gap-3">
                 <span class="text-base leading-none">🖥️</span>
-                <span class="text-sm font-semibold text-gray-100">Hosting & Server</span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
+                  >Hosting & Server</span
+                >
                 {#if data?.infrastructure && !data?.infrastructure?.nameservers_valid}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
@@ -531,7 +553,7 @@
                 {/if}
               </div>
               <svg
-                class="w-4 h-4 text-gray-500 transition-transform duration-200 {sectionExpanded.infrastructure
+                class="w-4 h-4 text-gray-600 dark:text-gray-500 transition-transform duration-200 {sectionExpanded.infrastructure
                   ? 'rotate-180'
                   : ''}"
                 viewBox="0 0 20 20"
@@ -544,7 +566,7 @@
                 ? 'max-h-[5000px] opacity-100'
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
-              <div class="acc-body border-t border-gray-800">
+              <div class="acc-body border-t border-gray-100 dark:border-gray-800">
                 <InfrastructureSection infrastructure={data.infrastructure} />
               </div>
             </div>
@@ -554,7 +576,7 @@
         <!-- Back to top -->
         <div class="pt-2 flex justify-center">
           <button
-            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-800/50 hover:bg-gray-700 text-gray-500 hover:text-gray-200 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition-colors duration-150"
+            class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 transition-colors duration-150"
             on:click={scrollToTop}
             aria-label="Scroll to top"
           >
@@ -572,8 +594,10 @@
     {/if}
 
     <!-- Scan another CTA -->
-    <div class="flex flex-col items-center gap-3 pt-4 pb-2 border-t border-gray-800/50">
-      <p class="text-sm text-gray-500">Want to scan another link?</p>
+    <div
+      class="flex flex-col items-center gap-3 pt-4 pb-2 border-t border-gray-300 dark:border-gray-800/50"
+    >
+      <p class="text-sm text-gray-600 dark:text-gray-500">Want to scan another link?</p>
       <button
         type="button"
         class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-500"

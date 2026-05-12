@@ -33,31 +33,34 @@
     }
   > = {
     Safe: {
-      border: "border-emerald-500/30",
-      bg: "bg-emerald-950/30",
+      border: "border-emerald-300 dark:border-emerald-500/30",
+      bg: "bg-emerald-50 dark:bg-emerald-950/30",
       shadow: "shadow-emerald-500/10",
-      badge: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
+      badge:
+        "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30",
       label: "Trusted",
       ringColor: "#10b981",
-      scoreText: "text-emerald-400",
+      scoreText: "text-emerald-600 dark:text-emerald-400",
     },
     Risky: {
-      border: "border-red-500/30",
-      bg: "bg-red-950/30",
+      border: "border-red-300 dark:border-red-500/30",
+      bg: "bg-red-50 dark:bg-red-950/30",
       shadow: "shadow-red-500/10",
-      badge: "bg-red-500/20 text-red-300 border border-red-500/30",
+      badge:
+        "bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-500/30",
       label: "High Risk",
       ringColor: "#ef4444",
-      scoreText: "text-red-400",
+      scoreText: "text-red-600 dark:text-red-400",
     },
     Suspicious: {
-      border: "border-yellow-500/30",
-      bg: "bg-yellow-950/30",
+      border: "border-yellow-300 dark:border-yellow-500/30",
+      bg: "bg-amber-50 dark:bg-yellow-950/30",
       shadow: "shadow-yellow-500/10",
-      badge: "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30",
+      badge:
+        "bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border border-yellow-300 dark:border-yellow-500/30",
       label: "Be Cautious",
       ringColor: "#eab308",
-      scoreText: "text-yellow-400",
+      scoreText: "text-yellow-600 dark:text-yellow-400",
     },
   };
 
@@ -80,11 +83,13 @@
 >
   <!-- Verdict -->
   <div class="flex-1 flex flex-col gap-1.5 min-w-0">
-    <span class="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest"
+    <span
+      class="text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest"
       >Verdict</span
     >
     <div class="flex items-center gap-2 flex-wrap">
-      <span class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-tight"
+      <span
+        class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight"
         >{verdict ?? "—"}</span
       >
       <span
@@ -93,7 +98,9 @@
         {style.label}
       </span>
     </div>
-    <p class="text-[10px] sm:text-[11px] text-gray-500 leading-relaxed">{context}</p>
+    <p class="text-[10px] sm:text-[11px] text-gray-600 dark:text-gray-500 leading-relaxed">
+      {context}
+    </p>
     {#if unreachable}
       <p class="text-[10px] sm:text-[11px] text-red-400/80">
         Site may be unreachable or returning no content.
@@ -103,12 +110,13 @@
 
   <!-- Circular Score Ring -->
   <div class="flex flex-col items-center gap-1 flex-shrink-0">
-    <span class="text-[10px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1"
+    <span
+      class="text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-1"
       >Trust Score</span
     >
     <div class="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24">
       <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
-        <circle cx="44" cy="44" r={R} fill="none" stroke="#374151" stroke-width="7" />
+        <circle cx="44" cy="44" r={R} fill="none" stroke="var(--ring-track)" stroke-width="7" />
         <circle
           cx="44"
           cy="44"
@@ -127,7 +135,9 @@
           >{finalScore !== undefined ? displayedScore : "—"}</span
         >
         <span class="block w-5 border-t border-gray-500 my-0.5"></span>
-        <span class="text-[9px] sm:text-[10px] text-gray-500 font-medium">100</span>
+        <span class="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-500 font-medium"
+          >100</span
+        >
       </div>
     </div>
   </div>

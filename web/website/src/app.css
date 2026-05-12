@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Basic styles to ensure CSS is loading */
 body {
   font-family:
     'Inter',
@@ -17,11 +16,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Keep inputs dark even when autofilled */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+/* SVG score-ring track: light mode uses a light gray, dark uses a darker gray */
+:root {
+  --ring-track: #e2e8f0;
+}
+.dark {
+  --ring-track: #374151;
+}
+
+/* Autofill: only needs overriding in dark mode — browser default works fine in light */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0px 1000px #1f2937 inset;
   -webkit-text-fill-color: #e5e7eb;
   caret-color: #e5e7eb;
