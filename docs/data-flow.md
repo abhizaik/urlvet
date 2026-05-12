@@ -1,1 +1,0 @@
-request/response, internal flow diagrams
