@@ -72,7 +72,7 @@ func CheckPhishTank(targetURL string) (*PhishTankResult, error) {
 	apiKey := os.Getenv("PHISHTANK_API_KEY")
 	userAgent := os.Getenv("PHISHTANK_USER_AGENT")
 	if userAgent == "" {
-		userAgent = "phishtank/SafeSurf"
+		userAgent = "phishtank/urlvet"
 	}
 
 	data := url.Values{}

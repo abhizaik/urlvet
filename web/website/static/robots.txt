@@ -1,7 +1,7 @@
-# SafeSurf robots.txt
+# url.vet robots.txt
 
 User-agent: *
 Disallow: /admin
 Disallow: /admin/
 
-Sitemap: https://safesurf.xorwave.com/sitemap.xml
+Sitemap: https://url.vet/sitemap.xml

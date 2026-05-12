@@ -16,7 +16,7 @@ RUN go mod download
 COPY . .
 
 # Build static binary
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o safesurf ./cmd/safesurf
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o urlvet ./cmd/urlvet
 
 
 # ============================
@@ -32,7 +32,7 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 # Copy binary
-COPY --from=builder /app/safesurf .
+COPY --from=builder /app/urlvet .
 
 # Copy assets folder
 COPY --from=builder /app/assets ./assets
@@ -41,4 +41,4 @@ COPY --from=builder /app/.env ./.env
 ENV PORT=8080
 EXPOSE 8080
 
-CMD ["./safesurf"]
+CMD ["./urlvet"]

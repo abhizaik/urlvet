@@ -27,7 +27,7 @@ Edit `server/.env` — all values are required for production:
 ```env
 ENV=PROD
 PORT=8080
-CACHE_ADDR=safesurf-valkey:6379
+CACHE_ADDR=urlvet-valkey:6379
 CACHE_PASSWORD=<generate: openssl rand -hex 32>
 CACHE_DB=0
 CACHE_POOL_SIZE=50
@@ -53,7 +53,7 @@ echo "CACHE_PASSWORD=<same value as above>" > docker/prod/.env
 make start
 ```
 
-This builds and starts four containers: `safesurf-backend`, `safesurf-web`, `safesurf-chrome`, `safesurf-valkey`.
+This builds and starts four containers: `urlvet-backend`, `urlvet-web`, `urlvet-chrome`, `urlvet-valkey`.
 
 Verify all containers are healthy:
 

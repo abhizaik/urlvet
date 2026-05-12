@@ -1,6 +1,6 @@
 # Contributor License Agreement
 
-**Project:** SafeSurf  
+**Project:** url.vet  
 **Copyright holder:** Abhishek K P  
 **License model:** AGPL-3.0 (community) / Commercial (enterprise)
 

@@ -16,7 +16,7 @@ type Cache struct {
 
 func New() (*Cache, error) {
 	// Get configuration from environment variables with defaults
-	addr := getEnv("CACHE_ADDR", "safesurf-valkey-dev:6379")
+	addr := getEnv("CACHE_ADDR", "urlvet-valkey-dev:6379")
 	password := getEnv("CACHE_PASSWORD", "")
 	db := getEnvAsInt("CACHE_DB", 0)
 	poolSize := getEnvAsInt("CACHE_POOL_SIZE", 50)

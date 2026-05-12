@@ -171,41 +171,41 @@
     {@const ogScore =
       scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
     {@const desc = ogVerdict
-      ? `SafeSurf verdict: ${ogVerdict} — see the full breakdown for ${shareDomain}.`
-      : `SafeSurf scanned ${shareDomain}. Is it safe to open? Check the full report.`}
-    {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
-    <title>SafeSurf — Is {shareDomain} safe?</title>
+      ? `url.vet verdict: ${ogVerdict} — see the full breakdown for ${shareDomain}.`
+      : `url.vet scanned ${shareDomain}. Is it safe to open? Check the full report.`}
+    {@const ogImage = `https://url.vet/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
+    <title>url.vet — Is {shareDomain} safe?</title>
     <meta name="description" content={desc} />
-    <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta property="og:title" content="url.vet — Is {shareDomain} safe?" />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content={currentUrl || `https://safesurf.xorwave.com/?q=${encodeURIComponent(data.queryUrl)}`}
+      content={currentUrl || `https://url.vet/?q=${encodeURIComponent(data.queryUrl)}`}
     />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta name="twitter:title" content="url.vet — Is {shareDomain} safe?" />
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>SafeSurf — Know if any link is safe before you click it.</title>
+    <title>url.vet — Know if any link is safe before you click it.</title>
     <meta
       name="description"
-      content="Free real-time URL scanner. Detect phishing, malware, and suspicious links in seconds — with transparent scoring."
+      content="Free real-time URL scanner. Previously known as SafeSurf. Detect phishing, malware, and suspicious links in seconds — with transparent scoring."
     />
-    <meta property="og:title" content="SafeSurf — Scan any link for threats before you click." />
+    <meta property="og:title" content="url.vet — Scan any link for threats before you click." />
     <meta
       property="og:description"
       content="Paste any link. Get an instant verdict — safe, suspicious, or risky. Free & transparent."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://safesurf.xorwave.com" />
-    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
+    <meta property="og:url" content="https://url.vet" />
+    <meta property="og:image" content="https://url.vet/urlvet.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="SafeSurf — Scan any link for threats before you click." />
+    <meta name="twitter:title" content="url.vet — Scan any link for threats before you click." />
     <meta
       name="twitter:description"
       content="Scan any URL for phishing and hidden threats. Free, instant, transparent."
@@ -229,16 +229,17 @@
         <a
           href="/"
           on:click={() => (location.href = "/")}
+          title="Pronounce: 'U-R-L dot vet'"
           class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 transition-all"
         >
-          SafeSurf
+          url.vet
         </a>
       </h1>
 
       <p
-        class="relative mt-1 text-gray-400 text-sm md:text-base font-light italic tracking-tight z-10 animate-fadeIn"
+        class="relative mt-1 text-gray-300 text-sm md:text-lg font-light italic tracking-tight z-10 animate-fadeIn"
       >
-        Every link wears a mask. Take it off.
+        some link looks sus? <strong class="font-bold">"just url.vet it"</strong>
       </p>
     </header>
 
@@ -252,7 +253,7 @@
             id="url-input"
             type="text"
             class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none transition-all duration-200 ${formError ? "border-red-600/70" : "border-gray-700/80"}`}
-            placeholder="Paste link (e.g. example.com)"
+            placeholder="Paste URL (e.g. example.com)"
             bind:value={input}
             on:input={() => {
               if (formError) formError = null;

@@ -6,9 +6,9 @@ import (
 	neturl "net/url"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/analyzer"
-	"github.com/abhizaik/SafeSurf/internal/logger"
-	"github.com/abhizaik/SafeSurf/internal/service/checks"
+	"github.com/abhizaik/urlvet/internal/analyzer"
+	"github.com/abhizaik/urlvet/internal/logger"
+	"github.com/abhizaik/urlvet/internal/service/checks"
 	"github.com/gin-gonic/gin"
 )
 

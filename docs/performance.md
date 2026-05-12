@@ -42,10 +42,10 @@ At the 256MB Valkey memory limit with `allkeys-lru` eviction, the cache holds ro
 
 | Container | Typical RAM | CPU (idle) |
 |---|---|---|
-| `safesurf-backend` | 50–150 MB | < 1% |
-| `safesurf-web` | 20–50 MB (Nginx) | < 1% |
-| `safesurf-chrome` | 300–600 MB | < 1% |
-| `safesurf-valkey` | 10–256 MB (bounded by `maxmemory`) | < 1% |
+| `urlvet-backend` | 50–150 MB | < 1% |
+| `urlvet-web` | 20–50 MB (Nginx) | < 1% |
+| `urlvet-chrome` | 300–600 MB | < 1% |
+| `urlvet-valkey` | 10–256 MB (bounded by `maxmemory`) | < 1% |
 
 Chrome dominates memory. If screenshots are not needed, the Chrome container can be removed and the screenshot task disabled to save 300–600MB.
 
@@ -56,10 +56,10 @@ Chrome dominates memory. If screenshots are not needed, the Chrome container can
 All per-route latency and per-task duration are tracked. Scrape `http://localhost:8080/metrics`:
 
 ```
-safesurf_task_duration_seconds{task="..."}         histogram per analyzer task
-safesurf_http_request_duration_seconds{path="..."}  histogram per route
-safesurf_risk_score                                  distribution of risk scores
-safesurf_trust_score                                 distribution of trust scores
+urlvet_task_duration_seconds{task="..."}         histogram per analyzer task
+urlvet_http_request_duration_seconds{path="..."}  histogram per route
+urlvet_risk_score                                  distribution of risk scores
+urlvet_trust_score                                 distribution of trust scores
 ```
 
 ---
@@ -80,7 +80,7 @@ safesurf_trust_score                                 distribution of trust score
 To profile the Go backend in development:
 
 ```bash
-# Add to safesurf.go (dev only — do not expose in production):
+# Add to urlvet.go (dev only — do not expose in production):
 import _ "net/http/pprof"
 go http.ListenAndServe(":6060", nil)
 ```

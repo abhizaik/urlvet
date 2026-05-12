@@ -3,7 +3,7 @@
 
   chrome.runtime.sendMessage({ type: "analyze_url", url }, (response) => {
     if (!response?.success) {
-      console.error("SafeSurf API error:", response?.error);
+      console.error("url.vet API error:", response?.error);
       return;
     }
 
@@ -17,10 +17,10 @@
 })();
 
 function showWarningPopup(data) {
-  if (document.getElementById("safesurf-warning")) return; // prevent duplicates
+  if (document.getElementById("urlvet-warning")) return; // prevent duplicates
 
   const container = document.createElement("div");
-  container.id = "safesurf-warning";
+  container.id = "urlvet-warning";
   container.style.position = "fixed";
   container.style.bottom = "20px";
   container.style.right = "20px";
@@ -39,7 +39,7 @@ function showWarningPopup(data) {
     URL: ${data.url}<br>
     Verdict: ${data.result.verdict}<br>
     Trust Score: ${data.result.final_score}
-    <button id="safesurf-close" style="
+    <button id="urlvet-close" style="
       margin-top: 8px;
       padding: 3px 6px;
       border: none;
@@ -53,7 +53,7 @@ function showWarningPopup(data) {
 
   document.body.appendChild(container);
 
-  document.getElementById("safesurf-close").onclick = () => {
+  document.getElementById("urlvet-close").onclick = () => {
     container.remove();
   };
 }

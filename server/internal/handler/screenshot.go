@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/abhizaik/SafeSurf/internal/service/checks"
-	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
+	"github.com/abhizaik/urlvet/internal/service/checks"
+	"github.com/abhizaik/urlvet/internal/service/screenshot"
 	"github.com/gin-gonic/gin"
 )
 

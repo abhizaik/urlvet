@@ -73,7 +73,7 @@ These commands allow running the backend and frontend directly, without Docker. 
 
 | Command                     | Description                                       |
 | --------------------------- | ------------------------------------------------- |
-| `make local-build-backend`  | Build backend binary locally (`server/safesurf`). |
+| `make local-build-backend`  | Build backend binary locally (`server/urlvet`). |
 | `make local-build-frontend` | Build frontend locally (`web/website`).           |
 | `make local-run-backend`    | Run backend via Air (hot reload).                 |
 | `make local-run-frontend`   | Run Svelte dev server.                            |
@@ -83,7 +83,7 @@ These commands allow running the backend and frontend directly, without Docker. 
 ```powershell
 # Backend
 cd server
-go build -o safesurf ./cmd/safesurf
+go build -o urlvet ./cmd/urlvet
 air
 
 # Frontend

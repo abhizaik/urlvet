@@ -64,8 +64,8 @@ func TestRootEndpoint(t *testing.T) {
 	if err := json.Unmarshal(w.Body.Bytes(), &body); err != nil {
 		t.Fatalf("body not valid JSON: %v", err)
 	}
-	if body["service"] != "SafeSurf API" {
-		t.Errorf("service = %v, want SafeSurf API", body["service"])
+	if body["service"] != "url.vet API" {
+		t.Errorf("service = %v, want url.vet API", body["service"])
 	}
 }
 

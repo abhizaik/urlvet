@@ -15,7 +15,7 @@
       <!-- GitHub link -->
       <p class="text-gray-400 flex items-center gap-2">
         <a
-          href="https://github.com/abhizaik/SafeSurf"
+          href="https://github.com/abhizaik/urlvet"
           target="_blank"
           class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
         >
@@ -30,9 +30,9 @@
 
       <!-- License and author -->
       <p class="text-gray-400 text-center md:text-right">
-        SafeSurf is licensed under
+        url.vet is licensed under
         <a
-          href="https://github.com/abhizaik/SafeSurf/blob/main/LICENSE"
+          href="https://github.com/abhizaik/urlvet/blob/main/LICENSE"
           target="_blank"
           class="text-gray-300 hover:text-white transition-colors"
         >

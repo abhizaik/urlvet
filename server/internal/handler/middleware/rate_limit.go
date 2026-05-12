@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/logger"
-	"github.com/abhizaik/SafeSurf/internal/service/cache"
+	"github.com/abhizaik/urlvet/internal/logger"
+	"github.com/abhizaik/urlvet/internal/service/cache"
 	"github.com/gin-gonic/gin"
 )
 
@@ -51,7 +51,6 @@ func RateLimiter(limit int64, window time.Duration) gin.HandlerFunc {
 		ctx.Next()
 	}
 }
-
 
 // URLLengthValidator returns a middleware that rejects requests where the
 // "url" query parameter exceeds maxLen bytes, preventing DoS via oversized inputs.

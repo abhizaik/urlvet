@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/abhizaik/SafeSurf/internal/constants"
+	"github.com/abhizaik/urlvet/internal/constants"
 	"golang.org/x/net/publicsuffix"
 )
 

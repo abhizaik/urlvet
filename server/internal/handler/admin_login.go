@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/admintoken"
+	"github.com/abhizaik/urlvet/internal/admintoken"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/argon2"
 )

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SafeSurf Phishing Checker",
+  "name": "url.vet Phishing Checker",
   "version": "1.0",
   "description": "Check if a URL is potentially phishing.",
   "permissions": ["contextMenus", "tabs", "scripting", "storage"],
