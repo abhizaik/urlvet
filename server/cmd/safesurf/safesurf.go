@@ -23,13 +23,14 @@
 package main
 
 import (
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/abhizaik/SafeSurf/internal/admintoken"
 	_ "github.com/abhizaik/SafeSurf/internal/docs" // swagger docs registration
 	"github.com/abhizaik/SafeSurf/internal/handler"
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
 	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
@@ -38,16 +39,23 @@ import (
 
 func main() {
 	// Load .env file if it exists (non-fatal if missing)
-	if err := godotenv.Load("/app/.env"); err != nil {
-		log.Println("No .env file found, using environment variables or defaults")
+	dotenvErr := godotenv.Load("/app/.env")
+
+	logger.Init()
+
+	if dotenvErr != nil {
+		logger.Info("no .env file found, using environment variables or defaults")
 	}
+
+	// Fail fast if required secrets are missing, before serving any requests.
+	admintoken.Preload()
 
 	// Initialize screenshot service (shared browser allocator)
 	_, err := screenshot.GetService()
 	if err != nil {
-		log.Printf("Warning: Failed to initialize screenshot service: %v. Screenshot functionality may be unavailable.", err)
+		logger.Warn("screenshot service init failed, continuing without it", "err", err)
 	} else {
-		log.Println("Screenshot service initialized successfully")
+		logger.Info("screenshot service initialized")
 		// Ensure cleanup on shutdown
 		defer func() {
 			service, _ := screenshot.GetService()
@@ -61,11 +69,11 @@ func main() {
 
 	err = rank.LoadDomainRanks()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("failed to load domain ranks", "err", err)
 	}
 
 	if err := typosquat.LoadTopDomains(); err != nil {
-		log.Fatal(err)
+		logger.Fatal("failed to load top domains", "err", err)
 	}
 
 	// Get port from environment variable, default to 8080
@@ -77,15 +85,15 @@ func main() {
 	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		log.Printf("Starting server on %s", addr)
+		logger.Info("starting server", "addr", addr)
 		if err := r.Run(addr); err != nil {
-			log.Fatal(err)
+			logger.Fatal("server error", "err", err)
 		}
 	}()
 
 	// Wait for interrupt signal
 	<-sigChan
-	log.Println("Shutting down server...")
+	logger.Info("shutting down server")
 
 	// Cleanup screenshot service
 	service, _ := screenshot.GetService()

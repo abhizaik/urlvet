@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 	"github.com/abhizaik/SafeSurf/internal/service/rank"
 	"github.com/gin-gonic/gin"
@@ -37,7 +37,7 @@ func GetDomainRankHandler(c *gin.Context) {
 
 	domain, err := checks.GetDomain(url)
 	if err != nil {
-		log.Printf("domain extraction failed: %v", err)
+		logger.Error("domain extraction failed", "err", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "could not extract domain from url"})
 		return
 	}

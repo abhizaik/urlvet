@@ -2,10 +2,10 @@ package analyzer
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/abhizaik/SafeSurf/internal/constants"
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/metrics"
 	"github.com/abhizaik/SafeSurf/internal/service/cache"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
@@ -53,7 +53,7 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 	var cacheInstance CacheInterface
 	cacheConn, cacheErr := cache.New()
 	if cacheErr != nil {
-		log.Printf("Warning: Failed to initialize cache: %v. Continuing without cache.", cacheErr)
+		logger.Warn("cache init failed, continuing without cache", "err", cacheErr)
 	} else {
 		cacheInstance = cacheConn
 		defer cacheConn.Close()

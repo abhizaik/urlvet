@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"log"
 	"net/http"
 
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/abhizaik/SafeSurf/internal/service/checks"
 	"github.com/gin-gonic/gin"
 )
@@ -32,7 +32,7 @@ func CheckIfUsesIPHandler(c *gin.Context) {
 
 	isIP, err := checks.UsesIPInsteadOfDomain(url)
 	if err != nil {
-		log.Printf("IP check failed: %v", err)
+		logger.Error("IP check failed", "err", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid url"})
 		return
 	}
@@ -67,14 +67,14 @@ func ResolveIPHandler(c *gin.Context) {
 
 	domain, err := checks.GetDomain(url)
 	if err != nil {
-		log.Printf("Domain extraction failed: %v", err)
+		logger.Error("domain extraction failed", "err", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid url"})
 		return
 	}
 
 	ips, err := checks.GetIPAddress(domain)
 	if err != nil {
-		log.Printf("IP resolution failed for domain %s: %v", domain, err)
+		logger.Error("IP resolution failed", "domain", domain, "err", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

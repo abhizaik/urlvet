@@ -31,7 +31,7 @@ Live demo: https://safesurf.xorwave.com
 ```bash
 git clone https://github.com/abhizaik/phishing-detection.git
 cd phishing-detection
-make build && make up
+make start
 ```
 
 Open Web UI: **[localhost:3000](http://localhost:3000)** 
@@ -214,9 +214,20 @@ docs/                   API, setup, architecture, security
 
 ## Documentation
 
-- [docs/README.md](docs/README.md) — start here
-- [docs/api.md](docs/api.md) — full API reference
-- [Swagger UI](https://api.safesurf.xorwave.com/swagger/index.html) — interactive API docs
+| | |
+|---|---|
+| [Setup](docs/setup.md) | Local & Docker setup, Makefile commands |
+| [Configuration](docs/configuration.md) | All environment variables |
+| [Deployment](docs/deployment.md) | VPS, reverse proxy, firewall |
+| [API Reference](docs/api.md) | Endpoints, rate limits, example response |
+| [Architecture](docs/architecture.md) | Services, request lifecycle, detection engine |
+| [Security](docs/security.md) | Admin auth, password hashing |
+| [Performance](docs/performance.md) | Latency, resource usage, tuning |
+| [Design Decisions](docs/design-decisions.md) | Why things are built the way they are |
+| [Maintenance](docs/maintenance.md) | Cache, logs, backups |
+| [Glossary](docs/glossary.md) | Terms and acronyms |
+
+Interactive API docs (Swagger UI): [api.safesurf.xorwave.com/swagger/index.html](https://api.safesurf.xorwave.com/swagger/index.html)
 
 
 ## Citation
@@ -230,7 +241,7 @@ Copyright (C) 2023–2026 Abhishek K P
 SafeSurf is dual-licensed:
 
 - **Community** — [GNU Affero General Public License v3.0](LICENSE). Free to use, modify, and self-host. Any modified version run over a network must make its source code available to users.
-- **Commercial** — A separate commercial license is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS, enterprise deployments). See [COMMERCIAL.md](COMMERCIAL.md) or contact **hi@abhizaik.com** to enquire.
+- **Commercial** — A separate [commercial license](COMMERCIAL.md) is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS).
 
 
 ## Contributing

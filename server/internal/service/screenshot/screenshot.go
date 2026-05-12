@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 	"path/filepath"
@@ -14,6 +13,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/abhizaik/SafeSurf/internal/logger"
 	"github.com/chromedp/chromedp"
 )
 
@@ -38,11 +38,11 @@ func NewService(chromeURL string) (*Service, error) {
 
 	if chromeURL != "" {
 		// Use remote allocator for enhanced sandboxing (e.g., separate container)
-		log.Printf("Initializing remote screenshot service with URL: %s", chromeURL)
+		logger.Info("initializing remote screenshot service", "url", chromeURL)
 		allocCtx, allocCancel = chromedp.NewRemoteAllocator(context.Background(), chromeURL)
 	} else {
 		// Fallback to local allocator
-		log.Println("Initializing local screenshot service")
+		logger.Info("initializing local screenshot service")
 		opts := append(chromedp.DefaultExecAllocatorOptions[:],
 			chromedp.NoSandbox,
 			chromedp.Headless,
@@ -258,8 +258,7 @@ func (s *Service) TakeScreenshot(rawURL string) ([]byte, error) {
 
 	// Try to save, but don't fail if save fails
 	if err := os.WriteFile(filePath, buf, 0644); err != nil {
-		// Log error but still return the screenshot
-		log.Printf("Warning: Failed to cache screenshot: %v", err)
+		logger.Warn("failed to cache screenshot", "err", err)
 	}
 
 	return buf, nil
@@ -279,7 +278,7 @@ func TakeScreenshot(rawURL string) ([]byte, error) {
 func TakeScreenshotAndSave(url string) string {
 	buf, err := TakeScreenshot(url)
 	if err != nil {
-		log.Printf("Error taking screenshot: %v", err)
+		logger.Error("screenshot failed", "err", err)
 		return ""
 	}
 
@@ -289,13 +288,13 @@ func TakeScreenshotAndSave(url string) string {
 	dir := filepath.Join(".", "tmp", "screenshots") // ./server/tmp/screenshots
 
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
-		log.Printf("Error creating screenshots directory: %v", err)
+		logger.Error("failed to create screenshots directory", "err", err)
 		return ""
 	}
 	fullPath := filepath.Join(dir, filename)
 
 	if err := os.WriteFile(fullPath, buf, 0644); err != nil {
-		log.Printf("Error writing screenshot file: %v", err)
+		logger.Error("failed to write screenshot file", "err", err)
 		return ""
 	}
 
