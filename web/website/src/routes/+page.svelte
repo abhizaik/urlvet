@@ -10,6 +10,43 @@
   import type { AnalyzeResult } from "../lib/types";
   import { encodeVerdict, formatUrl, isValidUrl, stripTrackers } from "../lib/utils";
 
+  const schemaSoftwareApp = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "url.vet",
+    url: "https://url.vet",
+    description:
+      "Free real-time URL scanner for detecting phishing, typosquatting, and malicious links. Instant verdict with full signal breakdown — no signup required.",
+    applicationCategory: "SecurityApplication",
+    applicationSubCategory: "URL Scanner",
+    operatingSystem: "Web",
+    browserRequirements: "Requires JavaScript",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    creator: {
+      "@type": "Person",
+      name: "abhizaik",
+      url: "https://abhizaik.com",
+    },
+    license: "https://github.com/abhizaik/urlvet/blob/main/LICENSE",
+    codeRepository: "https://github.com/abhizaik/urlvet",
+    featureList: [
+      "Real-time URL scanning",
+      "Phishing detection",
+      "WHOIS and domain age analysis",
+      "Typosquatting and homoglyph detection",
+      "Redirect chain tracing",
+      "TLS certificate verification",
+      "IP and infrastructure analysis",
+      "No signup required",
+      "Free to use",
+      "Open source (AGPL-3.0)",
+    ],
+  };
+
   // Page load data from +page.ts — runs server-side so bots get correct OG meta tags.
   export let data: {
     queryDomain: string;
@@ -210,6 +247,7 @@
       name="twitter:description"
       content="Some link looks sus? url.vet it. Free, instant, no signup."
     />
+    {@html `<script type="application/ld+json">${JSON.stringify(schemaSoftwareApp)}</script>`}
   {/if}
 </svelte:head>
 
@@ -241,10 +279,13 @@
         </a>
       </h1>
 
+      <p class="relative mt-3 text-gray-500 dark:text-gray-400 text-sm md:text-base z-10">
+        Know if a link is safe before you click.
+      </p>
       <p
         class="relative mt-1 text-gray-600 dark:text-gray-300 text-sm md:text-lg font-light italic tracking-tight z-10 animate-fadeIn"
       >
-        some link looks sus? <strong class="font-bold">"just url.vet it"</strong>
+        sketchy link? <strong class="font-bold">"just url.vet it"</strong>
       </p>
     </header>
 
@@ -412,10 +453,12 @@
       </div>
 
       <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
-        {#each ["Free & open source", "No signup required", "Explains every verdict", "Live page preview"] as pill}
-          <span class="flex items-center gap-1.5 text-[11px] text-gray-500">
+        {#each ["Free & open source", "No signup required", "Explains every verdict", "Safe preview"] as pill}
+          <span
+            class="flex items-center gap-1.5 text-[13px] font-medium text-gray-600 dark:text-gray-400"
+          >
             <svg
-              class="w-3 h-3 text-emerald-500/70 flex-shrink-0"
+              class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0"
               fill="none"
               stroke="currentColor"
               stroke-width="2.5"

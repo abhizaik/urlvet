@@ -1,15 +1,46 @@
 <script lang="ts">
-  import "../app.css";
-  import { onMount } from "svelte";
-  import { theme } from "$lib/theme";
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
+  import { theme } from "$lib/theme";
+  import { onMount } from "svelte";
+  import "../app.css";
 
   const year = new Date().getFullYear();
+
+  const schemaWebSite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "url.vet",
+    url: "https://url.vet",
+    description:
+      "Free real-time URL scanner. Paste any link and get an instant phishing and safety verdict — no signup needed.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://url.vet/?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
+  const schemaOrganization = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "url.vet",
+    url: "https://url.vet",
+    logo: "https://url.vet/favicon.ico",
+    sameAs: ["https://github.com/abhizaik/urlvet"],
+  };
 
   onMount(() => {
     theme.init();
   });
 </script>
+
+<svelte:head>
+  {@html `<script type="application/ld+json">${JSON.stringify(schemaWebSite)}</script>`}
+  {@html `<script type="application/ld+json">${JSON.stringify(schemaOrganization)}</script>`}
+</svelte:head>
 
 <ThemeToggle />
 
@@ -42,7 +73,7 @@
 
       <!-- License and author -->
       <p class="text-gray-500 dark:text-gray-400 text-center md:text-right">
-        url.vet is licensed under
+        Licensed under
         <a
           href="https://github.com/abhizaik/urlvet/blob/main/LICENSE"
           target="_blank"
