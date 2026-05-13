@@ -177,9 +177,27 @@
         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white" id="analysis-summary">
           Analysis Summary
         </h2>
-        <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
-          Here's the security profile for {data?.domain}
-        </p>
+        <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+          <span class="text-gray-600 dark:text-gray-400 text-sm">Security profile for</span>
+          <span
+            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-sm font-medium text-gray-800 dark:text-gray-200"
+          >
+            <svg
+              class="w-3.5 h-3.5 text-blue-500 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 0c2.21 0 4 4.477 4 10s-1.79 10-4 10-4-4.477-4-10 1.79-10 4-10zm-10 10h20"
+              />
+            </svg>
+            {data?.domain}
+          </span>
+        </div>
       </div>
 
       <button
@@ -645,6 +663,17 @@
 {/if}
 
 <style>
+  button[aria-expanded="true"] {
+    box-shadow: inset 3px 0 0 #3b82f6;
+  }
+  button[aria-expanded="false"] {
+    box-shadow: inset 3px 0 0 transparent;
+    transition: box-shadow 0.2s ease;
+  }
+  button[aria-expanded="true"] {
+    transition: box-shadow 0.15s ease;
+  }
+
   /* Strip section components' own card wrapper inside accordion — the accordion card provides the container */
   .acc-body > :global(section),
   .acc-body > :global(div) {

@@ -28,7 +28,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       {#if analysis.redirection_result}
         <div
@@ -101,7 +101,7 @@
               text="Shows how many redirect steps the website takes before reaching the final destination."
             />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white"
+          <span class="font-medium text-[#424242] dark:text-white"
             >{analysis.redirection_result.chain_length}</span
           >
         </div>
@@ -122,7 +122,7 @@
                 {#each analysis.redirection_result.chain as url, index}
                   <li class="break-all flex items-center gap-2 mb-1">
                     <span class="text-gray-400">{index + 1}.</span>
-                    <span class="font-medium text-gray-900 dark:text-white">{url}</span>
+                    <span class="font-medium text-[#424242] dark:text-white">{url}</span>
                     {#if !url.includes(domain)}
                       <span class="text-red-400 text-xs">⚠️</span>
                     {/if}
@@ -169,7 +169,7 @@
               text="The server response code returned when accessing the URL (e.g., 200 = OK, 404 = Not Found)."
             />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white"
+          <span class="font-medium text-[#424242] dark:text-white"
             >{analysis.http_status.code} {analysis.http_status.text}</span
           >
         </div>

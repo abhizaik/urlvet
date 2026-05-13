@@ -65,7 +65,7 @@
       {:else}
         <!-- In database and valid=true (phishing) or not yet reviewed -->
         <div
-          class="space-y-0 divide-y divide-gray-100 dark:divide-gray-700/50 text-sm text-gray-700 dark:text-gray-200"
+          class="space-y-0 divide-y divide-gray-100 dark:divide-gray-700/50 text-sm text-[#424242] dark:text-gray-200"
         >
           <!-- in_database -->
           <div
@@ -122,7 +122,7 @@
                 <span>Reviewed At:</span>
                 <TooltipIcon text="When the PhishTank community reviewed this report." />
               </div>
-              <span class="font-medium text-gray-900 dark:text-white">{phishing.verified_at}</span>
+              <span class="font-medium text-[#424242] dark:text-white">{phishing.verified_at}</span>
             </div>
           {/if}
 
@@ -135,7 +135,7 @@
                 <span>Impersonation Target:</span>
                 <TooltipIcon text="The brand or service this phishing URL is impersonating." />
               </div>
-              <span class="font-medium text-gray-900 dark:text-white">{phishing.target}</span>
+              <span class="font-medium text-[#424242] dark:text-white">{phishing.target}</span>
             </div>
           {/if}
 

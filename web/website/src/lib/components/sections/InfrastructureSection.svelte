@@ -17,7 +17,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       {#if infrastructure.ip_addresses?.length}
         <div

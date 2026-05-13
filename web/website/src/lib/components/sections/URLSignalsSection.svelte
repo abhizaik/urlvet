@@ -20,7 +20,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       {#if features.tld}
         <div
@@ -32,7 +32,7 @@
               text="The last part of a domain name (like .com, .org, .io). It can hint at the site's trust level or purpose."
             />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white">.{features.tld.tld}</span>
+          <span class="font-medium text-[#424242] dark:text-white">.{features.tld.tld}</span>
         </div>
 
         <div
@@ -208,7 +208,7 @@
               text="Shows how many subdomains (like shop.example.com) are used. Too many can hint at suspicious or temporary setups."
             />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white"
+          <span class="font-medium text-[#424242] dark:text-white"
             >{features.url.subdomain_count}</span
           >
         </div>
@@ -225,7 +225,7 @@
             />
           </div>
           <div class="flex items-center gap-2">
-            <span class="font-medium text-gray-900 dark:text-white"
+            <span class="font-medium text-[#424242] dark:text-white"
               >{domainRandomness.entropy.toFixed(2)}</span
             >
             {#if domainRandomness.entropy > 3.8}

@@ -18,7 +18,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       <div
         class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0"
@@ -27,7 +27,7 @@
           <span>Page Title:</span>
           <TooltipIcon text="The title of the page as defined in the HTML <title> tag." />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white"
+        <span class="font-medium text-[#424242] dark:text-white"
           >{contentData.title || "(No Title)"}</span
         >
       </div>
@@ -61,7 +61,7 @@
           <span>Forms Detected:</span>
           <TooltipIcon text="Total number of HTML forms found on the page." />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{contentData.form_count}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{contentData.form_count}</span>
       </div>
 
       <div

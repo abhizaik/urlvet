@@ -165,10 +165,10 @@
   >
     <!-- Fade edges -->
     <div
-      class="absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-gray-200 dark:from-gray-950 to-transparent z-10 pointer-events-none"
+      class="absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-white dark:from-gray-950 to-transparent z-10 pointer-events-none"
     ></div>
     <div
-      class="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-gray-200 dark:from-gray-950 to-transparent z-10 pointer-events-none"
+      class="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white dark:from-gray-950 to-transparent z-10 pointer-events-none"
     ></div>
 
     <div

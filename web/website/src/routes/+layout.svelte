@@ -19,7 +19,7 @@
   </main>
 
   <footer
-    class="bg-gray-300 dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-300 dark:border-gray-800 py-6"
+    class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800 py-6"
   >
     <div
       class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center gap-3 text-sm md:text-base"

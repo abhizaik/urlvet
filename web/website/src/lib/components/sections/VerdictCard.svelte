@@ -1,15 +1,24 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let verdict: string | undefined;
   export let finalScore: number | undefined;
   export let unreachable = false;
 
   let displayedScore = 0;
   let prevScore: number | undefined = undefined;
+  let ringReady = false;
+
+  onMount(() => {
+    setTimeout(() => {
+      ringReady = true;
+    }, 60);
+  });
 
   $: if (finalScore !== undefined && finalScore !== prevScore) {
     prevScore = finalScore;
     const target = finalScore;
-    const duration = 900;
+    const duration = 2000;
     const startTime = performance.now();
     const tick = (now: number) => {
       const t = Math.min((now - startTime) / duration, 1);
@@ -30,6 +39,7 @@
       label: string;
       ringColor: string;
       scoreText: string;
+      pulse: string;
     }
   > = {
     Safe: {
@@ -41,6 +51,7 @@
       label: "Trusted",
       ringColor: "#10b981",
       scoreText: "text-emerald-600 dark:text-emerald-400",
+      pulse: "verdict-safe",
     },
     Risky: {
       border: "border-red-300 dark:border-red-500/30",
@@ -51,6 +62,7 @@
       label: "High Risk",
       ringColor: "#ef4444",
       scoreText: "text-red-600 dark:text-red-400",
+      pulse: "verdict-risky",
     },
     Suspicious: {
       border: "border-yellow-300 dark:border-yellow-500/30",
@@ -61,6 +73,7 @@
       label: "Be Cautious",
       ringColor: "#eab308",
       scoreText: "text-yellow-600 dark:text-yellow-400",
+      pulse: "verdict-suspicious",
     },
   };
 
@@ -74,12 +87,12 @@
   };
 
   $: style = STYLES[verdict ?? ""] ?? STYLES.Suspicious;
-  $: dashOffset = CIRC - ((finalScore ?? 0) / 100) * CIRC;
+  $: dashOffset = ringReady ? CIRC - ((finalScore ?? 0) / 100) * CIRC : CIRC;
   $: context = CONTEXT[verdict ?? ""] ?? CONTEXT.Suspicious;
 </script>
 
 <div
-  class={`flex flex-row items-center gap-4 p-4 sm:gap-6 sm:p-6 rounded-xl border shadow-lg ${style.border} ${style.bg} ${style.shadow}`}
+  class={`flex flex-row items-center gap-4 p-4 sm:gap-6 sm:p-6 rounded-xl border shadow-lg ${style.border} ${style.bg} ${style.shadow} ${style.pulse}`}
 >
   <!-- Verdict -->
   <div class="flex-1 flex flex-col gap-1.5 min-w-0">
@@ -127,7 +140,7 @@
           stroke-linecap="round"
           stroke-dasharray={CIRC}
           stroke-dashoffset={dashOffset}
-          style="transition: stroke-dashoffset 0.8s ease"
+          style="transition: stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1)"
         />
       </svg>
       <div class="absolute inset-0 flex flex-col items-center justify-center">
@@ -142,3 +155,39 @@
     </div>
   </div>
 </div>
+
+<style>
+  @keyframes pulse-safe {
+    0% {
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 16px rgba(16, 185, 129, 0);
+    }
+  }
+  @keyframes pulse-risky {
+    0% {
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 16px rgba(239, 68, 68, 0);
+    }
+  }
+  @keyframes pulse-suspicious {
+    0% {
+      box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 16px rgba(234, 179, 8, 0);
+    }
+  }
+  .verdict-safe {
+    animation: pulse-safe 0.7s ease-out 0.3s both;
+  }
+  .verdict-risky {
+    animation: pulse-risky 0.7s ease-out 0.3s both;
+  }
+  .verdict-suspicious {
+    animation: pulse-suspicious 0.7s ease-out 0.3s both;
+  }
+</style>

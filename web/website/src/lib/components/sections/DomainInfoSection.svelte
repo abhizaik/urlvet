@@ -18,7 +18,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       <div
         class="flex flex-col md:grid md:grid-cols-[minmax(0,280px),1fr] md:items-center gap-2 md:gap-4 py-2 first:pt-0 last:pb-0"
@@ -29,7 +29,7 @@
             text="The registered name of the website — what users type in the browser to visit it."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.domain}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.domain}</span>
       </div>
 
       {#if rank !== undefined}
@@ -42,7 +42,7 @@
               text="A rough estimate of the website's global popularity, lower numbers mean more visitors. Derived from traffic and engagement data."
             />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white"
+          <span class="font-medium text-[#424242] dark:text-white"
             >{rank === 0 ? "Unranked" : rank}</span
           >
         </div>
@@ -57,7 +57,8 @@
             text="The company or organization that manages the registration of this domain (e.g., GoDaddy, Namecheap, Google Domains)."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.registrar || "-"}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.registrar || "-"}</span
+        >
       </div>
 
       <div
@@ -69,7 +70,7 @@
             text="How long ago the domain was first registered. Older domains often suggest more established or legitimate websites."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.age_human}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.age_human}</span>
       </div>
 
       <div
@@ -99,7 +100,7 @@
             text="The date when this domain was first registered and became active on the internet."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.created}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.created}</span>
       </div>
 
       <div
@@ -111,7 +112,7 @@
             text="The last date the domain registration information was modified (e.g., contact change or nameserver update)."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.updated}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.updated}</span>
       </div>
 
       <div
@@ -123,7 +124,7 @@
             text="The date when this domain's registration will expire unless renewed by the owner."
           />
         </div>
-        <span class="font-medium text-gray-900 dark:text-white">{domainInfo.expiry}</span>
+        <span class="font-medium text-[#424242] dark:text-white">{domainInfo.expiry}</span>
       </div>
 
       {#if domainInfo.nameservers?.length}

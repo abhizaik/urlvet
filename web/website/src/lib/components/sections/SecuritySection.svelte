@@ -20,7 +20,7 @@
     </div>
 
     <div
-      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-gray-700 dark:text-gray-200 max-w-4xl w-full mx-auto"
+      class="space-y-0 divide-y divide-gray-300 dark:divide-gray-800 text-sm text-[#424242] dark:text-gray-200 max-w-4xl w-full mx-auto"
     >
       {#if sslInfo}
         <div
@@ -68,7 +68,7 @@
               <span>Certificate Issuer:</span>
               <TooltipIcon text="The organization that issued the SSL certificate." />
             </div>
-            <span class="font-medium text-gray-900 dark:text-white">{sslInfo.Issuer || "-"}</span>
+            <span class="font-medium text-[#424242] dark:text-white">{sslInfo.Issuer || "-"}</span>
           </div>
 
           <div
@@ -80,7 +80,7 @@
                 text="How many days ago the certificate was issued. Recently issued certificates on new domains can be suspicious."
               />
             </div>
-            <span class="font-medium text-gray-900 dark:text-white">{sslInfo.AgeDays} days</span>
+            <span class="font-medium text-[#424242] dark:text-white">{sslInfo.AgeDays} days</span>
           </div>
 
           <div
@@ -90,7 +90,7 @@
               <span>Valid From:</span>
               <TooltipIcon text="The date this certificate first became active." />
             </div>
-            <span class="font-medium text-gray-900 dark:text-white">{sslInfo.NotBefore}</span>
+            <span class="font-medium text-[#424242] dark:text-white">{sslInfo.NotBefore}</span>
           </div>
 
           <div
@@ -100,7 +100,7 @@
               <span>Expiry Date:</span>
               <TooltipIcon text="When the current SSL certificate will expire." />
             </div>
-            <span class="font-medium text-gray-900 dark:text-white">{sslInfo.NotAfter}</span>
+            <span class="font-medium text-[#424242] dark:text-white">{sslInfo.NotAfter}</span>
           </div>
 
           <div
@@ -162,7 +162,7 @@
             <span>TLS Issuer (Connection):</span>
             <TooltipIcon text="The certificate issuer detected during the live connection." />
           </div>
-          <span class="font-medium text-gray-900 dark:text-white">{tlsInfo.Issuer || "-"}</span>
+          <span class="font-medium text-[#424242] dark:text-white">{tlsInfo.Issuer || "-"}</span>
         </div>
 
         <div
