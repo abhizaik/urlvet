@@ -258,7 +258,7 @@ If you found this project helpful, consider giving it a star.
 
 
 
-<div align="center">
+<!-- <div align="center">
   <a href="https://star-history.com/#abhizaik/urlvet&Date">
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date&theme=dark" />
@@ -266,5 +266,5 @@ If you found this project helpful, consider giving it a star.
       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date" />
     </picture>
   </a>
-</div>
+</div> -->
 

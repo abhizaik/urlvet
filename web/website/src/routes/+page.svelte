@@ -203,7 +203,7 @@
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://url.vet" />
-    <meta property="og:image" content="https://url.vet/urlvet.png" />
+    <meta property="og:image" content="https://url.vet/urlvet-light.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="url.vet — just url.vet it." />
     <meta
