@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/metrics"
+	"github.com/abhizaik/urlvet/internal/metrics"
 	"github.com/gin-gonic/gin"
 )
 

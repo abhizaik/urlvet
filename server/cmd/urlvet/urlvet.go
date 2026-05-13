@@ -1,6 +1,6 @@
-// Package main is the entrypoint for the SafeSurf API.
+// Package main is the entrypoint for the url.vet API.
 //
-//	@title			SafeSurf API
+//	@title			url.vet API
 //	@version		1.0
 //	@description	URL safety analysis API. Checks phishing signals, redirects, TLS, DNS, brand mismatches, and more.
 //	@license.name	AGPL-3.0
@@ -27,13 +27,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/abhizaik/SafeSurf/internal/admintoken"
-	_ "github.com/abhizaik/SafeSurf/internal/docs" // swagger docs registration
-	"github.com/abhizaik/SafeSurf/internal/handler"
-	"github.com/abhizaik/SafeSurf/internal/logger"
-	"github.com/abhizaik/SafeSurf/internal/service/rank"
-	"github.com/abhizaik/SafeSurf/internal/service/screenshot"
-	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
+	"github.com/abhizaik/urlvet/internal/admintoken"
+	_ "github.com/abhizaik/urlvet/internal/docs" // swagger docs registration
+	"github.com/abhizaik/urlvet/internal/handler"
+	"github.com/abhizaik/urlvet/internal/logger"
+	"github.com/abhizaik/urlvet/internal/service/rank"
+	"github.com/abhizaik/urlvet/internal/service/screenshot"
+	"github.com/abhizaik/urlvet/internal/service/typosquat"
 	"github.com/joho/godotenv"
 )
 

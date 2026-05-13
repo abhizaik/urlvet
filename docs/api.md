@@ -19,7 +19,7 @@ To regenerate the spec after editing handler annotations:
 
 ```bash
 cd server
-swag init -g cmd/safesurf/safesurf.go -o internal/docs
+swag init -g cmd/urlvet/urlvet.go -o internal/docs
 ```
 
 Install the CLI once with: `go install github.com/swaggo/swag/cmd/swag@v1.16.4`

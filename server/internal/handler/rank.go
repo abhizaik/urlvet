@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"github.com/abhizaik/SafeSurf/internal/logger"
-	"github.com/abhizaik/SafeSurf/internal/service/checks"
-	"github.com/abhizaik/SafeSurf/internal/service/rank"
+	"github.com/abhizaik/urlvet/internal/logger"
+	"github.com/abhizaik/urlvet/internal/service/checks"
+	"github.com/abhizaik/urlvet/internal/service/rank"
 	"github.com/gin-gonic/gin"
 )
 

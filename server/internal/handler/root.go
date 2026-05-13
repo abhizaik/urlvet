@@ -8,7 +8,7 @@ import (
 
 func RootHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"service": "SafeSurf API",
+		"service": "url.vet API",
 		"status":  "running",
 		"version": "v1",
 	})

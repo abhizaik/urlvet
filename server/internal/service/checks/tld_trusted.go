@@ -1,6 +1,6 @@
 package checks
 
-import "github.com/abhizaik/SafeSurf/internal/constants"
+import "github.com/abhizaik/urlvet/internal/constants"
 
 func IsTrustedTld(domain string) (bool, bool, string) {
 	tld, icann := GetTld(domain)

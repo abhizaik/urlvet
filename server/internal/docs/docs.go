@@ -1307,7 +1307,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "SafeSurf API",
+	Title:            "url.vet API",
 	Description:      "URL safety analysis API. Checks phishing signals, redirects, TLS, DNS, brand mismatches, and more.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

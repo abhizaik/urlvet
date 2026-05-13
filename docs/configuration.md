@@ -6,13 +6,13 @@ All configuration is via environment variables. Copy `server/.env.example` → `
 
 | Variable | Required | Description |
 |---|---|---|
-| `CACHE_ADDR` | Yes | Valkey/Redis address — `safesurf-valkey:6379` |
+| `CACHE_ADDR` | Yes | Valkey/Redis address — `urlvet-valkey:6379` |
 | `CACHE_PASSWORD` | Yes (prod) | Cache auth password — must match `CACHE_PASSWORD` set in `docker-compose.prod.yml` |
 | `CACHE_DB` | No | Redis DB index (default `0`) |
 | `CACHE_POOL_SIZE` | No | Connection pool size (default `50`) |
 | `CACHE_MIN_IDLE_CONNS` | No | Min idle connections (default `10`) |
 | `ENV` | No | Set to `DEV` for colored logs, debug endpoint, and verbose output |
-| `CORS_ALLOWED_ORIGINS` | No | Comma-separated allowed origins (default `*`) — e.g. `https://safesurf.xorwave.com,https://url.vet` |
+| `CORS_ALLOWED_ORIGINS` | No | Comma-separated allowed origins (default `*`) — e.g. `https://url.vet,https://url.vet` |
 | `PORT` | No | HTTP port (default `8080`) |
 | `LOG_TIMEZONE` | No | IANA timezone for log timestamps (default `UTC`) — e.g. `Asia/Kolkata`, `America/New_York` |
 | `LOG_DIR` | No | Directory for rotating daily log files — e.g. `logs`. Leave empty to disable file logging |

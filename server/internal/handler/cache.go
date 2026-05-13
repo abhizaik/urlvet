@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"sort"
 
-	"github.com/abhizaik/SafeSurf/internal/service/cache"
+	"github.com/abhizaik/urlvet/internal/service/cache"
 	"github.com/gin-gonic/gin"
 )
 

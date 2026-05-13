@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "URL safety analysis API. Checks phishing signals, redirects, TLS, DNS, brand mismatches, and more.",
-        "title": "SafeSurf API",
+        "title": "url.vet API",
         "contact": {},
         "license": {
             "name": "AGPL-3.0"

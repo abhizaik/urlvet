@@ -1,6 +1,6 @@
-# SafeSurf Web Application
+# url.vet Web Application
 
-A SvelteKit web application that serves as the frontend for the SafeSurf phishing detection tool.
+A SvelteKit web application that serves as the frontend for the url.vet phishing detection tool.
 
 ## Features
 

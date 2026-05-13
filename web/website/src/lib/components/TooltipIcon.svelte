@@ -48,8 +48,8 @@
 <div class="relative inline-flex items-center" bind:this={iconEl}>
   <div
     class="w-4 h-4 flex items-center justify-center rounded-full
-           bg-gray-700 text-gray-200 text-[10px] font-bold cursor-pointer
-           hover:bg-gray-600 transition-colors duration-150 select-none"
+           bg-gray-400 dark:bg-gray-700 text-white dark:text-gray-200 text-[10px] font-bold cursor-pointer
+           hover:bg-gray-500 dark:hover:bg-gray-600 transition-colors duration-150 select-none"
     role="button"
     tabindex="0"
     aria-label={text}

@@ -1,4 +1,4 @@
-module github.com/abhizaik/SafeSurf
+module github.com/abhizaik/urlvet
 
 go 1.24
 

@@ -1,17 +1,20 @@
 <div align="center">
 
-# Phishing Detection
-Open-source phishing detection engine for real-time URL analysis. Detect malicious links, explain every verdict, and generate a security report in real time.
+# url.vet
 
+**some link looks sus? just url.vet it.**
 
-[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go\&logoColor=white)](https://go.dev)
+Open-source phishing detection engine — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
+
+[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
 [![License](https://img.shields.io/badge/License-AGPL--3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/abhizaik/phishing-detection?style=social)](https://github.com/abhizaik/phishing-detection)
-[![Last Commit](https://img.shields.io/github/last-commit/abhizaik/phishing-detection)](https://github.com/abhizaik/phishing-detection/commits/main)
-
+[![GitHub stars](https://img.shields.io/github/stars/abhizaik/urlvet?style=social)](https://github.com/abhizaik/urlvet)
+[![Last Commit](https://img.shields.io/github/last-commit/abhizaik/urlvet)](https://github.com/abhizaik/urlvet/commits/main)
 
 [⚡ Quick Start](#quick-start) · [⚙️ Detection Engine](#detection-engine) · [🏛 Architecture](#architecture) · [📚 Docs](#documentation) · [🤝 Contributing](#contributing)
+
+<sub>(Previously known as SafeSurf)</sub>
 
 </div>
 
@@ -23,14 +26,14 @@ Open-source phishing detection engine for real-time URL analysis. Detect malicio
 
 ![Phishing Detection Demo](assets/demo.gif)
 
-Live demo: https://safesurf.xorwave.com
+Live demo: https://url.vet
 
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/abhizaik/phishing-detection.git
-cd phishing-detection
+git clone https://github.com/abhizaik/urlvet.git
+cd urlvet
 make start
 ```
 
@@ -51,7 +54,7 @@ Detailed setup guide: [docs/setup.md](docs/setup.md)
 
 ## How It Compares
 
-| Feature | SafeSurf | VirusTotal | Google Safe Browsing | URLScan.io | CheckPhish |
+| Feature | url.vet | VirusTotal | Google Safe Browsing | URLScan.io | CheckPhish |
 |---------|----------|------------|----------------------|------------|------------|
 | Live crawl, instant results | ✅ | Partial | ❌ | Partial | Partial |
 | Explains every verdict | ✅ | Partial | ❌ | Partial | Partial |
@@ -66,7 +69,7 @@ Detailed setup guide: [docs/setup.md](docs/setup.md)
 | Browser protection | ✅ | ✅ | ✅ | ✅ | ❌ |
 | Open source | ✅ | ❌ | ❌ | ❌ | ❌ |
 
-Fast scanners (like Google Safe Browsing) give you a verdict from database lookup with no explanation or live scanning. Deep crawlers (like URLScan.io) take too long. SafeSurf bridges the gap by doing live analysis with per-signal explanations in real time — and it's open-source.
+Fast scanners (like Google Safe Browsing) give you a verdict from database lookup with no explanation or live scanning. Deep crawlers (like URLScan.io) take too long. url.vet bridges the gap by doing live analysis with per-signal explanations in real time — and it's open-source.
 
 
 
@@ -161,7 +164,7 @@ Score formula: `finalScore = clamp(50 + (trustScore − riskScore) × 0.5)` → 
 32. PhishTank confirmed phishing _(community-verified)_
 33. PhishTank reported phishing _(awaiting verification, 3 h cache)_
 
-![SafeSurf Analyzer Pipeline](assets/pipeline.png)
+![url.vet Analyzer Pipeline](assets/pipeline.png)
 
 
 
@@ -176,14 +179,14 @@ Not a safety guarantee. Use alongside other defenses.
 
 Four containerized services on a shared Docker bridge network. The Go backend is the only service that makes outbound calls to external APIs — the frontend, Chrome, and cache are strictly internal.
 
-![SafeSurf Architecture](assets/architecture.png)
+![url.vet Architecture](assets/architecture.png)
 
 | Service | Role |
 |---|---|
-| `safesurf-web` | SvelteKit UI — :3000 (prod) · :5173 (dev) |
-| `safesurf-backend` | Go REST API & analyzer engine — :8080 |
-| `safesurf-chrome` | Headless Chrome — WebSocket :9222 |
-| `safesurf-valkey` | Valkey (Redis-compatible) — :6379, LRU cache, volume-persisted |
+| `urlvet-web` | SvelteKit UI — :3000 (prod) · :5173 (dev) |
+| `urlvet-backend` | Go REST API & analyzer engine — :8080 |
+| `urlvet-chrome` | Headless Chrome — WebSocket :9222 |
+| `urlvet-valkey` | Valkey (Redis-compatible) — :6379, LRU cache, volume-persisted |
 
 ### Request lifecycle
 1. URL submitted via the UI or REST API
@@ -196,7 +199,7 @@ Four containerized services on a shared Docker bridge network. The Go backend is
 
 ```text
 server/
-  cmd/safesurf/         entry point
+  cmd/urlvet/         entry point
   internal/analyzer/    goroutine runner, task definitions, score aggregation
   internal/service/
     checks/             18 individual analyzer implementations
@@ -227,7 +230,7 @@ docs/                   API, setup, architecture, security
 | [Maintenance](docs/maintenance.md) | Cache, logs, backups |
 | [Glossary](docs/glossary.md) | Terms and acronyms |
 
-Interactive API docs (Swagger UI): [api.safesurf.xorwave.com/swagger/index.html](https://api.safesurf.xorwave.com/swagger/index.html)
+Interactive API docs (Swagger UI): [api.url.vet/swagger/index.html](https://api.url.vet/swagger/index.html)
 
 
 ## Citation
@@ -238,7 +241,7 @@ If you use this project in academic or research work, please cite it — see [CI
 
 Copyright (C) 2023–2026 Abhishek K P
 
-SafeSurf is dual-licensed:
+url.vet is dual-licensed:
 
 - **Community** — [GNU Affero General Public License v3.0](LICENSE). Free to use, modify, and self-host. Any modified version run over a network must make its source code available to users.
 - **Commercial** — A separate [commercial license](COMMERCIAL.md) is available for organizations that cannot comply with the AGPL-3.0 (e.g. closed-source SaaS).
@@ -246,8 +249,8 @@ SafeSurf is dual-licensed:
 
 ## Contributing
 
-- Found a bug? → [Open an issue](https://github.com/abhizaik/phishing-detection/issues)
-- Have a question or idea? → [Start a discussion](https://github.com/abhizaik/phishing-detection/discussions)
+- Found a bug? → [Open an issue](https://github.com/abhizaik/urlvet/issues)
+- Have a question or idea? → [Start a discussion](https://github.com/abhizaik/urlvet/discussions)
 - Want to contribute code? → [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
 If you found this project helpful, consider giving it a star.
@@ -256,11 +259,11 @@ If you found this project helpful, consider giving it a star.
 
 
 <div align="center">
-  <a href="https://star-history.com/#abhizaik/phishing-detection&Date">
+  <a href="https://star-history.com/#abhizaik/urlvet&Date">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
-      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date" />
     </picture>
   </a>
 </div>

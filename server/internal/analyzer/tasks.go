@@ -4,12 +4,12 @@ import (
 	"context"
 	"strings"
 
-	"github.com/abhizaik/SafeSurf/internal/constants"
-	"github.com/abhizaik/SafeSurf/internal/service/checks"
-	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
-	"github.com/abhizaik/SafeSurf/internal/service/rank"
-	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
-	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
+	"github.com/abhizaik/urlvet/internal/constants"
+	"github.com/abhizaik/urlvet/internal/service/checks"
+	"github.com/abhizaik/urlvet/internal/service/domaininfo"
+	"github.com/abhizaik/urlvet/internal/service/rank"
+	"github.com/abhizaik/urlvet/internal/service/threatfeeds"
+	"github.com/abhizaik/urlvet/internal/service/typosquat"
 	"github.com/redis/go-redis/v9"
 )
 

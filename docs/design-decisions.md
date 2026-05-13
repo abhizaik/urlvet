@@ -1,6 +1,6 @@
 # Design Decisions
 
-Key architectural choices in SafeSurf and the reasoning behind them.
+Key architectural choices in url.vet and the reasoning behind them.
 
 ---
 
@@ -16,7 +16,7 @@ Key architectural choices in SafeSurf and the reasoning behind them.
 
 **Decision:** All detection is rule-based heuristics. No ML model.
 
-**Why:** Explainability is a first-class goal. Every verdict can be traced to specific, named signals with human-readable reasons. An ML model would give accurate verdicts but opaque ones — users and integrators couldn't understand or trust why a URL was flagged. The tradeoff is accepted: SafeSurf will miss sophisticated phishing that mimics legitimate site structure, but it will never produce a verdict nobody can explain.
+**Why:** Explainability is a first-class goal. Every verdict can be traced to specific, named signals with human-readable reasons. An ML model would give accurate verdicts but opaque ones — users and integrators couldn't understand or trust why a URL was flagged. The tradeoff is accepted: url.vet will miss sophisticated phishing that mimics legitimate site structure, but it will never produce a verdict nobody can explain.
 
 This decision may be revisited. If added, ML would be a separate signal alongside existing heuristics, not a replacement.
 
@@ -62,7 +62,7 @@ Tradeoff: no persistent scan history, no queries across results. Scan history (f
 
 **Decision:** The REST API uses the Gin framework.
 
-**Why:** Gin provides routing, middleware chaining, and request binding with minimal overhead. It is the most widely used Go HTTP framework with good community support. The alternative (stdlib `net/http`) would require writing routing and middleware manually; heavier frameworks (Echo, Fiber) offer no meaningful advantage for SafeSurf's API surface.
+**Why:** Gin provides routing, middleware chaining, and request binding with minimal overhead. It is the most widely used Go HTTP framework with good community support. The alternative (stdlib `net/http`) would require writing routing and middleware manually; heavier frameworks (Echo, Fiber) offer no meaningful advantage for url.vet's API surface.
 
 ---
 
@@ -76,7 +76,7 @@ Tradeoff: no persistent scan history, no queries across results. Scan history (f
 
 ## AGPL-3.0 license
 
-**Decision:** SafeSurf is licensed under AGPL-3.0 with a separate commercial license option.
+**Decision:** url.vet is licensed under AGPL-3.0 with a separate commercial license option.
 
 **Why:** AGPL requires any modified version run over a network to make its source code available. This prevents organizations from running a proprietary fork as a SaaS without contributing back. The commercial license option lets organizations that cannot comply with AGPL (closed-source SaaS) pay for an exception.
 

@@ -13,7 +13,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/logger"
+	"github.com/abhizaik/urlvet/internal/logger"
 	"github.com/chromedp/chromedp"
 )
 

@@ -165,10 +165,10 @@
   >
     <!-- Fade edges -->
     <div
-      class="absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-gray-950 to-transparent z-10 pointer-events-none"
+      class="absolute left-0 top-0 h-full w-10 bg-gradient-to-r from-white dark:from-gray-950 to-transparent z-10 pointer-events-none"
     ></div>
     <div
-      class="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-gray-950 to-transparent z-10 pointer-events-none"
+      class="absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-white dark:from-gray-950 to-transparent z-10 pointer-events-none"
     ></div>
 
     <div
@@ -181,7 +181,7 @@
           href={item.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex flex-col gap-3 p-4 rounded-xl border border-gray-800 bg-gray-900/60 hover:border-gray-700 hover:bg-gray-900 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30 transition-all duration-200 flex-shrink-0 w-72 text-left"
+          class="group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 hover:border-gray-400 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 transition-all duration-200 flex-shrink-0 w-72 text-left"
           draggable="false"
         >
           <div class="flex items-start justify-between gap-2">
@@ -192,7 +192,7 @@
                 {item.name[0]}
               </div>
               <div class="leading-tight">
-                <p class="text-sm font-semibold text-white">{item.name}</p>
+                <p class="text-sm font-semibold text-gray-900 dark:text-white">{item.name}</p>
                 <p class="text-xs text-gray-500">
                   {item.handle} <span class="ml-0.5">{item.flag}</span>
                 </p>
@@ -200,7 +200,7 @@
             </div>
             {#if item.type === "tweet"}
               <svg
-                class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -210,7 +210,7 @@
               </svg>
             {:else if item.type === "email"}
               <svg
-                class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -224,7 +224,7 @@
               </svg>
             {:else if item.type === "package"}
               <svg
-                class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -238,7 +238,7 @@
               </svg>
             {:else}
               <svg
-                class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
@@ -253,7 +253,9 @@
             {/if}
           </div>
 
-          <p class="text-sm text-gray-300 leading-relaxed relative z-10">"{item.text}"</p>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed relative z-10">
+            "{item.text}"
+          </p>
           <p class="text-xs text-gray-600">{item.date}</p>
         </a>
       {/each}

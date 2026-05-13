@@ -12,4 +12,4 @@
 | [performance.md](performance.md) | Latency characteristics, resource usage, tuning |
 | [design-decisions.md](design-decisions.md) | Key architectural choices and their rationale |
 | [maintenance.md](maintenance.md) | Cache management, log rotation, data updates, backups |
-| [glossary.md](glossary.md) | Definitions for domain terms and SafeSurf-internal concepts |
+| [glossary.md](glossary.md) | Definitions for domain terms and url.vet-internal concepts |

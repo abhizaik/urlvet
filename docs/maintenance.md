@@ -1,6 +1,6 @@
 # Maintenance
 
-Routine operational tasks for keeping a SafeSurf deployment healthy.
+Routine operational tasks for keeping a url.vet deployment healthy.
 
 ---
 
@@ -29,7 +29,7 @@ curl -X DELETE "http://localhost:8080/api/v1/cache/full_result:https://example.c
 ### Inspect cached keys directly in Valkey
 
 ```bash
-docker exec -it safesurf-valkey redis-cli -a "$CACHE_PASSWORD"
+docker exec -it urlvet-valkey redis-cli -a "$CACHE_PASSWORD"
 
 # List all keys
 KEYS *
@@ -90,7 +90,7 @@ find server/logs -type d -empty -delete
 Add to a host cron job (`crontab -e`):
 
 ```cron
-0 3 * * * find /path/to/SafeSurf/server/logs -name "*.log" -mtime +30 -delete
+0 3 * * * find /path/to/urlvet/server/logs -name "*.log" -mtime +30 -delete
 ```
 
 ---
@@ -145,7 +145,7 @@ Valkey snapshots to the `valkey_data` Docker volume automatically. To back up ma
 
 ```bash
 docker run --rm \
-  -v safesurf_valkey_data:/data \
+  -v urlvet_valkey_data:/data \
   -v $(pwd):/backup \
   alpine tar czf /backup/valkey-$(date +%Y%m%d).tar.gz /data
 ```
@@ -154,7 +154,7 @@ To restore:
 
 ```bash
 docker run --rm \
-  -v safesurf_valkey_data:/data \
+  -v urlvet_valkey_data:/data \
   -v $(pwd):/backup \
   alpine tar xzf /backup/valkey-YYYYMMDD.tar.gz -C /
 ```
@@ -168,7 +168,7 @@ docker run --rm \
 curl http://localhost:8080/health
 
 # Prometheus metrics snapshot
-curl -s http://localhost:8080/metrics | grep safesurf_
+curl -s http://localhost:8080/metrics | grep urlvet_
 
 # Container status and restart counts
 docker compose -f docker/prod/docker-compose.prod.yml ps

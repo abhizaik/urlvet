@@ -1,4 +1,4 @@
-# Contributing to SafeSurf
+# Contributing to url.vet
 
 Thank you for your interest in contributing!
 We welcome bug reports, feature requests, code, documentation, and testing help.

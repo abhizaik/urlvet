@@ -2,22 +2,22 @@
 
 ## Overview
 
-SafeSurf is a real-time URL analysis engine. When a URL is submitted — via the web UI, Chrome extension, or REST API — the Go backend runs **18 concurrent analyzers** across 7 signal categories, aggregates a trust/risk score, assigns a verdict, and returns a fully explainable report. Results are cached in Valkey so repeat lookups are instant.
+url.vet is a real-time URL analysis engine. When a URL is submitted — via the web UI, Chrome extension, or REST API — the Go backend runs **18 concurrent analyzers** across 7 signal categories, aggregates a trust/risk score, assigns a verdict, and returns a fully explainable report. Results are cached in Valkey so repeat lookups are instant.
 
 ---
 
 ## System Architecture
 
-![SafeSurf Architecture](../assets/architecture.png)
+![url.vet Architecture](../assets/architecture.png)
 
-Four containerized services run on a shared Docker bridge network (`safesurf-net`). The Go backend is the **only** service that makes outbound calls — the frontend, Chrome, and cache are strictly internal.
+Four containerized services run on a shared Docker bridge network (`urlvet-net`). The Go backend is the **only** service that makes outbound calls — the frontend, Chrome, and cache are strictly internal.
 
 | Service | Container | Role | Port |
 |---|---|---|---|
-| `safesurf-web` | SvelteKit UI | Renders the web interface; proxies API calls to the backend | `:3000` prod · `:5173` dev |
-| `safesurf-backend` | Go REST API | Validates URLs, runs analyzers, aggregates scores, manages cache | `:8080` |
-| `safesurf-chrome` | Headless Chrome | Takes page screenshots and serves content via WebSocket (chromedp) | `:9222` |
-| `safesurf-valkey` | Valkey (Redis-compatible) | LRU result cache, volume-persisted across restarts | `:6379` |
+| `urlvet-web` | SvelteKit UI | Renders the web interface; proxies API calls to the backend | `:3000` prod · `:5173` dev |
+| `urlvet-backend` | Go REST API | Validates URLs, runs analyzers, aggregates scores, manages cache | `:8080` |
+| `urlvet-chrome` | Headless Chrome | Takes page screenshots and serves content via WebSocket (chromedp) | `:9222` |
+| `urlvet-valkey` | Valkey (Redis-compatible) | LRU result cache, volume-persisted across restarts | `:6379` |
 
 **External services** (reached only by the backend over HTTPS/TCP):
 - **PhishTank** — confirmed phishing database lookups
@@ -30,7 +30,7 @@ Clients (browser, Chrome extension, API consumers) communicate directly with the
 
 ## Request Lifecycle
 
-![SafeSurf Analyzer Pipeline](../assets/pipeline.png)
+![url.vet Analyzer Pipeline](../assets/pipeline.png)
 
 ```
 Client
@@ -136,7 +136,7 @@ finalScore = clamp(50 + (trustScore − riskScore) × 0.5, 0, 100)
 
 ```
 server/
-├── cmd/safesurf/           entry point — init, router setup, graceful shutdown
+├── cmd/urlvet/           entry point — init, router setup, graceful shutdown
 ├── internal/
 │   ├── analyzer/
 │   │   ├── analyze.go      task registration, cache integration

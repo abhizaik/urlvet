@@ -171,74 +171,80 @@
     {@const ogScore =
       scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
     {@const desc = ogVerdict
-      ? `SafeSurf verdict: ${ogVerdict} — see the full breakdown for ${shareDomain}.`
-      : `SafeSurf scanned ${shareDomain}. Is it safe to open? Check the full report.`}
-    {@const ogImage = `https://safesurf.xorwave.com/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
-    <title>SafeSurf — Is {shareDomain} safe?</title>
+      ? `${ogVerdict} — url.vet scanned ${shareDomain}. See the full breakdown.`
+      : `Some link looks sus? url.vet scanned ${shareDomain} — check if it's actually safe to click.`}
+    {@const ogImage = `https://url.vet/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
+    <title>url.vet — is {shareDomain} sus?</title>
     <meta name="description" content={desc} />
-    <meta property="og:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta property="og:title" content="url.vet — is {shareDomain} sus?" />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content={currentUrl || `https://safesurf.xorwave.com/?q=${encodeURIComponent(data.queryUrl)}`}
+      content={currentUrl || `https://url.vet/?q=${encodeURIComponent(data.queryUrl)}`}
     />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SafeSurf — Is {shareDomain} safe?" />
+    <meta name="twitter:title" content="url.vet — is {shareDomain} sus?" />
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>SafeSurf — Know if any link is safe before you click it.</title>
+    <title>url.vet — some link looks sus? just url.vet it.</title>
     <meta
       name="description"
-      content="Free real-time URL scanner. Detect phishing, malware, and suspicious links in seconds — with transparent scoring."
+      content="Got a sketchy link? url.vet it. Free real-time URL scanner — instant verdict, no signup needed."
     />
-    <meta property="og:title" content="SafeSurf — Scan any link for threats before you click." />
+    <meta property="og:title" content="url.vet — just url.vet it." />
     <meta
       property="og:description"
-      content="Paste any link. Get an instant verdict — safe, suspicious, or risky. Free & transparent."
+      content="Some link looks sus? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://safesurf.xorwave.com" />
-    <meta property="og:image" content="https://safesurf.xorwave.com/safesurf.png" />
+    <meta property="og:url" content="https://url.vet" />
+    <meta property="og:image" content="https://url.vet/urlvet.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="SafeSurf — Scan any link for threats before you click." />
+    <meta name="twitter:title" content="url.vet — just url.vet it." />
     <meta
       name="twitter:description"
-      content="Scan any URL for phishing and hidden threats. Free, instant, transparent."
+      content="Some link looks sus? url.vet it. Free, instant, no signup."
     />
   {/if}
 </svelte:head>
 
-<section>
+<section class="relative overflow-hidden">
+  <div
+    class="absolute top-0 -left-8 w-48 h-48 dark:bg-blue-500/25 rounded-full blur-3xl animate-blob pointer-events-none z-0"
+  ></div>
+  <div
+    class="absolute top-8 right-0 w-36 h-36 dark:bg-indigo-500/20 rounded-full blur-3xl animate-blob animation-delay-2000 pointer-events-none z-0"
+  ></div>
   <div
     class={`max-w-4xl mx-auto px-6 ${isLanding ? "flex flex-col items-center text-center pt-16 md:pt-20 pb-12" : "py-12"}`}
   >
     <header class="relative mb-14 flex flex-col items-center text-center">
-      <div
-        class="absolute -top-16 -left-8 w-48 h-48 bg-blue-600/20 rounded-full blur-3xl animate-blob z-0"
-      ></div>
-      <div
-        class="absolute -top-8 right-0 w-36 h-36 bg-emerald-500/15 rounded-full blur-3xl animate-blob animation-delay-2000 z-0"
-      ></div>
-
-      <h1 class="relative text-5xl md:text-6xl font-extrabold tracking-tight text-white z-10">
+      <h1 class="relative text-5xl md:text-6xl font-extrabold tracking-tight z-10">
         <a
           href="/"
           on:click={() => (location.href = "/")}
-          class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 transition-all"
+          title="Pronounce: 'U-R-L dot vet'"
+          class="group inline-flex items-baseline"
         >
-          SafeSurf
+          <span
+            class="text-gray-500 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors"
+            >url</span
+          ><span class="text-blue-500 dark:text-blue-400">.</span><span
+            class="text-gray-800 dark:text-white group-hover:text-gray-900 dark:group-hover:text-gray-100 transition-colors"
+            >vet</span
+          >
         </a>
       </h1>
 
       <p
-        class="relative mt-1 text-gray-400 text-sm md:text-base font-light italic tracking-tight z-10 animate-fadeIn"
+        class="relative mt-1 text-gray-600 dark:text-gray-300 text-sm md:text-lg font-light italic tracking-tight z-10 animate-fadeIn"
       >
-        Every link wears a mask. Take it off.
+        some link looks sus? <strong class="font-bold">"just url.vet it"</strong>
       </p>
     </header>
 
@@ -251,8 +257,8 @@
           <input
             id="url-input"
             type="text"
-            class={`w-full rounded-xl bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-500 text-gray-200 focus:outline-none transition-all duration-200 ${formError ? "border-red-600/70" : "border-gray-700/80"}`}
-            placeholder="Paste link (e.g. example.com)"
+            class={`w-full rounded-xl bg-white dark:bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all duration-200 ${formError ? "border-red-400 dark:border-red-600/70" : "border-gray-300 dark:border-gray-700/80"}`}
+            placeholder="Paste URL (e.g. example.com)"
             bind:value={input}
             on:input={() => {
               if (formError) formError = null;
@@ -268,8 +274,8 @@
               type="button"
               on:click={pasteFromClipboard}
               class="h-full flex items-center gap-1.5 px-3.5 rounded-r-xl border-l text-[11px] font-medium transition-all duration-200 {justPasted
-                ? 'border-white/5 bg-emerald-500/10 text-emerald-400'
-                : 'border-white/5 bg-transparent hover:bg-white/5 text-gray-500 hover:text-gray-200'}"
+                ? 'border-gray-300 dark:border-white/5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                : 'border-gray-300 dark:border-white/5 bg-transparent hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500 hover:text-gray-800 dark:text-gray-500 dark:hover:text-gray-200'}"
               aria-label="Paste from clipboard"
               title="Paste from clipboard"
             >
@@ -394,7 +400,7 @@
               runAnalyze(example.url);
             }}
             title="Expected: {example.hint}"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-900 border border-gray-800 hover:border-gray-600 text-gray-400 hover:text-gray-200 text-xs transition-all"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 text-xs transition-all"
           >
             {example.label}
             <span

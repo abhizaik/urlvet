@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/abhizaik/SafeSurf/internal/admintoken"
+	"github.com/abhizaik/urlvet/internal/admintoken"
 	"github.com/gin-gonic/gin"
 )
 

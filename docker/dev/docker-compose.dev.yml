@@ -3,9 +3,9 @@ services:
     build:
       context: ../../server         # build context is the server folder
       dockerfile: ../docker/dev/go.Dockerfile
-    container_name: safesurf-backend-dev
+    container_name: urlvet-backend-dev
     environment:
-      CACHE_ADDR: "safesurf-valkey-dev:6379"
+      CACHE_ADDR: "urlvet-valkey-dev:6379"
       CACHE_PASSWORD: "${CACHE_PASSWORD}"
       PORT: "8080"
       CHROME_URL: "ws://chrome:9222"
@@ -13,7 +13,7 @@ services:
       - ../../server:/app
       - ../../server/.air.toml:/app/.air.toml:ro
       # Optional: mount screenshots to host for easy viewing/debug
-      - safesurf_screenshots:/app/tmp/screenshots
+      - urlvet_screenshots:/app/tmp/screenshots
     ports:
       - "8080:8080"
     depends_on:
@@ -22,20 +22,20 @@ services:
       chrome:
         condition: service_started
     networks:
-      - safesurf-dev-net
+      - urlvet-dev-net
   
   chrome:
     image: chromedp/headless-shell:latest
-    container_name: safesurf-chrome-dev
+    container_name: urlvet-chrome-dev
     restart: unless-stopped
     networks:
-      - safesurf-dev-net
+      - urlvet-dev-net
 
   web:
     build:
       context: ../..                # repo root (so Dockerfile can COPY web/website/package*.json)
       dockerfile: ./docker/dev/web.Dockerfile
-    container_name: safesurf-web-dev
+    container_name: urlvet-web-dev
     working_dir: /app
     environment:
       - HOST=0.0.0.0
@@ -46,11 +46,11 @@ services:
     ports:
       - "5173:5173"
     networks:
-      - safesurf-dev-net
+      - urlvet-dev-net
 
   valkey:
     image: valkey/valkey:8.0
-    container_name: safesurf-valkey-dev
+    container_name: urlvet-valkey-dev
     environment:
       REDISCLI_AUTH: "${CACHE_PASSWORD}"
     ports:
@@ -68,12 +68,12 @@ services:
       timeout: 3s
       retries: 3
     networks:
-      - safesurf-dev-net
+      - urlvet-dev-net
 
 networks:
-  safesurf-dev-net:
+  urlvet-dev-net:
     driver: bridge
 
 volumes:
   valkey_dev_data:
-  safesurf_screenshots:
+  urlvet_screenshots:

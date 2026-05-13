@@ -3,7 +3,7 @@ package checks
 import (
 	"strings"
 
-	"github.com/abhizaik/SafeSurf/internal/constants"
+	"github.com/abhizaik/urlvet/internal/constants"
 )
 
 type BrandResult struct {

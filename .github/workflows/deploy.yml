@@ -28,7 +28,7 @@ jobs:
     - name: Deploy via SSH
       run: |
         ssh ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} << 'EOF'
-          cd safesurf
+          cd urlvet
           git pull origin go
           docker compose -f docker-compose.prod.yml build
           docker compose -f docker-compose.prod.yml down

@@ -424,7 +424,7 @@ info:
     brand mismatches, and more.
   license:
     name: AGPL-3.0
-  title: SafeSurf API
+  title: url.vet API
   version: "1.0"
 paths:
   /analyze:

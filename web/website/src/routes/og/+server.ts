@@ -77,7 +77,7 @@ export const GET: RequestHandler = async ({ url }) => {
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
               },
-              children: 'SafeSurf',
+              children: 'url.vet',
             },
           },
           // Domain

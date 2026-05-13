@@ -3,9 +3,9 @@ services:
     build:
       context: ../../server
       dockerfile: ../docker/prod/go.Dockerfile
-    container_name: safesurf-backend
+    container_name: urlvet-backend
     environment:
-      CACHE_ADDR: "safesurf-valkey:6379"
+      CACHE_ADDR: "urlvet-valkey:6379"
       CACHE_PASSWORD: "${CACHE_PASSWORD}"
       PORT: "8080"
       CHROME_URL: "ws://chrome:9222"
@@ -18,20 +18,20 @@ services:
       - "8080:8080"
     restart: unless-stopped
     networks:
-      - safesurf-net
+      - urlvet-net
 
   chrome:
     image: chromedp/headless-shell:latest
-    container_name: safesurf-chrome
+    container_name: urlvet-chrome
     restart: unless-stopped
     networks:
-      - safesurf-net
+      - urlvet-net
 
   web:
     build:
       context: ../..
       dockerfile: ./docker/prod/web.Dockerfile
-    container_name: safesurf-web
+    container_name: urlvet-web
     depends_on:
       backend:
         condition: service_started
@@ -39,11 +39,11 @@ services:
       - "3000:80"
     restart: unless-stopped
     networks:
-      - safesurf-net
+      - urlvet-net
 
   valkey:
     image: valkey/valkey:8.0
-    container_name: safesurf-valkey
+    container_name: urlvet-valkey
     environment:
       REDISCLI_AUTH: "${CACHE_PASSWORD}"
     volumes:
@@ -57,10 +57,10 @@ services:
       retries: 3
     restart: unless-stopped
     networks:
-      - safesurf-net
+      - urlvet-net
 
 networks:
-  safesurf-net:
+  urlvet-net:
     driver: bridge
 
 volumes:

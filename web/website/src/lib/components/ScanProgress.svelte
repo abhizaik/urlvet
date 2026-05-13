@@ -75,9 +75,13 @@
 
 {#if loading || done}
   <div class="max-w-lg mx-auto mt-6 select-none" in:fade={{ duration: 200 }}>
-    <div class="rounded-2xl border border-gray-800 bg-gray-900/60 overflow-hidden">
+    <div
+      class="rounded-2xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 overflow-hidden"
+    >
       <!-- Header -->
-      <div class="flex items-center justify-between px-5 py-3.5 border-b border-gray-800/80">
+      <div
+        class="flex items-center justify-between px-5 py-3.5 border-b border-gray-100 dark:border-gray-800/80"
+      >
         <div class="flex items-center gap-2">
           {#if activeStep < STEPS.length}
             <span class="relative flex h-2 w-2">
@@ -101,7 +105,10 @@
       <!-- Active step (prominent) -->
       <div class="px-5 pt-5 pb-4 min-h-[3.5rem] flex items-center">
         {#key activeStep}
-          <p class="text-base font-medium text-white leading-snug" in:fly={{ y: 6, duration: 180 }}>
+          <p
+            class="text-base font-medium text-gray-900 dark:text-white leading-snug"
+            in:fly={{ y: 6, duration: 180 }}
+          >
             {#if activeStep >= 0 && activeStep < STEPS.length}
               {STEPS[activeStep]}
             {:else if activeStep === STEPS.length}
@@ -118,7 +125,7 @@
         <div class="flex justify-end mb-1.5">
           <span class="text-[10px] font-mono text-gray-600">{progress}%</span>
         </div>
-        <div class="h-1 bg-gray-800 rounded-full overflow-hidden">
+        <div class="h-1 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
           <div
             class="h-full rounded-full transition-all duration-500 ease-out {progress === 100
               ? 'bg-emerald-500'

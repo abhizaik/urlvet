@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/abhizaik/SafeSurf/internal/store"
+	"github.com/abhizaik/urlvet/internal/store"
 	"github.com/gin-gonic/gin"
 )
 

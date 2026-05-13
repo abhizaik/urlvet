@@ -1,23 +1,35 @@
-<script>
+<script lang="ts">
   import "../app.css";
+  import { onMount } from "svelte";
+  import { theme } from "$lib/theme";
+  import ThemeToggle from "$lib/components/ThemeToggle.svelte";
+
   const year = new Date().getFullYear();
+
+  onMount(() => {
+    theme.init();
+  });
 </script>
+
+<ThemeToggle />
 
 <div class="min-h-screen flex flex-col">
   <main class="flex-1">
     <slot />
   </main>
 
-  <footer class="bg-gray-900 text-gray-300 border-t border-gray-800 py-6">
+  <footer
+    class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800 py-6"
+  >
     <div
       class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center gap-3 text-sm md:text-base"
     >
       <!-- GitHub link -->
-      <p class="text-gray-400 flex items-center gap-2">
+      <p class="text-gray-500 dark:text-gray-400 flex items-center gap-2">
         <a
-          href="https://github.com/abhizaik/SafeSurf"
+          href="https://github.com/abhizaik/urlvet"
           target="_blank"
-          class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+          class="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center gap-2"
         >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -29,12 +41,12 @@
       </p>
 
       <!-- License and author -->
-      <p class="text-gray-400 text-center md:text-right">
-        SafeSurf is licensed under
+      <p class="text-gray-500 dark:text-gray-400 text-center md:text-right">
+        url.vet is licensed under
         <a
-          href="https://github.com/abhizaik/SafeSurf/blob/main/LICENSE"
+          href="https://github.com/abhizaik/urlvet/blob/main/LICENSE"
           target="_blank"
-          class="text-gray-300 hover:text-white transition-colors"
+          class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           AGPL-3.0
         </a>
@@ -42,7 +54,7 @@
         <a
           href="https://abhizaik.com"
           target="_blank"
-          class="text-gray-300 hover:text-white transition-colors"
+          class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           abhizaik
         </a>

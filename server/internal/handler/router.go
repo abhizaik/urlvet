@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/handler/middleware"
+	"github.com/abhizaik/urlvet/internal/handler/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -50,7 +50,7 @@ func SetupRouter() *gin.Engine {
 	// Swagger UI — served at /swagger/index.html
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// RootHandler returns basic info about the SafeSurf API service
+	// RootHandler returns basic info about the url.vet API service
 	r.GET("/", RootHandler)
 
 	// Unversioned global health check

@@ -2,9 +2,9 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-cmd = "go build -o tmp/safesurf -buildvcs=false ./cmd/safesurf"
-bin = "tmp/safesurf"
-full_bin = "tmp/safesurf"
+cmd = "go build -o tmp/urlvet -buildvcs=false ./cmd/urlvet"
+bin = "tmp/urlvet"
+full_bin = "tmp/urlvet"
 
 include_ext = ["go", "tpl", "tmpl", "html"]
 exclude_dir = ["tmp", "vendor", ".git"]

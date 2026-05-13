@@ -6,10 +6,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/abhizaik/SafeSurf/internal/service/checks"
-	"github.com/abhizaik/SafeSurf/internal/service/domaininfo"
-	"github.com/abhizaik/SafeSurf/internal/service/threatfeeds"
-	"github.com/abhizaik/SafeSurf/internal/service/typosquat"
+	"github.com/abhizaik/urlvet/internal/service/checks"
+	"github.com/abhizaik/urlvet/internal/service/domaininfo"
+	"github.com/abhizaik/urlvet/internal/service/threatfeeds"
+	"github.com/abhizaik/urlvet/internal/service/typosquat"
 )
 
 // Response and related public types mirror the handler's previous structs

@@ -323,7 +323,7 @@
 </script>
 
 <svelte:head>
-  <title>Admin — SafeSurf</title>
+  <title>Admin — url.vet</title>
   <meta name="robots" content="noindex, nofollow, noarchive" />
 </svelte:head>
 
@@ -331,7 +331,7 @@
   <div class="min-h-screen bg-gray-950 flex items-center justify-center px-4">
     <div class="w-full max-w-sm">
       <div class="text-center mb-8">
-        <h1 class="text-xl font-semibold text-white">SafeSurf Admin</h1>
+        <h1 class="text-xl font-semibold text-white">url.vet Admin</h1>
         <p class="text-sm text-gray-500 mt-1">Enter your admin password to continue</p>
       </div>
       <form
@@ -375,7 +375,7 @@
         <div class="flex items-center gap-3">
           <a
             href="/"
-            aria-label="Back to SafeSurf"
+            aria-label="Back to url.vet"
             class="text-gray-500 hover:text-gray-300 transition-colors"
           >
             <svg
@@ -393,7 +393,7 @@
             </svg>
           </a>
           <span class="text-gray-700">|</span>
-          <span class="text-sm font-semibold text-white">SafeSurf Admin</span>
+          <span class="text-sm font-semibold text-white">url.vet Admin</span>
         </div>
         <div class="flex items-center gap-2">
           <button
