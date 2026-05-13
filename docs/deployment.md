@@ -12,8 +12,8 @@
 ## 1. Clone and configure
 
 ```bash
-git clone https://github.com/abhizaik/phishing-detection.git
-cd phishing-detection
+git clone https://github.com/abhizaik/urlvet.git
+cd urlvet
 ```
 
 Create the backend env file:

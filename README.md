@@ -1,19 +1,20 @@
 <div align="center">
 
-# url.vet  Phishing Detection
-> *"just url.vet it"* · Previously known as SafeSurf
+# url.vet
 
-Open-source phishing detection engine for real-time URL analysis. Detect malicious links, explain every verdict, and generate a security report in real time.
+**some link looks sus? just url.vet it.**
 
+Open-source phishing detection engine — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
 
-[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go\&logoColor=white)](https://go.dev)
+[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
 [![License](https://img.shields.io/badge/License-AGPL--3-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/abhizaik/phishing-detection?style=social)](https://github.com/abhizaik/phishing-detection)
-[![Last Commit](https://img.shields.io/github/last-commit/abhizaik/phishing-detection)](https://github.com/abhizaik/phishing-detection/commits/main)
-
+[![GitHub stars](https://img.shields.io/github/stars/abhizaik/urlvet?style=social)](https://github.com/abhizaik/urlvet)
+[![Last Commit](https://img.shields.io/github/last-commit/abhizaik/urlvet)](https://github.com/abhizaik/urlvet/commits/main)
 
 [⚡ Quick Start](#quick-start) · [⚙️ Detection Engine](#detection-engine) · [🏛 Architecture](#architecture) · [📚 Docs](#documentation) · [🤝 Contributing](#contributing)
+
+<sub>(Previously known as SafeSurf)</sub>
 
 </div>
 
@@ -31,8 +32,8 @@ Live demo: https://url.vet
 ## Quick Start
 
 ```bash
-git clone https://github.com/abhizaik/phishing-detection.git
-cd phishing-detection
+git clone https://github.com/abhizaik/urlvet.git
+cd urlvet
 make start
 ```
 
@@ -248,8 +249,8 @@ url.vet is dual-licensed:
 
 ## Contributing
 
-- Found a bug? → [Open an issue](https://github.com/abhizaik/phishing-detection/issues)
-- Have a question or idea? → [Start a discussion](https://github.com/abhizaik/phishing-detection/discussions)
+- Found a bug? → [Open an issue](https://github.com/abhizaik/urlvet/issues)
+- Have a question or idea? → [Start a discussion](https://github.com/abhizaik/urlvet/discussions)
 - Want to contribute code? → [CONTRIBUTING.md](.github/CONTRIBUTING.md)
 
 If you found this project helpful, consider giving it a star.
@@ -258,11 +259,11 @@ If you found this project helpful, consider giving it a star.
 
 
 <div align="center">
-  <a href="https://star-history.com/#abhizaik/phishing-detection&Date">
+  <a href="https://star-history.com/#abhizaik/urlvet&Date">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
-      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/phishing-detection&type=Date" />
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=abhizaik/urlvet&type=Date" />
     </picture>
   </a>
 </div>
