@@ -12,6 +12,8 @@ Open-source phishing detection engine — paste any URL and get a trust score, a
 [![GitHub stars](https://img.shields.io/github/stars/abhizaik/urlvet?style=social)](https://github.com/abhizaik/urlvet)
 [![Last Commit](https://img.shields.io/github/last-commit/abhizaik/urlvet)](https://github.com/abhizaik/urlvet/commits/main)
 
+[English](./README.md) | [中文](./README.zh.md)
+
 [⚡ Quick Start](#quick-start) · [⚙️ Detection Engine](#detection-engine) · [🏛 Architecture](#architecture) · [📚 Docs](#documentation) · [🤝 Contributing](#contributing)
 
 <sub>(Previously known as SafeSurf)</sub>
