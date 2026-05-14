@@ -28,7 +28,7 @@ We are committed to fostering a friendly, safe, and inclusive environment.
 
 If you witness or experience unacceptable behavior, report it by email:
 
- `hi@abhizaik.com`
+ `[hi@url.vet](mailto:hi@url.vet)`
 
 Reports are confidential and will be handled with discretion.
 

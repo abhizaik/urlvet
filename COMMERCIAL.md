@@ -46,7 +46,7 @@ Pricing and specific terms are negotiated on a case-by-case basis depending on u
 To enquire about a commercial license, contact:
 
 **Abhishek K P**  
-hi@abhizaik.com
+[hi@url.vet](mailto:hi@url.vet)
 
 Please include a brief description of your intended use case and organization.
 

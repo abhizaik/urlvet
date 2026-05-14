@@ -6,7 +6,7 @@
 If you discover a security vulnerability in this project:
 
 1. **Do not open a GitHub issue or PR**
-2. **Email us directly** at: [hi@abhizaik.com]
+2. **Email us directly** at: [hi@url.vet](mailto:hi@url.vet)
 3. Include:
    - A detailed description
    - Steps to reproduce
