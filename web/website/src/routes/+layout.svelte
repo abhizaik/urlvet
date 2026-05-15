@@ -42,9 +42,8 @@
   {@html `<script type="application/ld+json">${JSON.stringify(schemaOrganization)}</script>`}
 </svelte:head>
 
-<ThemeToggle />
-
-<div class="min-h-screen flex flex-col">
+<div class="relative min-h-screen flex flex-col">
+  <ThemeToggle />
   <main class="flex-1">
     <slot />
   </main>
