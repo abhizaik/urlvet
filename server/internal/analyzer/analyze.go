@@ -113,10 +113,11 @@ func Analyze(ctx context.Context, rawURL string) (Response, []error) {
 		Features: Features{
 			Rank: out.Rank,
 			TLD: TLDInfo{
-				TLD:       out.TLD,
-				IsTrusted: out.TLDTrusted,
-				IsRisky:   out.TLDRisky,
-				IsICANN:   out.TLDICANN,
+				TLD:               out.TLD,
+				IsTrusted:         out.TLDTrusted,
+				IsRisky:           out.TLDRisky,
+				IsICANN:           out.TLDICANN,
+				IsHostingPlatform: out.TLDIsHostingPlatform,
 			},
 			URL: URLChecks{
 				IsURLShortener:   out.URLIsShortener,

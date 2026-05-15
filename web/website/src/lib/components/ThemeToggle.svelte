@@ -3,7 +3,7 @@
 </script>
 
 <button
-  class="fixed top-4 right-4 z-50 p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+  class="absolute top-4 right-4 z-10 p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
   on:click={theme.toggle}
   aria-label={$theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
   title={$theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}

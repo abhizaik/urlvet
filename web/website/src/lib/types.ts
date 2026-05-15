@@ -156,11 +156,13 @@ export interface PunycodeResponse {
 export interface TrustedTldResponse {
   is_trusted_tld: boolean;
   is_icann: boolean;
+  is_hosting_platform: boolean;
 }
 
 export interface RiskyTldResponse {
   is_risky_tld: boolean;
   is_icann: boolean;
+  is_hosting_platform: boolean;
 }
 
 export interface UrlShortenerResponse {

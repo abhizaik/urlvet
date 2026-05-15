@@ -1,6 +1,7 @@
 <script lang="ts">
   import TooltipIcon from "../TooltipIcon.svelte";
   export let infrastructure: any;
+  export let isHostingPlatform: boolean = false;
 </script>
 
 {#if infrastructure}
@@ -55,6 +56,10 @@
           <span class="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1"
             >✅ Detected</span
           >
+        {:else if isHostingPlatform}
+          <span class="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1"
+            >Managed by hosting platform</span
+          >
         {:else}
           <span class="text-red-400 font-medium flex items-center gap-1">❌ Not Detected</span>
         {/if}
@@ -93,6 +98,10 @@
         {#if infrastructure.mx_records_valid}
           <span class="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1"
             >✅ Detected</span
+          >
+        {:else if isHostingPlatform}
+          <span class="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-1"
+            >Not applicable</span
           >
         {:else}
           <span class="text-red-400 font-medium flex items-center gap-1">❌ Not Detected</span>

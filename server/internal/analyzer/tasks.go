@@ -105,11 +105,13 @@ func (tldTask) Name() string { return "tld_check" }
 func (tldTask) Run(in *Input, out *Output) error {
 	t, icann, tld := checks.IsTrustedTld(in.Domain)
 	r, _, _ := checks.IsRiskyTld(in.Domain)
+	_, isHosting := constants.TrustedHostingPlatforms[tld]
 	updateOutput(func(o *Output) {
 		o.TLDTrusted = t
 		o.TLDICANN = icann
 		o.TLDRisky = r
 		o.TLD = tld
+		o.TLDIsHostingPlatform = isHosting
 	})(out)
 	return nil
 }

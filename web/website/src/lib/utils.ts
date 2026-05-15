@@ -201,6 +201,7 @@ export function isValidUrl(url: string): boolean {
 }
 
 export function formatUrl(url: string): string {
+  url = url.trim();
   // Add protocol if missing
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     return `http://${url}`;

@@ -53,10 +53,11 @@ type Features struct {
 }
 
 type TLDInfo struct {
-	TLD       string `json:"tld"`
-	IsTrusted bool   `json:"is_trusted_tld"`
-	IsRisky   bool   `json:"is_risky_tld"`
-	IsICANN   bool   `json:"is_icann"`
+	TLD               string `json:"tld"`
+	IsTrusted         bool   `json:"is_trusted_tld"`
+	IsRisky           bool   `json:"is_risky_tld"`
+	IsICANN           bool   `json:"is_icann"`
+	IsHostingPlatform bool   `json:"is_hosting_platform"`
 }
 
 type Keywords struct {
@@ -138,11 +139,12 @@ type Output struct {
 	Timings map[string]string
 
 	// features
-	Rank       int
-	TLDTrusted bool
-	TLDRisky   bool
-	TLDICANN   bool
-	TLD        string
+	Rank                 int
+	TLDTrusted           bool
+	TLDRisky             bool
+	TLDICANN             bool
+	TLD                  string
+	TLDIsHostingPlatform bool
 
 	URLIsShortener     bool
 	URLUsesIP          bool
