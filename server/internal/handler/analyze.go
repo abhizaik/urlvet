@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	neturl "net/url"
+	"strings"
 	"time"
 
 	"github.com/abhizaik/urlvet/internal/analyzer"
@@ -22,7 +23,7 @@ import (
 //	@Failure		400	{object}	map[string]string
 //	@Router			/analyze [get]
 func AnalyzeURLHandler(c *gin.Context) {
-	url := c.Query("url")
+	url := strings.TrimSpace(c.Query("url"))
 	if url == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "url query param is required"})
 		return
