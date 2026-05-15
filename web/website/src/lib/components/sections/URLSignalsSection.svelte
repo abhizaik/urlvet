@@ -84,6 +84,10 @@
             <span class="text-emerald-700 dark:text-emerald-400 font-medium flex items-center gap-1"
               >✅ Yes</span
             >
+          {:else if features.tld.is_hosting_platform}
+            <span class="text-yellow-600 dark:text-yellow-400 font-medium flex items-center gap-1"
+              >Hosting Platform</span
+            >
           {:else}
             <span class="text-red-400 font-medium flex items-center gap-1">❌ No</span>
           {/if}

@@ -74,9 +74,13 @@
         d.typosquat_result?.is_suspicious ||
         (d.domain_randomness?.entropy ?? 0) > 3.8 ||
         d.features?.tld?.is_risky_tld ||
-        (d.features?.tld && !d.features?.tld?.is_icann)
+        (d.features?.tld && !d.features?.tld?.is_icann && !d.features?.tld?.is_hosting_platform)
       ),
-      infrastructure: !!(d.infrastructure && !d.infrastructure.nameservers_valid),
+      infrastructure: !!(
+        d.infrastructure &&
+        !d.infrastructure.nameservers_valid &&
+        !d.features?.tld?.is_hosting_platform
+      ),
       performance: false,
     };
   }
@@ -563,7 +567,7 @@
                 <span class="text-sm font-semibold text-gray-800 dark:text-gray-100"
                   >Hosting & Server</span
                 >
-                {#if data?.infrastructure && !data?.infrastructure?.nameservers_valid}
+                {#if data?.infrastructure && !data?.infrastructure?.nameservers_valid && !data?.features?.tld?.is_hosting_platform}
                   <span
                     class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0"
                     title="DNS issue detected"
@@ -585,7 +589,10 @@
                 : 'max-h-0 opacity-0 overflow-hidden'}"
             >
               <div class="acc-body border-t border-gray-100 dark:border-gray-800">
-                <InfrastructureSection infrastructure={data.infrastructure} />
+                <InfrastructureSection
+                  infrastructure={data.infrastructure}
+                  isHostingPlatform={!!data.features?.tld?.is_hosting_platform}
+                />
               </div>
             </div>
           </div>

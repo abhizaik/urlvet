@@ -15,17 +15,23 @@ func GenerateResult(resp Response) Result {
 
 	// --- 1. Popularity & Rank ---
 	if resp.Features.Rank == 0 {
-		// Changed from "Hardly known" to "Unranked"
-		badReasons = append(badReasons, "Very low traffic volume.")
-		riskScore += 20
+		if resp.Features.TLD.IsHostingPlatform {
+			// Personal/project pages on known hosting platforms are inherently unranked — not a risk signal.
+			neutralReasons = append(neutralReasons, fmt.Sprintf("Unranked subdomain on %s (normal for personal or project pages).", resp.Features.TLD.TLD))
+		} else {
+			badReasons = append(badReasons, "Very low traffic volume.")
+			riskScore += 10
+		}
 	} else if resp.Features.Rank > 0 && resp.Features.Rank <= 10000 {
 		goodReasons = append(goodReasons, fmt.Sprintf("Global Giant: Ranked #%d worldwide.", resp.Features.Rank))
 		trustScore += 90
-	} else if resp.Features.Rank > 50000 {
-		goodReasons = append(goodReasons, fmt.Sprintf("Established website with moderate popularity (#%d).", resp.Features.Rank))
+	} else if resp.Features.Rank <= 50000 {
+		// 10,001–50,000: well-known sites
+		goodReasons = append(goodReasons, fmt.Sprintf("Well-known website (#%d worldwide).", resp.Features.Rank))
 		trustScore += 50
 	} else {
-		goodReasons = append(goodReasons, fmt.Sprintf("Niche website with standard traffic volume (#%d).", resp.Features.Rank))
+		// 50,001+: ranked but lower traffic
+		goodReasons = append(goodReasons, fmt.Sprintf("Low-traffic but indexed website (#%d worldwide).", resp.Features.Rank))
 		trustScore += 20
 	}
 
@@ -44,8 +50,12 @@ func GenerateResult(resp Response) Result {
 	}
 
 	if !resp.Features.TLD.IsICANN {
-		badReasons = append(badReasons, "Unregulated or non-standard domain extension.")
-		riskScore += 30
+		if resp.Features.TLD.IsHostingPlatform {
+			// PSL private entry but operated by a reputable hosting company — small trust signal.
+		} else {
+			badReasons = append(badReasons, "Unregulated or non-standard domain extension.")
+			riskScore += 30
+		}
 	}
 
 	// --- 3. Security Protocols ---
@@ -98,14 +108,17 @@ func GenerateResult(resp Response) Result {
 
 	// --- 5. Infrastructure Forensics ---
 	if !resp.Infrastructure.NameserversValid {
-		badReasons = append(badReasons, "Incomplete or missing DNS configuration.")
-		riskScore += 10
+		if resp.Features.TLD.IsHostingPlatform {
+			// Hosting platforms manage the entire DNS zone; individual subdomains have no own NS records.
+		} else {
+			badReasons = append(badReasons, "Incomplete or missing DNS configuration.")
+			riskScore += 10
+		}
 	}
 
 	// MX records
-	if !resp.Infrastructure.MXRecordsValid {
+	if !resp.Infrastructure.MXRecordsValid && !resp.Features.TLD.IsHostingPlatform {
 		neutralReasons = append(neutralReasons, "No email server configured for this domain.")
-		// Reduced risk score here, as some landing pages legitimately don't have email
 		riskScore += 5
 	}
 
