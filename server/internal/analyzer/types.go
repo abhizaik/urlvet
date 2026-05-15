@@ -139,12 +139,12 @@ type Output struct {
 	Timings map[string]string
 
 	// features
-	Rank                  int
-	TLDTrusted            bool
-	TLDRisky              bool
-	TLDICANN              bool
-	TLD                   string
-	TLDIsHostingPlatform  bool
+	Rank                 int
+	TLDTrusted           bool
+	TLDRisky             bool
+	TLDICANN             bool
+	TLD                  string
+	TLDIsHostingPlatform bool
 
 	URLIsShortener     bool
 	URLUsesIP          bool
