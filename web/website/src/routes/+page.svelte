@@ -216,6 +216,7 @@
     <meta property="og:title" content="url.vet — is {shareDomain} sus?" />
     <meta property="og:description" content={desc} />
     <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://url.vet" />
     <meta
       property="og:url"
       content={currentUrl || `https://url.vet/?q=${encodeURIComponent(data.queryUrl)}`}
@@ -238,6 +239,7 @@
       property="og:description"
       content="Some link looks sus? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
     />
+    <link rel="canonical" href="https://url.vet" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://url.vet" />
     <meta property="og:image" content="https://url.vet/urlvet-light.png" />
