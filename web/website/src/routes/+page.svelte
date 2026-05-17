@@ -209,7 +209,7 @@
       scanResult?.result?.final_score ?? (data.score ? Number(data.score) : undefined)}
     {@const desc = ogVerdict
       ? `${ogVerdict} — url.vet scanned ${shareDomain}. See the full breakdown.`
-      : `Some link looks sus? url.vet scanned ${shareDomain} — check if it's actually safe to click.`}
+      : `Sketchy link? url.vet scanned ${shareDomain} — check if it's actually safe to click.`}
     {@const ogImage = `https://url.vet/og?domain=${encodeURIComponent(shareDomain)}${ogVerdict ? `&v=${encodeURIComponent(ogVerdict)}` : ""}${ogScore !== undefined ? `&s=${ogScore}` : ""}`}
     <title>url.vet — is {shareDomain} sus?</title>
     <meta name="description" content={desc} />
@@ -229,7 +229,7 @@
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>url.vet — some link looks sus? just url.vet it.</title>
+    <title>url.vet — sketchy link? just url.vet it.</title>
     <meta
       name="description"
       content="Got a sketchy link? url.vet it. Free real-time URL scanner — instant verdict, no signup needed."
@@ -237,7 +237,7 @@
     <meta property="og:title" content="url.vet — just url.vet it." />
     <meta
       property="og:description"
-      content="Some link looks sus? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
+      content="Sketchy link? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
     />
     <link rel="canonical" href="https://url.vet" />
     <meta property="og:type" content="website" />
@@ -247,7 +247,7 @@
     <meta name="twitter:title" content="url.vet — just url.vet it." />
     <meta
       name="twitter:description"
-      content="Some link looks sus? url.vet it. Free, instant, no signup."
+      content="Sketchy link? url.vet it. Free, instant, no signup."
     />
     {@html `<script type="application/ld+json">${JSON.stringify(schemaSoftwareApp)}</script>`}
   {/if}
@@ -261,16 +261,11 @@
     class="absolute top-8 right-0 w-36 h-36 dark:bg-indigo-500/20 rounded-full blur-3xl animate-blob animation-delay-2000 pointer-events-none z-0"
   ></div>
   <div
-    class={`max-w-4xl mx-auto px-6 ${isLanding ? "flex flex-col items-center text-center pt-16 md:pt-20 pb-12" : "py-12"}`}
+    class={`max-w-5xl mx-auto px-6 ${isLanding ? "flex flex-col items-center text-center pt-16 md:pt-20 pb-12" : "py-12"}`}
   >
     <header class="relative mb-14 flex flex-col items-center text-center">
       <h1 class="relative text-5xl md:text-6xl font-extrabold tracking-tight z-10">
-        <a
-          href="/"
-          on:click={() => (location.href = "/")}
-          title="Pronounce: 'U-R-L dot vet'"
-          class="group inline-flex items-baseline"
-        >
+        <a href="/" on:click={() => (location.href = "/")} class="group inline-flex items-baseline">
           <span
             class="text-gray-500 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors"
             >url</span
@@ -282,12 +277,7 @@
       </h1>
 
       <p class="relative mt-3 text-gray-500 dark:text-gray-400 text-sm md:text-base z-10">
-        Know if a link is safe before you click.
-      </p>
-      <p
-        class="relative mt-1 text-gray-600 dark:text-gray-300 text-sm md:text-lg font-light italic tracking-tight z-10 animate-fadeIn"
-      >
-        sketchy link? <strong class="font-bold">"just url.vet it"</strong>
+        sketchy link? just url.vet it.
       </p>
     </header>
 
