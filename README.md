@@ -2,7 +2,7 @@
 
 # url.vet
 
-**some link looks sus? just url.vet it.**
+**sketchy link? just url.vet it.**
 
 Open-source phishing detection engine — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
 
