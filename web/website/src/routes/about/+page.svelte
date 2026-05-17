@@ -87,8 +87,8 @@
             Creator &amp; maintainer
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            Security-minded builder who got tired of sketchy links with no good answer and decided
-            to build one.
+            Builds things on the internet. Got one too many suspicious links with no good way to
+            check them, so built url.vet.
           </p>
           <div class="flex items-center gap-4 mt-3">
             <a
@@ -127,7 +127,7 @@
         </div>
       </div>
       <p class="text-sm text-gray-500 dark:text-gray-400">
-        Built with help from
+        With help from
         <a
           href="https://github.com/abhizaik/urlvet/graphs/contributors"
           target="_blank"
