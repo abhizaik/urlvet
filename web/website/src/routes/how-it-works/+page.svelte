@@ -2,7 +2,7 @@
   <title>How It Works — url.vet</title>
   <meta
     name="description"
-    content="How url.vet detects phishing links: 18 concurrent analyzers, 33 signals across 7 categories, fully explainable scoring. No black-box ML."
+    content="How to use url.vet: paste a link, read the score, understand the verdict. Plus a look at what's running under the hood."
   />
   <link rel="canonical" href="https://url.vet/how-it-works" />
 </svelte:head>
@@ -21,263 +21,132 @@
     </a>
 
     <h1 class="text-3xl font-bold tracking-tight mb-3">How It Works</h1>
-    <p class="text-gray-500 dark:text-gray-400 text-lg mb-8">
-      18 concurrent analyzers. 33 signals. Every verdict is fully explainable, no black-box ML.
+    <p class="text-gray-500 dark:text-gray-400 text-lg mb-12">
+      Paste a link. Get an answer. Here's what happens and how to read it.
     </p>
 
-    <div class="space-y-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-12">
-      <p>
-        When you paste a URL, url.vet doesn't look it up in a database. It actively fetches and
-        analyzes it in real time. Eighteen checks run in parallel, each probing a different
-        dimension of the link: its structure, DNS records, TLS certificate, domain age, whether the
-        page content matches what the domain implies, and whether it appears in any threat feeds.
-      </p>
-      <p>
-        Each check emits a reason (good, bad, or neutral) and a numeric weight. Those weights feed
-        into a single score using a transparent formula. You can see exactly what pushed the score
-        up or down, which is the only way a safety verdict is actually useful.
-      </p>
-    </div>
-
-    <!-- Pipeline image -->
-    <div class="mb-14">
-      <img
-        src="/pipeline.png"
-        alt="url.vet analyzer pipeline showing 18 checks across 7 signal categories feeding into a single trust score"
-        class="w-full rounded-xl border border-gray-200 dark:border-gray-800 dark:invert"
-        loading="lazy"
-      />
-      <p class="text-xs text-gray-400 dark:text-gray-500 mt-2 text-center">
-        All 18 checks run concurrently via goroutines
-      </p>
-    </div>
-
-    <!-- Scoring formula -->
+    <!-- Step 1: Using it -->
     <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-4">The Score</h2>
-      <div
-        class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-5 font-mono text-sm mb-5"
-      >
-        finalScore = clamp(50 + (trustScore − riskScore) × 0.5)
-      </div>
-      <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-5">
-        50 is the neutral baseline. A URL with no signals at all scores exactly 50, landing in
-        Suspicious. That's intentional: an unknown link should be treated as unknown, not safe.
-        Trust signals pull the score up; risk signals pull it down. Each side is capped at 100
-        individually, so a single catastrophic signal can't drown out everything else.
-      </p>
-      <div class="flex flex-wrap gap-3">
-        <span
-          class="px-3 py-1.5 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300"
-        >
-          Risky — score &lt; 30
-        </span>
-        <span
-          class="px-3 py-1.5 rounded-full text-sm font-medium bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-300"
-        >
-          Suspicious — 30 to 64
-        </span>
-        <span
-          class="px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300"
-        >
-          Safe — 65 and above
-        </span>
-      </div>
-    </section>
-
-    <!-- Signal categories -->
-    <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-2">Signal Categories</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-8">
-        Seven categories, 33 individual signals. Each runs independently; a failure in one never
-        blocks another.
-      </p>
-      <div class="space-y-8">
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-full"
-              >URL Structure</span
-            >
-            <span class="text-xs text-gray-400">8 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            Analyzed before any network request is made.
-          </p>
-          <ol class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside">
-            <li>Raw IP address used as hostname instead of a domain name</li>
-            <li>Punycode or IDN-encoded hostname (lookalike domain spoofing)</li>
-            <li>URL shortener service detected</li>
-            <li>Abnormally long URL</li>
-            <li>Deeply nested path structure</li>
-            <li>Phishing keywords in the path: login, verify, secure, update, confirm…</li>
-            <li>Excessive subdomain depth</li>
-            <li>
-              Non-ASCII characters in hostname (IDN homograph attack, e.g. аpple.com with Cyrillic
-              а)
-            </li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 px-2.5 py-1 rounded-full"
-              >HTTP / Network</span
-            >
-            <span class="text-xs text-gray-400">4 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            One real HTTP request follows the full redirect chain.
-          </p>
-          <ol
-            start="9"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>Redirect chain length</li>
-            <li>Final destination is a different domain than the original link</li>
-            <li>HSTS header present</li>
-            <li>HTTP status code</li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/30 px-2.5 py-1 rounded-full"
-              >DNS</span
-            >
-            <span class="text-xs text-gray-400">3 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            Checks that the domain resolves and has legitimate infrastructure in place.
-          </p>
-          <ol
-            start="13"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>NS record validity</li>
-            <li>MX record validity</li>
-            <li>IP resolution</li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2.5 py-1 rounded-full"
-              >TLS / SSL</span
-            >
-            <span class="text-xs text-gray-400">2 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            One TLS handshake checks the full certificate chain.
-          </p>
-          <ol
-            start="16"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>TLS presence and hostname match</li>
-            <li>
-              Certificate chain validity: expiry, issuer, CT log inclusion, known-bad fingerprints
-            </li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-cyan-900/30 px-2.5 py-1 rounded-full"
-              >Domain Intelligence</span
-            >
-            <span class="text-xs text-gray-400">6 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            Passive checks on the domain's history and registration.
-          </p>
-          <ol
-            start="18"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>Global traffic rank (position in the top-1M popularity list)</li>
-            <li>TLD classification: trusted, risky, or ICANN-registered</li>
-            <li>Domain registration age via WHOIS (newly registered domains carry high risk)</li>
-            <li>DNSSEC</li>
-            <li>Shannon entropy score (detects algorithmically generated domain names)</li>
-            <li>Typosquatting and combo-squatting against 500+ known brands</li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 px-2.5 py-1 rounded-full"
-              >Content Analysis</span
-            >
-            <span class="text-xs text-gray-400">8 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            The page is fetched and parsed. Most expensive step, most revealing.
-          </p>
-          <ol
-            start="24"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>Login form on an unranked or newly registered domain</li>
-            <li>Payment form with credit card or CVV fields</li>
-            <li>Personal information collection form</li>
-            <li>Hidden iframes (credential theft or clickjacking vector)</li>
-            <li>1×1 tracking pixels</li>
-            <li>
-              Brand impersonation: brand name in page content doesn't match the hosting domain
-            </li>
-            <li>Form that submits data to a third-party domain</li>
-            <li>Password field served over unencrypted HTTP</li>
-          </ol>
-        </div>
-
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span
-              class="text-xs font-semibold uppercase tracking-wider text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2.5 py-1 rounded-full"
-              >Threat Intelligence</span
-            >
-            <span class="text-xs text-gray-400">2 signals</span>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">
-            Cross-referenced against community-maintained phishing databases.
-          </p>
-          <ol
-            start="32"
-            class="space-y-1.5 text-sm text-gray-700 dark:text-gray-300 list-decimal list-inside"
-          >
-            <li>PhishTank confirmed phishing (community-verified)</li>
-            <li>PhishTank reported but unverified (cached 3 hours)</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- Request lifecycle -->
-    <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-2">What Happens When You Submit a URL</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-        From paste to verdict, typically in under 5 seconds.
-      </p>
-      <ol class="space-y-4">
-        {#each [{ step: "Validate and normalize", desc: "The URL is validated and normalized. If the scheme is missing, https:// is inferred." }, { step: "Cache check", desc: "Results are cached for 24 hours. A cache hit returns the full report instantly with no re-analysis." }, { step: "18 goroutines launch", desc: "On a cache miss, all 18 checks start simultaneously via sync.WaitGroup. A panic in one task is recovered without affecting the others." }, { step: "Score aggregated", desc: "Each check returns a numeric weight and a reason string. Trust and risk scores are summed, clamped, and fed into the formula." }, { step: "Result returned", desc: "Trust score, verdict, every individual reason, redirect chain, page screenshot, and per-task timing in one response." }] as item, i}
+      <h2 class="text-xl font-semibold mb-5">Using url.vet</h2>
+      <ol class="space-y-5">
+        {#each [{ n: "1", title: "Paste any link", desc: "Drop a URL into the input box — full link, shortened link, or just a domain like example.com. url.vet will normalize it." }, { n: "2", title: "Hit Check", desc: "The scan runs live. It takes a few seconds because url.vet actually fetches the page rather than looking it up in a static database." }, { n: "3", title: "Read the result", desc: "You'll get a trust score from 0 to 100, a verdict, and a breakdown of every signal that contributed to it." }] as item}
           <li class="flex gap-4">
             <span
-              class="flex-shrink-0 w-6 h-6 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs font-semibold flex items-center justify-center mt-0.5"
-              >{i + 1}</span
+              class="flex-shrink-0 w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-semibold flex items-center justify-center mt-0.5"
+              >{item.n}</span
             >
             <div>
-              <p class="text-sm font-medium">{item.step}</p>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{item.desc}</p>
+              <p class="text-sm font-semibold mb-0.5">{item.title}</p>
+              <p class="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
             </div>
           </li>
         {/each}
       </ol>
+    </section>
+
+    <!-- Understanding the output -->
+    <section class="mb-14">
+      <h2 class="text-xl font-semibold mb-5">Reading the Result</h2>
+
+      <!-- Score -->
+      <div class="mb-8">
+        <p class="text-sm font-semibold mb-2">The trust score</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          A number from 0 to 100. Higher is safer. 50 is the neutral baseline — a brand new unknown
+          URL with no signals in either direction. Most legitimate sites score above 65; anything
+          below 30 has serious red flags.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <div
+            class="flex items-center gap-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-lg px-3.5 py-2.5"
+          >
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500 flex-shrink-0"></span>
+            <div>
+              <p class="text-xs font-semibold text-red-700 dark:text-red-300">Risky</p>
+              <p class="text-xs text-red-600/70 dark:text-red-400/70">score below 30</p>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2.5 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/40 rounded-lg px-3.5 py-2.5"
+          >
+            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500 flex-shrink-0"></span>
+            <div>
+              <p class="text-xs font-semibold text-yellow-700 dark:text-yellow-300">Suspicious</p>
+              <p class="text-xs text-yellow-600/70 dark:text-yellow-400/70">score 30 to 64</p>
+            </div>
+          </div>
+          <div
+            class="flex items-center gap-2.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800/40 rounded-lg px-3.5 py-2.5"
+          >
+            <span class="w-2.5 h-2.5 rounded-full bg-green-500 flex-shrink-0"></span>
+            <div>
+              <p class="text-xs font-semibold text-green-700 dark:text-green-300">Safe</p>
+              <p class="text-xs text-green-600/70 dark:text-green-400/70">score 65 and above</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="mb-8">
+        <p class="text-sm font-semibold mb-2">The signal breakdown</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Below the score you'll see every check that ran, grouped into sections: URL structure,
+          DNS, TLS, domain intelligence, content, and threat feeds. Each one shows a green
+          checkmark, a red flag, or a neutral note. Red flags increase the risk score; green
+          checkmarks build trust. Neutral notes are shown for context but don't affect the score.
+        </p>
+      </div>
+
+      <!-- Screenshot -->
+      <div class="mb-8">
+        <p class="text-sm font-semibold mb-2">The page preview</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          url.vet takes a live screenshot of the page. It's one of the fastest ways to spot a
+          phishing site — if the page looks like your bank's login screen but the domain has nothing
+          to do with your bank, that's a red flag no automated check can fully capture.
+        </p>
+      </div>
+
+      <!-- Sharing -->
+      <div>
+        <p class="text-sm font-semibold mb-2">Sharing a result</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400">
+          Every scan has a permanent shareable URL. Use it to send a result to a colleague, post it
+          in a security thread, or report a suspicious link to someone who needs context. The link
+          includes the verdict and score so recipients see the summary without having to re-scan.
+        </p>
+      </div>
+    </section>
+
+    <!-- Under the hood (condensed) -->
+    <section class="mb-14">
+      <h2 class="text-xl font-semibold mb-2">Under the Hood</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+        18 checks run concurrently the moment you submit. Each one is independent — a timeout or
+        failure in one never delays the others.
+      </p>
+
+      <!-- Pipeline image -->
+      <div class="mb-8">
+        <img
+          src="/pipeline.png"
+          alt="url.vet analyzer pipeline showing 18 checks across 7 signal categories"
+          class="w-full rounded-xl border border-gray-200 dark:border-gray-800 dark:invert"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="space-y-3">
+        {#each [{ label: "URL structure", desc: "Inspects the link itself before any network request: IP-as-hostname, URL shorteners, suspicious path keywords, IDN homograph encoding, subdomain depth." }, { label: "HTTP / Network", desc: "Makes one real request and follows every redirect. Checks HSTS, status code, and whether the final destination is a different domain than what you clicked." }, { label: "DNS", desc: "Verifies NS and MX records exist and that the domain resolves to a real IP." }, { label: "TLS / SSL", desc: "Checks certificate validity, expiry, issuer, Certificate Transparency log inclusion, and known-bad fingerprints." }, { label: "Domain intelligence", desc: "Looks up domain age via WHOIS, global traffic rank, TLD classification, DNSSEC, Shannon entropy, and typosquatting against 500+ brands." }, { label: "Content analysis", desc: "Fetches and parses the page. Detects login and payment forms on suspicious domains, hidden iframes, brand impersonation, and forms that exfiltrate data to third parties." }, { label: "Threat intelligence", desc: "Cross-references against PhishTank's confirmed and reported phishing databases." }] as item}
+          <div class="flex gap-3 py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
+            <p class="text-sm font-medium w-40 flex-shrink-0 text-gray-700 dark:text-gray-300">
+              {item.label}
+            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+          </div>
+        {/each}
+      </div>
     </section>
 
     <!-- Limitations -->
