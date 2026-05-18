@@ -42,11 +42,11 @@ func TestGenerateResult_Verdict(t *testing.T) {
 			name: "unranked domain",
 			modify: func(r *Response) {
 				r.Features.Rank = 0
-				// no rank trust (was +90), trust=0, risk=20
-				// finalScore = 50 + (0-20)*0.5 = 40 → "Suspicious"
+				// no rank trust (was +90), trust=0, risk=10
+				// finalScore = 50 + (0-10)*0.5 = 45 → "Suspicious"
 			},
 			wantVerdict: "Suspicious",
-			wantRiskMin: 20,
+			wantRiskMin: 10,
 		},
 		{
 			name: "HSTS adds trust",

@@ -4,7 +4,7 @@
 
 **sketchy link? just url.vet it.**
 
-Open-source phishing detection engine — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
+Open-source phishing detection engine (urlvet) — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
@@ -16,7 +16,7 @@ Open-source phishing detection engine — paste any URL and get a trust score, a
 
 [⚡ Quick Start](#quick-start) · [⚙️ Detection Engine](#detection-engine) · [🏛 Architecture](#architecture) · [📚 Docs](#documentation) · [🤝 Contributing](#contributing)
 
-<sub>(Previously known as SafeSurf)</sub>
+<sub>Also known as urlvet · Previously known as SafeSurf</sub>
 
 </div>
 
@@ -28,7 +28,7 @@ Open-source phishing detection engine — paste any URL and get a trust score, a
 
 ![Phishing Detection Demo](assets/demo.gif)
 
-Live demo: https://url.vet
+Live demo: https://url.vet &nbsp;_(urlvet)_
 
 
 ## Quick Start

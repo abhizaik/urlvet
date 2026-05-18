@@ -1,1 +1,1 @@
-cd web/website && npx prettier --check .
+make ci

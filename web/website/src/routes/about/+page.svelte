@@ -2,7 +2,7 @@
   <title>About — url.vet</title>
   <meta
     name="description"
-    content="url.vet is an open-source phishing detection engine built to make the web a little safer. Free, transparent, and fully explainable."
+    content="url.vet (urlvet) is an open-source phishing detection engine built to make the web a little safer. Free, transparent, and fully explainable."
   />
   <link rel="canonical" href="https://url.vet/about" />
 </svelte:head>

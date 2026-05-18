@@ -232,7 +232,11 @@
     <title>url.vet — sketchy link? just url.vet it.</title>
     <meta
       name="description"
-      content="Got a sketchy link? url.vet it. Free real-time URL scanner — instant verdict, no signup needed."
+      content="Got a sketchy link? url.vet it (urlvet) — free, instant phishing verdict with no signup needed."
+    />
+    <meta
+      name="keywords"
+      content="urlvet, url.vet, URL scanner, phishing detection, link checker, safe link checker, phishing URL checker, link safety checker"
     />
     <meta property="og:title" content="url.vet — just url.vet it." />
     <meta

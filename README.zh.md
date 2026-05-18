@@ -2,9 +2,9 @@
 
 # url.vet
 
-**链接看起来可疑？就用 url.vet 检测一下。**
+**链接看起来可疑？就用 url.vet (urlvet) 检测一下。**
 
-开源钓鱼网站检测引擎 — 粘贴任意 URL，实时获取信任评分、完整可解释的检测报告，以及带有页面预览的可分享安全报告。
+开源 URL 安全检测引擎（urlvet）— 粘贴任意链接，实时获取信任评分、完整可解释的检测报告，以及带有页面预览的可分享安全报告。
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
@@ -16,7 +16,7 @@
 
 [⚡ 快速开始](#快速开始) · [⚙️ 检测引擎](#检测引擎) · [🏛 架构](#架构) · [📚 文档](#文档) · [🤝 贡献](#贡献)
 
-<sub>（原名 SafeSurf）</sub>
+<sub>英文名 urlvet · 原名 SafeSurf</sub>
 
 </div>
 
