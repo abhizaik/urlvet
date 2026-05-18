@@ -278,6 +278,7 @@
             >vet</span
           >
         </a>
+        <span class="sr-only">(urlvet)</span>
       </h1>
 
       <p class="relative mt-3 text-gray-500 dark:text-gray-400 text-sm md:text-base z-10">
