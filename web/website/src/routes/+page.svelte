@@ -285,7 +285,7 @@
         sketchy link? just url.vet it
       </p>
       <p class="relative mt-2 text-gray-400 dark:text-gray-500 text-xs md:text-sm z-10">
-        Free link safety checker. Scan any URL for phishing, malware & suspicious redirects
+        FOSS link safety checker: scan any URL for phishing, malware & suspicious redirects
       </p>
     </header>
 
