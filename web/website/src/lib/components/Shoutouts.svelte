@@ -16,16 +16,6 @@
 
   const items: Item[] = [
     {
-      type: "email",
-      name: "Raj",
-      handle: "via email",
-      date: "Oct 1, 2023",
-      text: "I am using this project as reference for my BTech final year project.",
-      url: "https://x.com/abhizaik/status/1708401691367022776",
-      accent: "from-emerald-500 to-teal-600",
-      flag: "🇮🇳",
-    },
-    {
       type: "paper",
       name: "Academic Research",
       handle: "ijesr.org",
@@ -50,7 +40,7 @@
       name: "Dika Ardianta",
       handle: "@DikaArdnt",
       date: "Apr 28, 2026",
-      text: "I ported the detection engine to PHP and published it as a Composer package on packagist.org",
+      text: "I ported the detection engine to PHP and published it as an unofficial community Composer package on packagist.org",
       url: "https://packagist.org/packages/safesurf/safesurf",
       accent: "from-fuchsia-500 to-pink-600",
       flag: "🇮🇩",
@@ -146,7 +136,7 @@
 
 <div class="pb-8 md:pb-0">
   <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-5 text-center">
-    What people are saying
+    Used by developers, researchers &amp; students worldwide
   </p>
 
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
