@@ -181,7 +181,7 @@
           href={item.url}
           target="_blank"
           rel="noopener noreferrer"
-          class="group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 hover:border-gray-400 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 transition-all duration-200 flex-shrink-0 w-72 text-left"
+          class="group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 hover:border-gray-400 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/10 dark:hover:shadow-black/30 transition-all duration-200 flex-shrink-0 w-72 text-left cursor-pointer"
           draggable="false"
         >
           <div class="flex items-start justify-between gap-2">
@@ -256,7 +256,27 @@
           <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed relative z-10">
             "{item.text}"
           </p>
-          <p class="text-xs text-gray-600">{item.date}</p>
+          <div class="flex items-center justify-between mt-auto">
+            <p class="text-xs text-gray-400 dark:text-gray-600">{item.date}</p>
+            <span
+              class="inline-flex items-center gap-1 text-xs text-gray-400 dark:text-gray-600 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors"
+            >
+              View
+              <svg
+                class="w-3 h-3"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </span>
+          </div>
         </a>
       {/each}
     </div>
