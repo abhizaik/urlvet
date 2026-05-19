@@ -229,7 +229,7 @@
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>url.vet — sketchy link? just url.vet it.</title>
+    <title>url.vet — sketchy link? just url.vet it</title>
     <meta
       name="description"
       content="Got a sketchy link? url.vet it (urlvet) — free, instant phishing verdict with no signup needed."
@@ -238,7 +238,7 @@
       name="keywords"
       content="urlvet, url.vet, URL scanner, phishing detection, link checker, safe link checker, phishing URL checker, link safety checker"
     />
-    <meta property="og:title" content="url.vet — just url.vet it." />
+    <meta property="og:title" content="url.vet — just url.vet it" />
     <meta
       property="og:description"
       content="Sketchy link? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
@@ -248,7 +248,7 @@
     <meta property="og:url" content="https://url.vet" />
     <meta property="og:image" content="https://url.vet/urlvet-light.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="url.vet — just url.vet it." />
+    <meta name="twitter:title" content="url.vet — just url.vet it" />
     <meta
       name="twitter:description"
       content="Sketchy link? url.vet it. Free, instant, no signup."
@@ -269,7 +269,7 @@
   >
     <header class="relative mb-14 flex flex-col items-center text-center">
       <h1 class="relative text-5xl md:text-6xl font-extrabold tracking-tight z-10">
-        <a href="/" on:click={() => (location.href = "/")} class="group inline-flex items-baseline">
+        <a href="/" on:click={() => (location.href = "/")} class="group">
           <span
             class="text-gray-500 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors"
             >url</span
@@ -282,7 +282,10 @@
       </h1>
 
       <p class="relative mt-3 text-gray-500 dark:text-gray-400 text-sm md:text-base z-10">
-        sketchy link? just url.vet it.
+        sketchy link? just url.vet it
+      </p>
+      <p class="relative mt-2 text-gray-400 dark:text-gray-500 text-xs md:text-sm z-10">
+        Free link safety checker. Scan any URL for phishing, malware & suspicious redirects
       </p>
     </header>
 
@@ -450,7 +453,7 @@
       </div>
 
       <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
-        {#each ["Free & open source", "No signup required", "Explains every verdict", "Safe preview"] as pill}
+        {#each ["Free & open source", "No signup required", "Explains every verdict", "See it before you click"] as pill}
           <span
             class="flex items-center gap-1.5 text-[13px] font-medium text-gray-600 dark:text-gray-400"
           >

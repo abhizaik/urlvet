@@ -3,7 +3,8 @@ import { formatUrl, getDomainFromUrl, formatUrlForShare, decodeVerdict } from '$
 
 // Runs on the server for every request, giving bots the correct OG meta tags.
 export const load: PageLoad = ({ url }) => {
-  const q = url.searchParams.get('q') ?? '';
+  const raw = url.searchParams.get('q') ?? '';
+  const q = raw === '{search_term_string}' ? '' : raw;
   const normalized = q ? formatUrl(q) : '';
   const domain = normalized ? getDomainFromUrl(normalized) : '';
   const formatted = domain ? formatUrlForShare(normalized) : '';
