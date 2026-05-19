@@ -47,6 +47,16 @@
     },
     {
       type: "tweet",
+      name: "Bryan",
+      handle: "@so_sthbryan",
+      date: "May 16, 2026",
+      text: "Explainable phishing detection that scans URLs in real time. SafeSurf catches phishing sites before you interact with them.",
+      url: "https://x.com/so_sthbryan/status/2055390764339974377",
+      accent: "from-teal-500 to-cyan-600",
+      flag: "🇺🇸",
+    },
+    {
+      type: "tweet",
       name: "NeoTeo.com",
       handle: "@NeoteoCom",
       date: "Jan 16, 2026",
