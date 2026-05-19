@@ -87,8 +87,7 @@
             Creator &amp; maintainer
           </p>
           <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-            Builds things on the internet. Got one too many suspicious links with no good way to
-            check them, so built url.vet.
+            Got one too many suspicious links with no good way to check them, so built url.vet.
           </p>
           <div class="flex items-center gap-4 mt-3">
             <a
