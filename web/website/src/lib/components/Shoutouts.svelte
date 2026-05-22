@@ -227,7 +227,7 @@
             href={items[currentIndex].url}
             target="_blank"
             rel="noopener noreferrer"
-            class="col-start-1 row-start-1 group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 w-full text-left cursor-pointer min-h-[200px]"
+            class="col-start-1 row-start-1 group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 w-full text-left cursor-pointer h-[230px]"
             draggable="false"
             in:fly={{ x: direction * 300, duration: 350 }}
             out:fly={{ x: direction * -300, duration: 350 }}
@@ -304,7 +304,7 @@
                 </svg>
               {/if}
             </div>
-            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed line-clamp-4">
               "{items[currentIndex].text}"
             </p>
             <div class="flex items-center justify-between mt-auto">
