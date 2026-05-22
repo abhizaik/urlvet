@@ -21,6 +21,7 @@
   let activeStep = -1;
   let completedSteps: Set<number> = new Set();
   let elapsed = 0;
+  let startTime = 0;
   let intervalTimer: ReturnType<typeof setInterval>;
   let elapsedTimer: ReturnType<typeof setInterval>;
 
@@ -35,8 +36,11 @@
     activeStep = 0;
     completedSteps = new Set();
     elapsed = 0;
+    startTime = performance.now();
 
-    elapsedTimer = setInterval(() => elapsed++, 100);
+    elapsedTimer = setInterval(() => {
+      elapsed = Math.round((performance.now() - startTime) / 100);
+    }, 100);
 
     let stepIdx = 0;
     intervalTimer = setInterval(() => {
