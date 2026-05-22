@@ -128,7 +128,6 @@
       return;
     }
 
-    loading = true;
     scanDone = false;
     error = null;
     formError = null;
@@ -154,6 +153,7 @@
           screenshotLoading = false;
         });
 
+      loading = true;
       const res = await api.analyze(url);
       if (res.error) {
         error = res.error;
