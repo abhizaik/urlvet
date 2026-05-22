@@ -10,7 +10,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "url.vet",
-    alternateName: ["urlvet", "url vet"],
+    alternateName: ["URLvet", "urlvet", "url vet"],
     url: "https://url.vet",
     description:
       "Free real-time URL scanner. Paste any link and get an instant phishing and safety verdict, no signup needed.",
@@ -28,7 +28,7 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "url.vet",
-    alternateName: ["urlvet", "url vet"],
+    alternateName: ["URLvet", "urlvet", "url vet"],
     url: "https://url.vet",
     logo: "https://url.vet/favicon.ico",
     sameAs: ["https://github.com/abhizaik/urlvet"],

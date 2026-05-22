@@ -1,6 +1,6 @@
-# url.vet Web Application
+# url.vet (URLvet) Web Application
 
-A SvelteKit web application that serves as the frontend for the url.vet phishing detection tool.
+A SvelteKit web application that serves as the frontend for the url.vet (URLvet) phishing detection tool.
 
 ## Features
 
