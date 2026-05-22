@@ -14,6 +14,7 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "url.vet",
+    alternateName: ["URLvet", "urlvet", "url vet"],
     url: "https://url.vet",
     description:
       "Free real-time URL scanner for detecting phishing, typosquatting, and malicious links. Instant verdict with full signal breakdown — no signup required.",
@@ -229,16 +230,16 @@
     <meta name="twitter:description" content={desc} />
     <meta name="twitter:image" content={ogImage} />
   {:else}
-    <title>url.vet — sketchy link? just url.vet it</title>
+    <title>url.vet (URLvet) — sketchy link? just url.vet it</title>
     <meta
       name="description"
       content="Got a sketchy link? url.vet it (urlvet) — free, instant phishing verdict with no signup needed."
     />
     <meta
       name="keywords"
-      content="urlvet, url.vet, URL scanner, phishing detection, link checker, safe link checker, phishing URL checker, link safety checker"
+      content="URLvet, urlvet, url.vet, URL scanner, phishing detection, link checker, safe link checker, phishing URL checker, link safety checker"
     />
-    <meta property="og:title" content="url.vet — just url.vet it" />
+    <meta property="og:title" content="url.vet (URLvet) — just url.vet it" />
     <meta
       property="og:description"
       content="Sketchy link? Paste it. Get a verdict in seconds — safe, suspicious, or risky. Free & transparent."
@@ -248,7 +249,7 @@
     <meta property="og:url" content="https://url.vet" />
     <meta property="og:image" content="https://url.vet/urlvet-light.png" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="url.vet — just url.vet it" />
+    <meta name="twitter:title" content="url.vet (URLvet) — just url.vet it" />
     <meta
       name="twitter:description"
       content="Sketchy link? url.vet it. Free, instant, no signup."
@@ -278,14 +279,14 @@
             >vet</span
           >
         </a>
-        <span class="sr-only">(urlvet)</span>
+        <span class="sr-only">&nbsp;(also known as URLvet)</span>
       </h1>
 
       <p class="relative mt-3 text-gray-500 dark:text-gray-400 text-sm md:text-base z-10">
         sketchy link? just url.vet it
       </p>
       <p class="relative mt-2 text-gray-400 dark:text-gray-500 text-xs md:text-sm z-10">
-        FOSS link safety checker: scan any URL for phishing, malware & suspicious redirects
+        Vet any URL for phishing, malware & suspicious redirects
       </p>
     </header>
 

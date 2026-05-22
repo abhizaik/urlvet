@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 
-  type ItemType = "tweet" | "paper" | "email" | "package";
+  type ItemType = "tweet" | "paper" | "email" | "package" | "newsletter";
 
   type Item = {
     name: string;
@@ -27,16 +27,6 @@
       flag: "🇮🇳",
     },
     {
-      type: "tweet",
-      name: "Tom Dörr",
-      handle: "@tom_doerr",
-      date: "Jan 16, 2026",
-      text: "Engine for phishing detection with a web UI and browser extension",
-      url: "https://twitter.com/tom_doerr/status/2012050578721915177",
-      accent: "from-blue-500 to-indigo-600",
-      flag: "🇩🇪",
-    },
-    {
       type: "package",
       name: "Dika Ardianta",
       handle: "@DikaArdnt",
@@ -48,13 +38,23 @@
     },
     {
       type: "tweet",
-      name: "Bryan",
-      handle: "@so_sthbryan",
-      date: "May 16, 2026",
-      text: "Explainable phishing detection that scans URLs in real time. SafeSurf catches phishing sites before you interact with them.",
-      url: "https://x.com/so_sthbryan/status/2055390764339974377",
-      accent: "from-teal-500 to-cyan-600",
-      flag: "🇺🇸",
+      name: "Tom Dörr",
+      handle: "@tom_doerr",
+      date: "Jan 16, 2026",
+      text: "Engine for phishing detection with a web UI and browser extension",
+      url: "https://twitter.com/tom_doerr/status/2012050578721915177",
+      accent: "from-blue-500 to-indigo-600",
+      flag: "🇩🇪",
+    },
+    {
+      type: "newsletter",
+      name: "OSINTech",
+      handle: "osintech.substack.com",
+      date: "May 21, 2026",
+      text: "URLvet. Open-source phishing detection engine — get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.",
+      url: "https://osintech.substack.com/p/osintechs-timeline-163-21052026?open=false#%C2%A7osint-tools-services-and-investigations",
+      accent: "from-green-500 to-emerald-600",
+      flag: "🇰🇿",
     },
     {
       type: "tweet",
@@ -65,6 +65,16 @@
       url: "https://twitter.com/NeoteoCom/status/2012102861807554843",
       accent: "from-violet-500 to-purple-600",
       flag: "🇪🇸",
+    },
+    {
+      type: "tweet",
+      name: "Bryan",
+      handle: "@so_sthbryan",
+      date: "May 16, 2026",
+      text: "Explainable phishing detection that scans URLs in real time. SafeSurf catches phishing sites before you interact with them.",
+      url: "https://x.com/so_sthbryan/status/2055390764339974377",
+      accent: "from-teal-500 to-cyan-600",
+      flag: "🇺🇸",
     },
   ];
 
@@ -264,6 +274,20 @@
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
                   />
                 </svg>
+              {:else if items[currentIndex].type === "newsletter"}
+                <svg
+                  class="w-4 h-4 text-gray-400 dark:text-gray-600 flex-shrink-0 mt-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
               {:else}
                 <svg
                   class="w-4 h-4 text-gray-400 dark:text-gray-600 flex-shrink-0 mt-0.5"
@@ -404,6 +428,20 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              {:else if item.type === "newsletter"}
+                <svg
+                  class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
                   />
                 </svg>
               {:else}

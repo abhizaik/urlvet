@@ -1,8 +1,8 @@
 <svelte:head>
-  <title>About — url.vet</title>
+  <title>About — url.vet (URLvet)</title>
   <meta
     name="description"
-    content="url.vet (urlvet) is an open-source phishing detection engine built to make the web a little safer. Free, transparent, and fully explainable."
+    content="url.vet (URLvet) is an open-source phishing detection engine built to make the web a little safer. Free, transparent, and fully explainable."
   />
   <link rel="canonical" href="https://url.vet/about" />
 </svelte:head>
@@ -36,9 +36,9 @@
           the moment. There's no fast middle ground that also shows its work.
         </p>
         <p>
-          url.vet is that middle ground. Paste a link, get a result in a few seconds: a trust score,
-          a verdict, and a full breakdown of every signal that contributed to it. No black-box ML.
-          No signup. Every decision is visible.
+          url.vet (also known as URLvet) is that middle ground. Paste a link, get a result in a few
+          seconds: a trust score, a verdict, and a full breakdown of every signal that contributed
+          to it. No black-box ML. No signup. Every decision is visible.
         </p>
         <p>
           It runs 18 checks in parallel: URL structure, DNS records, TLS certificates, domain age,

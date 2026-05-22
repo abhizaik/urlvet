@@ -1,8 +1,8 @@
 <svelte:head>
-  <title>How It Works — url.vet</title>
+  <title>How It Works — url.vet (URLvet)</title>
   <meta
     name="description"
-    content="How to use url.vet: paste a link, read the score, understand the verdict. Plus a look at what's running under the hood."
+    content="How to use url.vet (URLvet): paste a link, read the score, understand the verdict. Plus a look at what's running under the hood."
   />
   <link rel="canonical" href="https://url.vet/how-it-works" />
 </svelte:head>
