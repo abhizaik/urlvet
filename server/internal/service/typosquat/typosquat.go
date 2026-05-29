@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/abhizaik/urlvet/internal/constants"
+	"github.com/abhizaik/urlvet/internal/service/rank"
 	"golang.org/x/net/publicsuffix"
 )
 
@@ -99,7 +100,7 @@ func CheckTyposquatting(domain string) TyposquatResult {
 	}
 
 	// If the input is itself a well-known domain, it cannot be a typosquat of another.
-	if _, ok := topSLDSet[inputSLD]; ok {
+	if domainRank := rank.DomainRankLookup(domain); domainRank > 0 {
 		return TyposquatResult{}
 	}
 
