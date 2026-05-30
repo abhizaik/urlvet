@@ -4,7 +4,13 @@
 
 **sketchy link? just url.vet it**
 
-Open-source phishing detection engine — paste any URL and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time.
+
+Open-source phishing detection engine for URLs and domains — paste any link and get a trust score, a fully explainable verdict, and a shareable security report with live page preview, all in real time. No black-box ML result. Every signal explained.
+
+**18 concurrent analyzers · 33 signals · DNS · TLS · domain info · typosquatting · redirect chains · content analysis · PhishTank · REST API · Chrome extension · Docker · self-hostable**
+
+> Open-source self-hostable alternative to VirusTotal, CheckPhish, and URLScan.io
+
 
 [![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?logo=go&logoColor=white)](https://go.dev)
 [![Svelte](https://img.shields.io/badge/Svelte-5-orange?logo=svelte)](https://svelte.dev)
