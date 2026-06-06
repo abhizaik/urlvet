@@ -22,7 +22,9 @@
 
     <h1 class="text-3xl font-bold tracking-tight mb-3">About</h1>
     <p class="text-gray-500 dark:text-gray-400 text-lg mb-12">
-      Making it a little harder to get phished.
+      A fully open-source phishing detection engine that runs multiple checks in real time and
+      explains exactly what it found. No accounts, no hidden algorithms. Built for people who want
+      to understand why a link is safe, not just be told it is.
     </p>
 
     <!-- Origin -->
@@ -30,30 +32,31 @@
       <h2 class="text-xl font-semibold mb-4">Why this exists</h2>
       <div class="space-y-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
         <p>
-          Phishing links are everywhere: in emails, DMs, QR codes, shortened URLs. Most people click
-          and hope for the best. The tools that exist either hand you a pass/fail verdict from a
-          database with no explanation, or do a thorough crawl that takes too long to be useful in
-          the moment. There's no fast middle ground that also shows its work.
+          Phishing links show up everywhere: in emails, DMs, QR codes, and shortened URLs. When
+          something looks suspicious, most people either click and hope, or avoid the link entirely.
+          Neither is a good. The tools that exist don't help much either. Quick scanners return a
+          pass or fail with no explanation. Thorough crawlers take too long and often bury results
+          in raw technical data. There is nothing in between that is fast and still shows its work
+          in plain language.
         </p>
         <p>
-          url.vet (also known as URLvet) is that middle ground. Paste a link, get a result in a few
-          seconds: a trust score, a verdict, and a full breakdown of every signal that contributed
-          to it. No black-box ML. No signup. Every decision is visible.
+          url.vet (also known as URLvet, previously SafeSurf) is that middle ground. Paste a link
+          and get a result in seconds: a trust score, a clear verdict, and a breakdown of exactly
+          what was checked. No guesswork, no signup, nothing hidden.
         </p>
         <p>
-          It runs 18 checks in parallel: URL structure, DNS records, TLS certificates, domain age,
-          typosquatting, page content, and live threat feeds. You see exactly why something scored
-          the way it did. That's the only way a safety verdict is useful when you need to decide
-          right now.
+          It runs 18 checks covering URL structure, DNS records, TLS certificates, domain age,
+          typosquatting, page content, and live threat feeds. Every check produces a plain-language
+          reason, so you always know what pushed the score up or down.
         </p>
       </div>
     </section>
 
     <!-- Philosophy -->
     <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-5">How we think about it</h2>
+      <h2 class="text-xl font-semibold mb-5">Philosophy</h2>
       <div class="grid sm:grid-cols-2 gap-4">
-        {#each [{ title: "Explainability over accuracy theatre", desc: "A verdict you can't explain is a verdict you can't trust. Every signal is shown, whether it helped or hurt the score." }, { title: "Live over cached", desc: "Phishing pages spin up and disappear in hours. Scanning at request time catches what static databases miss." }, { title: "Open source by default", desc: "Security tools should be auditable. The entire detection engine is on GitHub under AGPL-3.0." }, { title: "No friction", desc: "No account, no ads, no API key. Paste a URL, get an answer." }] as item}
+        {#each [{ title: "Explainability over security theater", desc: "A verdict you can't explain is a verdict you can't trust. Every signal is shown, whether it helped or hurt the score." }, { title: "Live over cached", desc: "Phishing pages spin up and disappear in hours. Scanning at request time catches what static databases miss." }, { title: "Open source by default", desc: "Security tools should be auditable. The entire detection engine is on GitHub under AGPL-3.0." }, { title: "No friction", desc: "No account, no ads, no API key. Paste a URL, get an answer." }] as item}
           <div
             class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4"
           >
@@ -140,15 +143,20 @@
     <!-- Open source -->
     <section class="mb-14">
       <h2 class="text-xl font-semibold mb-4">Open source</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
+        url.vet is fully open source. A lot of projects call themselves open source but only publish
+        the frontend while keeping the actual engine private. Here, everything is publicly
+        available. The detection engine, scoring logic, API, and frontend. Nothing hidden.
+      </p>
       <p class="text-sm text-gray-600 dark:text-gray-400 mb-5 leading-relaxed">
-        url.vet is dual-licensed. The community edition is
+        The community edition is licensed under
         <a
           href="https://github.com/abhizaik/urlvet/blob/main/LICENSE"
           target="_blank"
           rel="noopener noreferrer"
           class="text-gray-900 dark:text-white underline underline-offset-2">AGPL-3.0</a
-        >, free to use, self-host, and modify. Any modified version served over a network must make
-        its source code available. Found a bug or want to contribute? Pull requests are welcome.
+        >. Free to use, self-host, and modify. Found a bug or want to contribute? Pull requests are
+        welcome.
       </p>
       <div class="flex flex-wrap gap-3">
         <a
@@ -179,7 +187,7 @@
     <section>
       <h2 class="text-xl font-semibold mb-4">Get in touch</h2>
       <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-        Feedback, false positives, partnership inquiries, or just saying hi. Reach out at
+        Feedback, false positives, or just to say hi. Reach out at
         <a
           href="mailto:hi@url.vet"
           class="text-gray-900 dark:text-white underline underline-offset-2 hover:no-underline transition-all"

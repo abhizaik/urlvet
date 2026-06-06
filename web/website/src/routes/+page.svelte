@@ -233,7 +233,7 @@
     <title>url.vet (URLvet) — sketchy link? just url.vet it</title>
     <meta
       name="description"
-      content="Got a sketchy link? url.vet it (urlvet) — free, instant phishing verdict with no signup needed."
+      content="Got a sketchy link? url.vet it (URLvet) — free, instant phishing verdict with no signup needed."
     />
     <meta
       name="keywords"
