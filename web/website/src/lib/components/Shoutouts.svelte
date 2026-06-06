@@ -1,8 +1,9 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { quintOut } from "svelte/easing";
   import { fly } from "svelte/transition";
 
-  type ItemType = "tweet" | "paper" | "email" | "package" | "newsletter";
+  type ItemType = "tweet" | "paper" | "email" | "package" | "newsletter" | "linkedin";
 
   type Item = {
     name: string;
@@ -75,6 +76,16 @@
       url: "https://x.com/so_sthbryan/status/2055390764339974377",
       accent: "from-teal-500 to-cyan-600",
       flag: "🇺🇸",
+    },
+    {
+      type: "linkedin",
+      name: "Şevket Can Özöğretmen",
+      handle: "@ozogretmen",
+      date: "May 14, 2026",
+      text: "Unsure where a link you click online will take you? url.vet is a powerful phishing detection engine that scans, scores, and transparently explains why a link is safe or not in real time.",
+      url: "https://www.linkedin.com/posts/ozogretmen_cybersecurity-opensource-phishingdetection-ugcPost-7460836352545341440-B4yF/",
+      accent: "from-sky-500 to-blue-600",
+      flag: "🇹🇷",
     },
   ];
 
@@ -229,8 +240,8 @@
             rel="noopener noreferrer"
             class="col-start-1 row-start-1 group flex flex-col gap-3 p-4 rounded-xl border border-gray-300 dark:border-gray-800 bg-white dark:bg-gray-900/60 w-full text-left cursor-pointer h-[230px]"
             draggable="false"
-            in:fly={{ x: direction * 300, duration: 350 }}
-            out:fly={{ x: direction * -300, duration: 350 }}
+            in:fly={{ x: direction * 300, duration: 700, easing: quintOut }}
+            out:fly={{ x: direction * -300, duration: 700, easing: quintOut }}
           >
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-center gap-2.5">
@@ -286,6 +297,16 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
+              {:else if items[currentIndex].type === "linkedin"}
+                <svg
+                  class="w-4 h-4 text-gray-400 dark:text-gray-600 flex-shrink-0 mt-0.5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                   />
                 </svg>
               {:else}
@@ -442,6 +463,16 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+                  />
+                </svg>
+              {:else if item.type === "linkedin"}
+                <svg
+                  class="w-4 h-4 text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors flex-shrink-0 mt-0.5"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                   />
                 </svg>
               {:else}

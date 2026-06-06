@@ -2,7 +2,7 @@
   <title>How It Works — url.vet (URLvet)</title>
   <meta
     name="description"
-    content="How to use url.vet (URLvet): paste a link, read the score, understand the verdict. Plus a look at what's running under the hood."
+    content="How url.vet scans links, what it checks, and what each result means."
   />
   <link rel="canonical" href="https://url.vet/how-it-works" />
 </svelte:head>
@@ -27,9 +27,9 @@
 
     <!-- Step 1: Using it -->
     <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-5">Using url.vet</h2>
+      <h2 class="text-xl font-semibold mb-5">How to scan a link</h2>
       <ol class="space-y-5">
-        {#each [{ n: "1", title: "Paste any link", desc: "Drop a URL into the input box — full link, shortened link, or just a domain like example.com. url.vet will normalize it." }, { n: "2", title: "Hit Check", desc: "The scan runs live. It takes a few seconds because url.vet actually fetches the page rather than looking it up in a static database." }, { n: "3", title: "Read the result", desc: "You'll get a trust score from 0 to 100, a verdict, and a breakdown of every signal that contributed to it." }] as item}
+        {#each [{ n: "1", title: "Paste any link", desc: "Drop a URL into the input box. Full link, shortened link, or just a domain like example.com. url.vet handles the formatting." }, { n: "2", title: "Click Scan", desc: "The scan runs live. It takes a few seconds because url.vet fetches the page in real time rather than looking it up in a cached index." }, { n: "3", title: "Read the result", desc: "You'll get a trust score from 0 to 100, a verdict, and a breakdown of every check that ran." }] as item}
           <li class="flex gap-4">
             <span
               class="flex-shrink-0 w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-semibold flex items-center justify-center mt-0.5"
@@ -46,15 +46,15 @@
 
     <!-- Understanding the output -->
     <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-5">Reading the Result</h2>
+      <h2 class="text-xl font-semibold mb-5">What you get back</h2>
 
       <!-- Score -->
       <div class="mb-8">
         <p class="text-sm font-semibold mb-2">The trust score</p>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          A number from 0 to 100. Higher is safer. 50 is the neutral baseline — a brand new unknown
-          URL with no signals in either direction. Most legitimate sites score above 65; anything
-          below 30 has serious red flags.
+          A number from 0 to 100. Higher is safer. 50 is the neutral baseline. A brand new URL with
+          no signals in either direction starts there. Most legitimate sites score above 65.
+          Anything below 30 is worth treating as dangerous.
         </p>
         <div class="flex flex-wrap gap-3">
           <div
@@ -92,9 +92,8 @@
         <p class="text-sm font-semibold mb-2">The signal breakdown</p>
         <p class="text-sm text-gray-600 dark:text-gray-400">
           Below the score you'll see every check that ran, grouped into sections: URL structure,
-          DNS, TLS, domain intelligence, content, and threat feeds. Each one shows a green
-          checkmark, a red flag, or a neutral note. Red flags increase the risk score; green
-          checkmarks build trust. Neutral notes are shown for context but don't affect the score.
+          DNS, TLS, domain intelligence, content, and threat feeds. Each one shows a green flag or a
+          red flag. Red flags push the risk score up. Green flags build trust.
         </p>
       </div>
 
@@ -103,8 +102,8 @@
         <p class="text-sm font-semibold mb-2">The page preview</p>
         <p class="text-sm text-gray-600 dark:text-gray-400">
           url.vet takes a live screenshot of the page. It's one of the fastest ways to spot a
-          phishing site — if the page looks like your bank's login screen but the domain has nothing
-          to do with your bank, that's a red flag no automated check can fully capture.
+          phishing site. If the page looks like your bank's login screen but the domain has nothing
+          to do with your bank, that's something no automated check can fully catch.
         </p>
       </div>
 
@@ -114,21 +113,23 @@
         <p class="text-sm text-gray-600 dark:text-gray-400">
           Every scan has a permanent shareable URL. Use it to send a result to a colleague, post it
           in a security thread, or report a suspicious link to someone who needs context. The link
-          includes the verdict and score so recipients see the summary without having to re-scan.
+          includes the verdict and score so whoever you send it to sees the result without having to
+          re-scan.
         </p>
       </div>
     </section>
 
     <!-- Under the hood (condensed) -->
     <section class="mb-14">
-      <h2 class="text-xl font-semibold mb-2">Under the Hood</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
-        18 checks run concurrently the moment you submit. Each one is independent — a timeout or
-        failure in one never delays the others.
+      <h2 class="text-xl font-semibold mb-2">The checks</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400">
+        18 checks run at the same time the moment you submit. Each one is independent, so a timeout
+        or failure in one never holds up the rest.
       </p>
+      <br />
 
       <!-- Pipeline image -->
-      <div class="mb-8">
+      <div class="mb-4">
         <img
           src="/pipeline.png"
           alt="url.vet analyzer pipeline showing 18 checks across 7 signal categories"
@@ -136,9 +137,16 @@
           loading="lazy"
         />
       </div>
+      <p class="text-sm text-gray-600 dark:text-gray-400">
+        Checks run in parallel, not in sequence. The slowest check sets the total scan time, not the
+        sum of all checks. Scores are calculated once all signals are collected. The score reflects
+        the weight of everything combined.
+      </p>
+
+      <br />
 
       <div class="space-y-3">
-        {#each [{ label: "URL structure", desc: "Inspects the link itself before any network request: IP-as-hostname, URL shorteners, suspicious path keywords, IDN homograph encoding, subdomain depth." }, { label: "HTTP / Network", desc: "Makes one real request and follows every redirect. Checks HSTS, status code, and whether the final destination is a different domain than what you clicked." }, { label: "DNS", desc: "Verifies NS and MX records exist and that the domain resolves to a real IP." }, { label: "TLS / SSL", desc: "Checks certificate validity, expiry, issuer, Certificate Transparency log inclusion, and known-bad fingerprints." }, { label: "Domain intelligence", desc: "Looks up domain age via WHOIS, global traffic rank, TLD classification, DNSSEC, Shannon entropy, and typosquatting against 500+ brands." }, { label: "Content analysis", desc: "Fetches and parses the page. Detects login and payment forms on suspicious domains, hidden iframes, brand impersonation, and forms that exfiltrate data to third parties." }, { label: "Threat intelligence", desc: "Cross-references against PhishTank's confirmed and reported phishing databases." }] as item}
+        {#each [{ label: "URL structure", desc: "Inspects the link before making any network request. Checks for IP addresses used as hostnames, URL shorteners, suspicious keywords in the path, IDN homograph attacks, and unusually deep subdomains." }, { label: "HTTP / Network", desc: "Makes one real request and follows every redirect. Checks HSTS, status code, and whether the final destination differs from the link you pasted." }, { label: "DNS", desc: "Verifies NS and MX records exist and that the domain resolves to a real IP." }, { label: "TLS / SSL", desc: "Checks certificate validity, expiry, issuer, Certificate Transparency log inclusion, and known-bad fingerprints." }, { label: "Domain intelligence", desc: "Looks up domain age via WHOIS, global traffic rank, TLD classification, DNSSEC status, character randomness in the domain name, and typosquatting similarity against 500+ brands." }, { label: "Content analysis", desc: "Fetches and parses the page. Detects login and payment forms on suspicious domains, hidden iframes, brand impersonation, and forms that submit data to external servers." }, { label: "Threat intelligence", desc: "Checks the URL against PhishTank's databases of confirmed and reported phishing links." }] as item}
           <div class="flex gap-3 py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
             <p class="text-sm font-medium w-40 flex-shrink-0 text-gray-700 dark:text-gray-300">
               {item.label}
@@ -155,12 +163,11 @@
       <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
         <p>
           Heuristic detection means false positives are possible. A legitimate site that's new and
-          unranked might score lower than it deserves. No tool is a guarantee.
+          unranked might score lower than it deserves.
         </p>
         <p>
-          There's no ML model, and that's intentional. A model that can't explain itself isn't
-          useful when you need to make a trust decision in the moment. Every signal here can be read
-          and reasoned about.
+          There's no ML model as of now, and that's intentional. A model that can't explain its
+          reasoning isn't useful when trust is on the line.
         </p>
         <p>Use url.vet as one layer of defense, not the only one.</p>
       </div>
