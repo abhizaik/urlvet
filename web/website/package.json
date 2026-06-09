@@ -41,5 +41,8 @@
   "dependencies": {
     "satori": "^0.26.0",
     "sharp": "^0.34.5"
+  },
+  "overrides": {
+    "cookie": ">=0.7.0"
   }
 }
