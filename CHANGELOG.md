@@ -33,10 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ---
 
 
-## [0.1.0] – 2021-05-01
+## [0.1.0] – 2021-07-29
 
 ### Added
-- Proof-of-concept in Python 
+- Started project 
 
 
 ---

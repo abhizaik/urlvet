@@ -241,7 +241,7 @@ If you use this project in academic or research work, please cite it — see [CI
 
 ## License
 
-Copyright (C) 2023–2026 Abhishek K P
+Copyright (C) 2021–2026 Abhishek K P
 
 url.vet is dual-licensed:
 

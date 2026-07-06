@@ -232,7 +232,7 @@ docs/                   API、部署、架构、安全文档
 
 ## 许可证
 
-Copyright (C) 2023–2026 Abhishek K P
+Copyright (C) 2021–2026 Abhishek K P
 
 url.vet 采用双重许可：
 
