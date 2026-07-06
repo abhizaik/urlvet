@@ -94,7 +94,7 @@
           class="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
           >AGPL-3.0</a
         >
-        © 2023–{year}
+        © 2021–{year}
         <a
           href="https://abhizaik.com"
           target="_blank"
