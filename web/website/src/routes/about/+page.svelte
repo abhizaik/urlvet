@@ -12,7 +12,7 @@
     <!-- Back link -->
     <a
       href="/"
-      class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
+      class="inline-flex items-center gap-2 text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -58,7 +58,7 @@
           <div
             class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4"
           >
-            <p class="font-medium text-sm mb-1.5">{item.title}</p>
+            <p class="font-medium text-base mb-1.5">{item.title}</p>
             <p class="text-gray-500 dark:text-gray-400 text-base leading-relaxed">{item.desc}</p>
           </div>
         {/each}
@@ -161,7 +161,7 @@
           href="https://github.com/abhizaik/urlvet"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
+          class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-lg text-base font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -174,7 +174,7 @@
           href="https://github.com/abhizaik/urlvet/issues"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
+          class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-base font-medium hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
         >
           Report an issue
         </a>

@@ -54,7 +54,7 @@
     class="bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800 py-6"
   >
     <div
-      class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center gap-4 text-sm md:text-base"
+      class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row md:justify-between items-center gap-4 text-base"
     >
       <!-- Left: GitHub + nav links -->
       <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">

@@ -12,7 +12,7 @@
     <!-- Back link -->
     <a
       href="/"
-      class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
+      class="inline-flex items-center gap-2 text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -36,7 +36,7 @@
               >{item.n}</span
             >
             <div>
-              <p class="text-sm font-semibold mb-0.5">{item.title}</p>
+              <p class="text-base font-semibold mb-0.5">{item.title}</p>
               <p class="text-base text-gray-500 dark:text-gray-400">{item.desc}</p>
             </div>
           </li>
@@ -50,7 +50,7 @@
 
       <!-- Score -->
       <div class="mb-8">
-        <p class="text-sm font-semibold mb-2">The trust score</p>
+        <p class="text-base font-semibold mb-2">The trust score</p>
         <p class="text-base text-gray-600 dark:text-gray-400 mb-4">
           A number from 0 to 100. Higher is safer. 50 is the neutral baseline. A brand new URL with
           no signals in either direction starts there. Most legitimate sites score above 65.
@@ -89,7 +89,7 @@
 
       <!-- Breakdown -->
       <div class="mb-8">
-        <p class="text-sm font-semibold mb-2">The signal breakdown</p>
+        <p class="text-base font-semibold mb-2">The signal breakdown</p>
         <p class="text-base text-gray-600 dark:text-gray-400">
           Below the score you'll see every check that ran, grouped into sections: URL structure,
           DNS, TLS, domain intelligence, content, and threat feeds. Each one shows a green flag or a
@@ -99,7 +99,7 @@
 
       <!-- Screenshot -->
       <div class="mb-8">
-        <p class="text-sm font-semibold mb-2">The page preview</p>
+        <p class="text-base font-semibold mb-2">The page preview</p>
         <p class="text-base text-gray-600 dark:text-gray-400">
           url.vet takes a live screenshot of the page. It's one of the fastest ways to spot a
           phishing site. If the page looks like your bank's login screen but the domain has nothing
@@ -109,7 +109,7 @@
 
       <!-- Sharing -->
       <div>
-        <p class="text-sm font-semibold mb-2">Sharing a result</p>
+        <p class="text-base font-semibold mb-2">Sharing a result</p>
         <p class="text-base text-gray-600 dark:text-gray-400">
           Every scan has a permanent shareable URL. Use it to send a result to a colleague, post it
           in a security thread, or report a suspicious link to someone who needs context. The link
@@ -148,7 +148,7 @@
       <div class="space-y-3">
         {#each [{ label: "URL structure", desc: "Inspects the link before making any network request. Checks for IP addresses used as hostnames, URL shorteners, suspicious keywords in the path, IDN homograph attacks, and unusually deep subdomains." }, { label: "HTTP / Network", desc: "Makes one real request and follows every redirect. Checks HSTS, status code, and whether the final destination differs from the link you pasted." }, { label: "DNS", desc: "Verifies NS and MX records exist and that the domain resolves to a real IP." }, { label: "TLS / SSL", desc: "Checks certificate validity, expiry, issuer, Certificate Transparency log inclusion, and known-bad fingerprints." }, { label: "Domain intelligence", desc: "Looks up domain age via WHOIS, global traffic rank, TLD classification, DNSSEC status, character randomness in the domain name, and typosquatting similarity against 500+ brands." }, { label: "Content analysis", desc: "Fetches and parses the page. Detects login and payment forms on suspicious domains, hidden iframes, brand impersonation, and forms that submit data to external servers." }, { label: "Threat intelligence", desc: "Checks the URL against PhishTank's databases of confirmed and reported phishing links." }] as item}
           <div class="flex gap-3 py-3 border-b border-gray-100 dark:border-gray-800 last:border-0">
-            <p class="text-sm font-medium w-40 flex-shrink-0 text-gray-700 dark:text-gray-300">
+            <p class="text-base font-medium w-40 flex-shrink-0 text-gray-700 dark:text-gray-300">
               {item.label}
             </p>
             <p class="text-base text-gray-500 dark:text-gray-400">{item.desc}</p>
@@ -177,10 +177,10 @@
     <div
       class="border-t border-gray-200 dark:border-gray-800 pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
     >
-      <p class="text-gray-500 dark:text-gray-400 text-sm">Got a link you're not sure about?</p>
+      <p class="text-gray-500 dark:text-gray-400 text-base">Got a link you're not sure about?</p>
       <a
         href="/"
-        class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
+        class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-5 py-2.5 rounded-lg text-base font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
       >
         Check it on url.vet
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
