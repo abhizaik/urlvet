@@ -37,7 +37,7 @@
             >
             <div>
               <p class="text-sm font-semibold mb-0.5">{item.title}</p>
-              <p class="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+              <p class="text-base text-gray-500 dark:text-gray-400">{item.desc}</p>
             </div>
           </li>
         {/each}
@@ -51,7 +51,7 @@
       <!-- Score -->
       <div class="mb-8">
         <p class="text-sm font-semibold mb-2">The trust score</p>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p class="text-base text-gray-600 dark:text-gray-400 mb-4">
           A number from 0 to 100. Higher is safer. 50 is the neutral baseline. A brand new URL with
           no signals in either direction starts there. Most legitimate sites score above 65.
           Anything below 30 is worth treating as dangerous.
@@ -90,7 +90,7 @@
       <!-- Breakdown -->
       <div class="mb-8">
         <p class="text-sm font-semibold mb-2">The signal breakdown</p>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
+        <p class="text-base text-gray-600 dark:text-gray-400">
           Below the score you'll see every check that ran, grouped into sections: URL structure,
           DNS, TLS, domain intelligence, content, and threat feeds. Each one shows a green flag or a
           red flag. Red flags push the risk score up. Green flags build trust.
@@ -100,7 +100,7 @@
       <!-- Screenshot -->
       <div class="mb-8">
         <p class="text-sm font-semibold mb-2">The page preview</p>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
+        <p class="text-base text-gray-600 dark:text-gray-400">
           url.vet takes a live screenshot of the page. It's one of the fastest ways to spot a
           phishing site. If the page looks like your bank's login screen but the domain has nothing
           to do with your bank, that's something no automated check can fully catch.
@@ -110,7 +110,7 @@
       <!-- Sharing -->
       <div>
         <p class="text-sm font-semibold mb-2">Sharing a result</p>
-        <p class="text-sm text-gray-600 dark:text-gray-400">
+        <p class="text-base text-gray-600 dark:text-gray-400">
           Every scan has a permanent shareable URL. Use it to send a result to a colleague, post it
           in a security thread, or report a suspicious link to someone who needs context. The link
           includes the verdict and score so whoever you send it to sees the result without having to
@@ -122,7 +122,7 @@
     <!-- Under the hood (condensed) -->
     <section class="mb-14">
       <h2 class="text-xl font-semibold mb-2">The checks</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400">
+      <p class="text-base text-gray-600 dark:text-gray-400">
         18 checks run at the same time the moment you submit. Each one is independent, so a timeout
         or failure in one never holds up the rest.
       </p>
@@ -137,7 +137,7 @@
           loading="lazy"
         />
       </div>
-      <p class="text-sm text-gray-600 dark:text-gray-400">
+      <p class="text-base text-gray-600 dark:text-gray-400">
         Checks run in parallel, not in sequence. The slowest check sets the total scan time, not the
         sum of all checks. Scores are calculated once all signals are collected. The score reflects
         the weight of everything combined.
@@ -151,7 +151,7 @@
             <p class="text-sm font-medium w-40 flex-shrink-0 text-gray-700 dark:text-gray-300">
               {item.label}
             </p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{item.desc}</p>
+            <p class="text-base text-gray-500 dark:text-gray-400">{item.desc}</p>
           </div>
         {/each}
       </div>
@@ -160,7 +160,7 @@
     <!-- Limitations -->
     <section class="mb-14">
       <h2 class="text-xl font-semibold mb-4">Limitations</h2>
-      <div class="space-y-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      <div class="space-y-3 text-base text-gray-600 dark:text-gray-400 leading-relaxed">
         <p>
           Heuristic detection means false positives are possible. A legitimate site that's new and
           unranked might score lower than it deserves.
