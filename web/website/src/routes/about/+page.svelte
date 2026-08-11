@@ -12,7 +12,7 @@
     <!-- Back link -->
     <a
       href="/"
-      class="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
+      class="inline-flex items-center gap-2 text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors mb-10"
     >
       <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -30,24 +30,22 @@
     <!-- Origin -->
     <section class="mb-14">
       <h2 class="text-xl font-semibold mb-4">Why this exists</h2>
-      <div class="space-y-4 text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+      <div class="space-y-4 text-gray-600 dark:text-gray-400 text-base leading-relaxed">
         <p>
-          Phishing links show up everywhere: in emails, DMs, QR codes, and shortened URLs. When
-          something looks suspicious, most people either click and hope, or avoid the link entirely.
-          Neither is a good. The tools that exist don't help much either. Quick scanners return a
-          pass or fail with no explanation. Thorough crawlers take too long and often bury results
-          in raw technical data. There is nothing in between that is fast and still shows its work
-          in plain language.
+          Phishing links show up in emails, DMs, QR codes, and shortened URLs. Most people either
+          click and hope, or avoid the link entirely. Neither is good. Existing tools don't close
+          that gap: quick scanners return a pass/fail with no explanation, thorough crawlers take
+          too long and bury results in raw technical data. Nothing is both fast and legible.
         </p>
         <p>
-          url.vet (also known as URLvet, previously SafeSurf) is that middle ground. Paste a link
-          and get a result in seconds: a trust score, a clear verdict, and a breakdown of exactly
-          what was checked. No guesswork, no signup, nothing hidden.
+          url.vet (also known as URLvet, previously SafeSurf) is that middle ground. Paste a link,
+          get a trust score, a verdict, and a full breakdown in seconds. No guesswork, no signup,
+          nothing hidden.
         </p>
         <p>
-          It runs 18 checks covering URL structure, DNS records, TLS certificates, domain age,
-          typosquatting, page content, and live threat feeds. Every check produces a plain-language
-          reason, so you always know what pushed the score up or down.
+          It runs 18 checks: URL structure, DNS, TLS, domain age, typosquatting, page content, and
+          live threat feeds. Each produces a plain-language reason, so you always know what moved
+          the score.
         </p>
       </div>
     </section>
@@ -60,8 +58,8 @@
           <div
             class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4"
           >
-            <p class="font-medium text-sm mb-1.5">{item.title}</p>
-            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+            <p class="font-medium text-base mb-1.5">{item.title}</p>
+            <p class="text-gray-500 dark:text-gray-400 text-base leading-relaxed">{item.desc}</p>
           </div>
         {/each}
       </div>
@@ -89,7 +87,7 @@
           <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 mb-2">
             Creator &amp; maintainer
           </p>
-          <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
             Got one too many suspicious links with no good way to check them, so built url.vet.
           </p>
           <div class="flex items-center gap-4 mt-3">
@@ -128,7 +126,7 @@
           </div>
         </div>
       </div>
-      <p class="text-sm text-gray-500 dark:text-gray-400">
+      <p class="text-base text-gray-500 dark:text-gray-400">
         With help from
         <a
           href="https://github.com/abhizaik/urlvet/graphs/contributors"
@@ -143,12 +141,12 @@
     <!-- Open source -->
     <section class="mb-14">
       <h2 class="text-xl font-semibold mb-4">Open source</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
+      <p class="text-base text-gray-600 dark:text-gray-400 mb-3 leading-relaxed">
         url.vet is fully open source. A lot of projects call themselves open source but only publish
         the frontend while keeping the actual engine private. Here, everything is publicly
         available. The detection engine, scoring logic, API, and frontend. Nothing hidden.
       </p>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mb-5 leading-relaxed">
+      <p class="text-base text-gray-600 dark:text-gray-400 mb-5 leading-relaxed">
         The community edition is licensed under
         <a
           href="https://github.com/abhizaik/urlvet/blob/main/LICENSE"
@@ -163,7 +161,7 @@
           href="https://github.com/abhizaik/urlvet"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
+          class="inline-flex items-center gap-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-lg text-base font-medium hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
         >
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path
@@ -176,7 +174,7 @@
           href="https://github.com/abhizaik/urlvet/issues"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
+          class="inline-flex items-center gap-2 border border-gray-300 dark:border-gray-700 px-4 py-2 rounded-lg text-base font-medium hover:border-gray-500 dark:hover:border-gray-500 transition-colors"
         >
           Report an issue
         </a>
@@ -186,7 +184,7 @@
     <!-- Contact -->
     <section>
       <h2 class="text-xl font-semibold mb-4">Get in touch</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+      <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
         Feedback, false positives, or just to say hi. Reach out at
         <a
           href="mailto:hi@url.vet"

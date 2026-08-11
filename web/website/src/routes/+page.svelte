@@ -260,12 +260,6 @@
 
 <section class="relative overflow-hidden">
   <div
-    class="absolute top-0 -left-8 w-48 h-48 dark:bg-blue-500/25 rounded-full blur-3xl animate-blob pointer-events-none z-0"
-  ></div>
-  <div
-    class="absolute top-8 right-0 w-36 h-36 dark:bg-indigo-500/20 rounded-full blur-3xl animate-blob animation-delay-2000 pointer-events-none z-0"
-  ></div>
-  <div
     class={`max-w-5xl mx-auto px-6 ${isLanding ? "flex flex-col items-center text-center pt-16 md:pt-20 pb-12" : "py-12"}`}
   >
     <header class="relative mb-14 flex flex-col items-center text-center">
@@ -299,7 +293,7 @@
           <input
             id="url-input"
             type="text"
-            class={`w-full rounded-xl bg-white dark:bg-gray-900 border px-4 py-3.5 pr-24 text-sm placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all duration-200 ${formError ? "border-red-400 dark:border-red-600/70" : "border-gray-300 dark:border-gray-700/80"}`}
+            class={`w-full rounded-xl bg-white dark:bg-gray-900 border px-4 py-3.5 pr-24 text-base placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-all duration-200 ${formError ? "border-red-400 dark:border-red-600/70" : "border-gray-300 dark:border-gray-700/80"}`}
             placeholder="Paste URL (e.g. example.com)"
             bind:value={input}
             on:input={() => {
@@ -356,7 +350,7 @@
 
         <button
           type="submit"
-          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-sm font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 active:scale-95"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-base font-semibold shadow-lg shadow-blue-900/30 transition-all duration-200 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 active:scale-95"
           disabled={loading}
           aria-busy={loading}
           aria-label={loading ? "Scanning URL, please wait" : "Scan Now"}
@@ -421,7 +415,7 @@
           <button
             type="button"
             on:click={copyCleanUrl}
-            class="w-full font-mono text-[10px] break-all transition-colors cursor-copy {trackerCopied
+            class="w-full font-mono text-xs break-all transition-colors cursor-copy {trackerCopied
               ? 'text-emerald-400'
               : 'text-gray-500 hover:text-gray-300'}"
           >
@@ -446,7 +440,7 @@
           >
             {example.label}
             <span
-              class={`text-[10px] font-semibold ${example.hint === "Safe" ? "text-emerald-500" : "text-red-500"}`}
+              class={`text-xs font-semibold ${example.hint === "Safe" ? "text-emerald-500" : "text-red-500"}`}
               >{example.hint}</span
             >
           </button>
@@ -456,7 +450,7 @@
       <div class="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2">
         {#each ["Free & open source", "No signup required", "Explains every verdict", "See it before you click"] as pill}
           <span
-            class="flex items-center gap-1.5 text-[13px] font-medium text-gray-600 dark:text-gray-400"
+            class="flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-gray-400"
           >
             <svg
               class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0"
