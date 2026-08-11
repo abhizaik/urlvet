@@ -1,5 +1,5 @@
 # Development image with Air
-FROM golang:1.24-bullseye
+FROM golang:1.25-bookworm
 
 # Install basic utilities
 RUN apt-get update \
